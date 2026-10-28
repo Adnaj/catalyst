@@ -1,0 +1,138 @@
+/* ---------- Mega panel: hidden by default (and always on mobile) ---------- */
+.mega-panel {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  :root {
+    --mega-accent: var(--tj-color-theme-primary, #1a56db);
+    --mega-text: #1b1b1b;
+    --mega-muted: #555;
+    --mega-soft: #f3f6fb;
+  }
+
+  /* Online / Offline rows inside the Courses dropdown */
+  .mainmenu li.has-mega {
+    position: static !important;
+  }
+
+  /* desktop uses the mega panel, so hide the plain nested list */
+  .mainmenu li.has-mega > .sub-menu {
+    display: none !important;
+  }
+
+  /* make sure the Courses dropdown doesn't clip the panel */
+  .mainmenu li.has-dropdown > .sub-menu {
+    overflow: visible;
+  }
+
+  .mainmenu li.has-mega > .mega-panel {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 640px;
+    max-width: calc(100vw - 340px);
+    padding: 28px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+    z-index: 9999;
+    display: none;
+  }
+
+  .mainmenu li.has-mega:hover > .mega-panel,
+  .mainmenu li.has-mega:focus-within > .mega-panel {
+    display: block;
+  }
+
+  .mainmenu li.has-mega:hover > a {
+    color: var(--mega-accent);
+    background: #31308540;
+  }
+
+  /* ---------- Panel header ---------- */
+  .mega-panel__head {
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--mega-text);
+    border-bottom: 1px solid #e6e9ef;
+  }
+
+  /* ---------- 2 columns ----------
+     column 1: Accounting Courses, then Tech Courses (stacked)
+     column 2: Marketing & Management Courses */
+  .mega-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+    row-gap: 24px;
+    align-items: start;
+  }
+
+  .mega-panel__grid > .mega-col:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .mega-panel__grid > .mega-col:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .mega-panel__grid > .mega-col:nth-child(3) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .mega-col__title {
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--mega-accent);
+    border-bottom: 2px solid var(--mega-soft);
+  }
+
+  /* force a vertical stack (theme styles menu li as inline/flex) */
+  .mainmenu .mega-col__list {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mainmenu .mega-col__list li {
+    display: block !important;
+    float: none !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mainmenu .mega-col__list a {
+    display: block !important;
+    width: 100%;
+    padding: 6px 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--mega-muted);
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .mainmenu .mega-col__list a::before,
+  .mainmenu .mega-col__list a::after {
+    display: none;
+  }
+
+  .mainmenu .mega-col__list a:hover {
+    color: var(--mega-accent);
+    transform: translateX(4px);
+  }
+}

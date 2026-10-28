@@ -1,0 +1,87 @@
+.cc-line { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: inherit; }
+.cc-line strong { font-weight: 600; }
+.cc-actions { display: flex; flex-direction: column; gap: 10px; }
+.cc-empty { text-align: center; padding: 40px 0; color: inherit; }
+
+/* ---------- empty state ---------- */
+.cc-empty { text-align: center; padding: 40px 0; color: inherit; }
+
+/* ---------- action buttons (right column) ---------- */
+.cc-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------- Tools / Job roles panels ---------- */
+/* white panel so the light design reads well inside the dark event card */
+.cc-block {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-top: 14px;
+  color: #3f4f7a;
+}
+
+.cc-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.cc-head-icon {
+  width: 46px; height: 46px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: #e3f4ff;
+  color: #313085;
+}
+.cc-head-title { margin: 0; font-size: 18px; font-weight: 700; color: #141a4a; }
+
+/* Tools: icon + name, divided by thin vertical lines */
+.cc-tools {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; row-gap: 12px;
+}
+.cc-tools li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; line-height: 1.35; 
+  margin-right: 15px;
+}
+.cc-tools li:first-child { padding-left: 0; border-left: 0; }
+.cc-tool-icon {
+  
+  display: flex; 
+ color: #313085;
+}
+.cc-tool-icon img { width: 16px; height: 16px; object-fit: contain; }
+.cc-tool-name { color: #3f4f7a; }
+
+/* Job roles: plain text divided by vertical lines */
+.cc-roles {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; row-gap: 8px;
+}
+.cc-roles li {
+  padding: 0 14px;
+  border-left: 1px solid #e3e7f1;
+  font-size: 14px; color: #3f4f7a;
+}
+.c-category-btn{
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+.course-cat-dec{
+    font-size: 16px;
+    max-width: 97%;
+}
+/* .cc-roles li:first-child { padding-left: 0; border-left: 0; } */
+
+/* ---------- small screens ---------- */
+@media (max-width: 575px) {
+  .cc-block { padding: 16px; }
+  .cc-tools li { padding: 0 12px; max-width: 100%; }
+}
+
+.banner-content.course-banner-content{
+    max-width: 100% !important;
+}
+
+.cat-course{
+  padding: 30px;
+}
+.cat-course img{
+  border-radius: 12px;
+}

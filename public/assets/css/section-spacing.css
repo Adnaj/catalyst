@@ -1,0 +1,14 @@
+/* One spacing value for every section. Change only this number. */
+:root {
+  --section-space: 70px;
+}
+@media (max-width: 991px) { :root { --section-space: 55px; } }
+@media (max-width: 575px) { :root { --section-space: 45px; } }
+
+/* Every content section on every page (home, courses, about, contact, course details) */
+.site-main section:not(.tj-page-header):not([class*="banner"]) {
+  padding-top: var(--section-space) !important;
+  padding-bottom: var(--section-space) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
