@@ -2,11 +2,7 @@
 import React from "react";
 
 const Students = () => {
-  const categories = [
-    {
-      name: "Marketing",
-      className: "marketing",
-      images: [
+  const images =[
         "/assets/images/placements/Agna-P-P.webp",
         "/assets/images/placements/Anjana-Krishna.webp",
         "/assets/images/placements/Fadiya.webp",
@@ -17,41 +13,8 @@ const Students = () => {
         "/assets/images/placements/Thahira.webp",
         "/assets/images/placements/Vismaya.webp",
         "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-      ],
-    },
-    {
-      name: "Accounting",
-      className: "accounting",
-      images: [
-        "/assets/images/placements/Agna-P-P.webp",
-        "/assets/images/placements/Anjana-Krishna.webp",
-        "/assets/images/placements/Fadiya.webp",
-        "/assets/images/placements/Fathima-Fidha.webp",
-        "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-        "/assets/images/placements/MUHAMMED-SHAMIL.webp",
-        "/assets/images/placements/Muhammed-Unais.webp",
-        "/assets/images/placements/Thahira.webp",
-        "/assets/images/placements/Vismaya.webp",
-        "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-      ],
-    },
-    {
-      name: "Technology",
-      className: "technology",
-      images: [
-        "/assets/images/placements/Agna-P-P.webp",
-        "/assets/images/placements/Anjana-Krishna.webp",
-        "/assets/images/placements/Fadiya.webp",
-        "/assets/images/placements/Fathima-Fidha.webp",
-        "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-        "/assets/images/placements/MUHAMMED-SHAMIL.webp",
-        "/assets/images/placements/Muhammed-Unais.webp",
-        "/assets/images/placements/Thahira.webp",
-        "/assets/images/placements/Vismaya.webp",
-        "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-      ],
-    },
-  ];
+      ]
+  
 
   return (
     <>
@@ -190,31 +153,26 @@ const Students = () => {
           </div>
 
           {/* Marketing */}
-          {categories.map((category) => (
+         
             <div
-              className={`students-category-row ${category.className}`}
-              key={category.name}
+              className='students-category-row'
             >
-              <h3 className="students-category-title">
-                {category.name}
-              </h3>
-
               <div className="students-category-images">
-                {category.images.map((image, index) => (
+                {images.map((image, index) => (
                   <div
                     className="student-image"
-                    key={`${category.className}-${index}`}
+                    key={`${index}`}
                   >
                     <img
                       src={image}
-                      alt={`${category.name} student success story`}
+                      alt='student success story'
                       loading="lazy"
                     />
                   </div>
                 ))}
               </div>
             </div>
-          ))}
+         
         </div>
       </section>
     </>

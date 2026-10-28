@@ -5,12 +5,17 @@ import Select from "react-select";
 const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
 
 const SUBJECTS = [
-  { value: "1", label: "General question" },
-  { value: "2", label: "Course Information" },
-  { value: "3", label: "Pricing & Subscription" },
-  { value: "4", label: "Request a Refund" },
-  { value: "5", label: "Account & Login" },
-  { value: "6", label: "Billing & Payments" },
+ { value: "1", label: "Accounting Courses" },
+  { value: "2", label: "GCC Accounting" },
+  { value: "3", label: "Business Accounting" },
+  { value: "4", label: "SAP Accounting" },
+  { value: "5", label: "Certified Indian & Foreign Accounting (CIFA)" },
+  { value: "6", label: "Digital Marketing" },
+  { value: "7", label: "HR Management" },
+  { value: "8", label: "Office Administration" },
+  { value: "9", label: "Python Full-Stack Development with DevOps" },
+  { value: "10", label: "Data Analytics with Generative AI" },
+  { value: "11", label: "Cyber Security" }
 ];
 
 const MODES = [
@@ -182,7 +187,7 @@ const ContactSection = () => {
                   </h3>
 
                   <p className="desc">
-                    Start learning free — no credit card required.
+                    Ready to take the next step in your career? Connect with Catalyst SkillHub to explore courses that match your goals. 
                   </p>
                 </div>
 
@@ -373,8 +378,7 @@ const ContactSection = () => {
                   </h2>
 
                   <p className="desc tj-fade-anim" data-delay=".3">
-                    Pick whichever channel suits you — we're quick on all of
-                    them. Master modern digital and tech skills through.
+                    Have questions about your learning journey? Our team is here to guide you in the right direction. 
                   </p>
                 </div>
 
@@ -394,13 +398,13 @@ const ContactSection = () => {
                         Email us
                       </h3>
 
-                      <p>For anything, anytime</p>
+                      <p>Get the information you need </p>
 
                       <a
                         className="contact-link"
-                        href="mailto:hello@email.com"
+                        href="mailto:hello@catalysthub.in  "
                       >
-                        hello@email.com
+                        hello@catalysthub.in  
                       </a>
                     </div>
                   </div>
@@ -416,16 +420,16 @@ const ContactSection = () => {
 
                     <div className="contact-content">
                       <h3 className="contact-title">
-                        Call us
+                        Phone Number: 
                       </h3>
 
-                      <p>Mon-Fri, 9am-6pm CT.</p>
+                      <p>Mon – Sat 9.00 am – 7. 00 pm </p>
 
                       <a
                         className="contact-link"
-                        href="tel:14155550132"
+                        href="tel:+919207300700 "
                       >
-                        +1 (415) 555-0132
+                        +91 9207300700 
                       </a>
                     </div>
                   </div>
@@ -445,14 +449,14 @@ const ContactSection = () => {
                       </h3>
 
                       <p>
-                        189 Congress, Suite 300 TX 78701, USA
+                       Headquarters – Mankav, Calicut, Keralam  
                       </p>
 
                       <a
                         className="tj-text-btn flip-text-wrap"
                         target="_blank"
                         rel="noreferrer"
-                        href="https://maps.app.goo.gl/atM8DyLTPi25AwLDA"
+                        href="https://maps.app.goo.gl/d45VP5cxQmTQ5eoR6"
                       >
                         <span className="btn-text">
                           Get directions
@@ -475,7 +479,7 @@ const ContactSection = () => {
               <div className="map-area">
                 <div className="map">
                   <iframe
-    src="https://maps.google.com/maps?q=6RP3%2BMW%2C%20Kozhikode%2C%20Kerala&t=&z=15&ie=UTF8&iwloc=&output=embed"
+   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.336332946371!2d75.80228907498388!3d11.236650250536348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4d1cf7637efd3dcb%3A0x2d2d0c627868d555!2sCatalyst%20Hub!5e0!3m2!1sen!2sin!4v1793184920895!5m2!1sen!2sin" 
     width="100%"
     height="450"
     style={{ border: 0, borderRadius: "12px" }}

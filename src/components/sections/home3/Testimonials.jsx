@@ -1,12 +1,15 @@
-
 import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 import LeadPopup from "../../common/LeadPopup";
 
 const facultyData = [
   {
     id: 1,
     name: "Aiswarya",
-    designation: "Accounting Faculty",
+    designation: "CIFA Faculty",
     description:
       "Learn accounting fundamentals, financial reporting, and practical accounting skills from experienced faculty.",
     image:
@@ -16,7 +19,7 @@ const facultyData = [
   {
     id: 2,
     name: "Ameera",
-    designation: "Accounting Faculty",
+    designation: "CIFA Faculty",
     description:
       "Gain practical knowledge of accounting principles, financial management, and industry-relevant practices.",
     image:
@@ -25,8 +28,8 @@ const facultyData = [
   },
   {
     id: 3,
-    name: "Faculty Member",
-    designation: "Professional Accounting Faculty",
+    name: "Prajila",
+    designation: "CIFA Faculty",
     description:
       "Develop job-ready accounting skills through practical learning and expert academic guidance.",
     image:
@@ -36,7 +39,7 @@ const facultyData = [
   {
     id: 4,
     name: "Febna",
-    designation: "Accounting Faculty",
+    designation: "CIFA Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -45,8 +48,8 @@ const facultyData = [
   },
   {
     id: 5,
-    name: "Febna",
-    designation: "Accounting Faculty",
+    name: "Rithika Rajan",
+    designation: "CIFA Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -55,8 +58,8 @@ const facultyData = [
   },
   {
     id: 6,
-    name: "Febna",
-    designation: "Accounting Faculty",
+    name: "Romisha",
+    designation: "CIFA Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -65,8 +68,8 @@ const facultyData = [
   },
   {
     id: 7,
-    name: "Febna",
-    designation: "Accounting Faculty",
+    name: "Shuhail",
+    designation: "DM Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -75,8 +78,8 @@ const facultyData = [
   },
   {
     id: 8,
-    name: "Febna",
-    designation: "Accounting Faculty",
+    name: "Gopika",
+    designation: "CIFA Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -85,15 +88,14 @@ const facultyData = [
   },
   {
     id: 9,
-    name: "Febna",
-    designation: "Accounting Faculty",
+    name: "Sreerag",
+    designation: "CIFA Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
       "/assets/images/faculty/sreerag-CIFA-faculty-catalyst-skillhub.webp",
     delay: ".6",
   },
-
 ];
 
 const Testimonials = () => {
@@ -124,13 +126,25 @@ const Testimonials = () => {
             </div>
           </div>
 
-          <div className="row rg-30">
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            spaceBetween={30}
+            slidesPerView={1}
+            loop={facultyData.length > 4}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: false,
+            }}
+            pagination={{ clickable: true }}
+            breakpoints={{
+              576: { slidesPerView: 2 },
+              992: { slidesPerView: 4 },
+            }}
+            style={{ paddingBottom: "50px" }}
+          >
             {facultyData.map((faculty) => (
-              <div
-                className="col-lg-3 col-sm-6 tj-fade-anim"
-                data-delay={faculty.delay}
-                key={faculty.id}
-              >
+              <SwiperSlide key={faculty.id}>
                 <div className="tj-instructor-item tj-instructor-item-2">
                   <div className="tj-instructor-img">
                     <div>
@@ -152,15 +166,15 @@ const Testimonials = () => {
                         {faculty.designation}
                       </span>
 
-                      <p className="desc">
+                      {/* <p className="desc">
                         {faculty.description}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </div>
-              </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
 
           <div className="about-3-btns justify-content-center">
             <button

@@ -1,9 +1,16 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 
-const logos = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5].map(
-  (n) => `/assets/images/clients/client-img-${n}.png`
-);
+const logos = [
+  '/assets/images/clients/d3.webp',
+  '/assets/images/clients/kayool.webp',
+  '/assets/images/clients/novizco.webp',
+  '/assets/images/clients/softnotions.webp',
+  '/assets/images/clients/summit.png',
+  '/assets/images/clients/techgeum.webp',
+  '/assets/images/clients/zecser.webp',
+]
+
 
 const SPEED = 60; // pixels per second, raise to go faster
 

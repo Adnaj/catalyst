@@ -205,7 +205,7 @@ export const courses = [
     certificate:'/assets/images/certificate/CAT-Certificate.webp',
     image: '/assets/images/course/allcourses/INDIAN-AND-FOREIGN-ACCOUNTING.png',
     lessons: 48,
-    summary: "A certification-oriented programme covering both Indian and international accounting practices.",
+    summary: "Build practical accounting skills for indian and international business environments with the CIFA Course. Learn SAP FICO, Tally Prime, taxation, financial reporting, and industry-relevant accounting tools through flexible online and offline training.",
     level: "Intermediate",
     tools: [
       "Tally Prime",
