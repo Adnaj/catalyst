@@ -2,23 +2,25 @@
 import React from "react";
 
 const Students = () => {
-  const images =[
-        "/assets/images/placements/Agna-P-P.webp",
-        "/assets/images/placements/Anjana-Krishna.webp",
-        "/assets/images/placements/Fadiya.webp",
-        "/assets/images/placements/Fathima-Fidha.webp",
-        "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-        "/assets/images/placements/MUHAMMED-SHAMIL.webp",
-        "/assets/images/placements/Muhammed-Unais.webp",
-        "/assets/images/placements/Thahira.webp",
-        "/assets/images/placements/Vismaya.webp",
-        "/assets/images/placements/Hamna-Abdul-Kamal.webp",
-      ]
-  
+  const stories = [
+    { type: "image", src: "/assets/images/placements/Agna-P-P.webp" },
+    { type: "image", src: "/assets/images/placements/Anjana-Krishna.webp" },
+    { type: "instagram", src: "DaNKUk5gM_g" },
+    { type: "image", src: "/assets/images/placements/Fadiya.webp" },
+    { type: "image", src: "/assets/images/placements/Fathima-Fidha.webp" },
+    { type: "instagram", src: "DaS4lWKDLJZ" },
+    { type: "image", src: "/assets/images/placements/Hamna-Abdul-Kamal.webp" },
+    { type: "image", src: "/assets/images/placements/MUHAMMED-SHAMIL.webp" },
+    { type: "instagram", src: "DavJ0EtkwP6" },
+    { type: "image", src: "/assets/images/placements/Muhammed-Unais.webp" },
+    { type: "image", src: "/assets/images/placements/Thahira.webp" },
+    { type: "image", src: "/assets/images/placements/Vismaya.webp" },
+  ];
 
   return (
     <>
       <style>{`
+      
         .tj-features-section .students-category-row {
           margin-top: 35px;
           padding: 0 30px;
@@ -34,7 +36,6 @@ const Students = () => {
           font-size: 27px;
           font-weight: 700;
           line-height: 1.4;
-          
         }
 
         .tj-features-section .students-category-title::after {
@@ -68,8 +69,12 @@ const Students = () => {
           height: 250px;
           overflow: hidden;
           border-radius: 14px;
-          background: #f3f3f8;
+          
         }
+          .tj-features-section iframe{
+          width:100%;
+          height:100%;
+          }
 
         .tj-features-section .students-category-images .student-image img {
           display: block;
@@ -130,6 +135,7 @@ const Students = () => {
 
       <section className="tj-features-section section-gap fix">
         <div className="container-fluid p-0">
+
           {/* Heading - unchanged */}
           <div className="row">
             <div className="col-12">
@@ -152,27 +158,36 @@ const Students = () => {
             </div>
           </div>
 
-          {/* Marketing */}
-         
-            <div
-              className='students-category-row'
-            >
-              <div className="students-category-images">
-                {images.map((image, index) => (
-                  <div
-                    className="student-image"
-                    key={`${index}`}
-                  >
+          {/* Student Images and Instagram Videos */}
+          <div className="students-category-row">
+            <div className="students-category-images">
+
+              {stories.map((story, index) => (
+                <div className="student-image" key={index}>
+
+                  {story.type === "instagram" ? (
+                    <iframe
+                      src={`https://www.instagram.com/reel/${story.src}/embed/`}
+                      title={`Student Success Story ${index + 1}`}
+                      loading="lazy"
+                      allowFullScreen
+                      scrolling="no"
+                      frameBorder="0"
+                    />
+                  ) : (
                     <img
-                      src={image}
-                      alt='student success story'
+                      src={story.src}
+                      alt="Student success story"
                       loading="lazy"
                     />
-                  </div>
-                ))}
-              </div>
+                  )}
+
+                </div>
+              ))}
+
             </div>
-         
+          </div>
+
         </div>
       </section>
     </>

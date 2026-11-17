@@ -1,3 +1,5 @@
+import { campuses, campusPath } from "./campuses";
+
 export const navigation = [
   {
     label: "Home",
@@ -13,7 +15,7 @@ export const navigation = [
       // =========================
       {
         label: "Online",
-        to: "#",
+        to: "/courses-online",
         mega: true,
         children: [
           {
@@ -22,19 +24,19 @@ export const navigation = [
             children: [
               {
                 label: "GCC Accounting",
-                to: "/courses/gcc-accounting",
+                to: "/courses-online/gcc-accounting",
               },
               {
                 label: "Business Accounting",
-                to: "/courses/business-accounting",
+                to: "/courses-online/business-accounting",
               },
               {
                 label: "SAP Accounting",
-                to: "/courses/sap-accounting",
+                to: "/courses-online/sap-accounting",
               },
               {
                 label: "Certified Indian & Foreign Accounting",
-                to: "/courses/certified-indian-foreign-accounting",
+                to: "/courses-online/certified-indian-foreign-accounting",
               },
             ],
           },
@@ -44,15 +46,15 @@ export const navigation = [
             children: [
               {
                 label: "Python Full-Stack with DevOps",
-                to: "/courses/python-full-stack-devops",
+                to: "/courses-online/python-full-stack-devops",
               },
               {
                 label: "Data Analytics with Gen AI",
-                to: "/courses/data-analytics-gen-ai",
+                to: "/courses-online/data-analytics-gen-ai",
               },
               {
                 label: "Cyber Security",
-                to: "/courses/cyber-security",
+                to: "/courses-online/cyber-security",
               },
             ],
           },
@@ -62,15 +64,15 @@ export const navigation = [
             children: [
               {
                 label: "Digital Marketing",
-                to: "/courses/digital-marketing",
+                to: "/courses-online/digital-marketing",
               },
               {
                 label: "Human Resource Management",
-                to: "/courses/human-resource-management",
+                to: "/courses-online/human-resource-management",
               },
               {
                 label: "Office Administration",
-                to: "/courses/office-administration",
+                to: "/courses-online/office-administration",
               },
             ],
           },
@@ -78,19 +80,16 @@ export const navigation = [
       },
 
       // =========================
-      // OFFLINE COURSES
-      // =========================
-      // =========================
-      // OFFLINE COURSES
+      // OFFLINE COURSES  (links go to /offline-courses/... and ?mode=offline category pages)
       // =========================
       {
         label: "Offline",
-        to: "#",
+        to: "/courses",
         mega: true,
         children: [
           {
             label: "Accounting Courses",
-            to: "/category/accounting",
+            to: "/category/accounting?mode=offline",
             children: [
               {
                 label: "GCC Accounting",
@@ -112,7 +111,7 @@ export const navigation = [
           },
           {
             label: "Tech Courses",
-            to: "/category/tech",
+            to: "/category/tech?mode=offline",
             children: [
               {
                 label: "Python Full-Stack with DevOps",
@@ -130,7 +129,7 @@ export const navigation = [
           },
           {
             label: "Marketing & Management Courses",
-            to: "/category/marketing-management",
+            to: "/category/marketing-management?mode=offline",
             children: [
               {
                 label: "Digital Marketing",
@@ -155,46 +154,13 @@ export const navigation = [
   // OFFLINE CAMPUS
   // =========================
   {
-    label: "Offline Campus",
-    to: "#",
-    children: [
-      {
-        label: "Kannur",
-        to: "/campus/kannur",
-      },
-      {
-        label: "Calicut",
-        to: "/campus/kozhikode",
-      },
-      {
-        label: "Vadakara",
-        to: "/campus/kozhikode",
-      },
-      {
-        label: "Manjeri",
-        to: "/campus/malappuram",
-      },
-      {
-        label: "Edappal",
-        to: "/campus/malappuram",
-      },
-      {
-        label: "Perinthalmanna",
-        to: "/campus/malappuram",
-      },
-      {
-        label: "Kottakkal",
-        to: "/campus/malappuram",
-      },
-      {
-        label: "Thrissur",
-        to: "/campus/thrissur",
-      },
-      {
-        label: "Kochi",
-        to: "/campus/ernakulam",
-      },
-    ],
+    label: "Learn Offline",
+    to: "/campus",
+    // One item per district, taken from data/campuses.js (add a district there and it appears here).
+    children: campuses.map((c) => ({
+      label: c.name,
+      to: campusPath(c.slug),
+    })),
   },
 
   {

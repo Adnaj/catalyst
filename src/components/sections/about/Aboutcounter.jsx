@@ -9,10 +9,10 @@ const AboutCounter = () => (
                   >
                     <div  className="tj-counter">
                       <div  className="counter-number">
-                        <span  className="counter" data-target="300">50</span>
+                        <span  className="counter" data-target="1000">50</span>
                         <span  className="suffix">+</span>
                       </div>
-                      <div  className="counter-label">Expert Mentors</div>
+                      <div  className="counter-label">Expert Faculty</div>
                     </div>
                   </div>
                 </div>
@@ -22,10 +22,10 @@ const AboutCounter = () => (
                   >
                     <div  className="tj-counter">
                       <div  className="counter-number">
-                        <span  className="counter" data-target="8000">15</span>
-                        <span  className="suffix">+</span>
+                        <span  className="counter" data-target="100">15</span>
+                        <span  className="suffix">%</span>
                       </div>
-                      <div  className="counter-label">Skill based courses</div>
+                      <div  className="counter-label">Placement Assistanc</div>
                     </div>
                   </div>
                 </div>
@@ -35,10 +35,10 @@ const AboutCounter = () => (
                   >
                     <div  className="tj-counter">
                       <div  className="counter-number">
-                        <span  className="counter" data-target="100">100</span>
-                        <span  className="suffix">%</span>
+                        <span  className="counter" data-target="5">1</span>
+                        <span  className="suffix">+</span>
                       </div>
-                      <div  className="counter-label">Placement Support</div>
+                      <div  className="counter-label">Languages</div>
                     </div>
                   </div>
                 </div>
@@ -62,7 +62,7 @@ const AboutCounter = () => (
                       </li>
                      
                     </ul>
-                    <div  className="reviews-label">2000+ Students Join Us.</div>
+                    <div  className="reviews-label">35000+ Students Join Us.</div>
                   </div>
                 </div>
               </div>

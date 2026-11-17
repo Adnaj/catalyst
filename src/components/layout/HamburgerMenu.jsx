@@ -9,7 +9,7 @@ const HamburgerMenu = () => (
           <div className="hamburger_top d-flex align-items-center justify-content-between">
             <div className="hamburger_logo">
               <a href="#" className="mobile_logo">
-                <img src="/assets/images/logos/logo.png" alt="Logo" />
+                <img src="/assets/images/hero/logo.png" alt="Logo" />
               </a>
             </div>
             <div className="hamburger_close">
@@ -47,23 +47,6 @@ const HamburgerMenu = () => (
               leaders.{" "}
             </p>
           </div>
-          <div className="hamburger-search-area">
-            <h5 className="hamburger-title">Search now</h5>
-            <div className="hamburger_search">
-              <form method="get" action="index.html">
-                <button type="submit">
-                  <i className="tji-search"></i>
-                </button>{" "}
-                <input
-                  type="search"
-                  autoComplete="off"
-                  name="s"
-                  defaultValue=""
-                  placeholder="Search here..."
-                />
-              </form>
-            </div>
-          </div>
           <div className="hamburger_menu">
             <div className="mobile_menu">
               <MobileMenu />
@@ -74,20 +57,20 @@ const HamburgerMenu = () => (
             <div className="contact-info">
               <div className="contact-item">
                 <span className="subtitle">Phone:</span>{" "}
-                <a className="contact-link" href="tel:+1(009)544-7818">
-                  +1 (009) 544-7818
+                <a className="contact-link" href="tel:+91 9207300700">
+                  +91 9207300700
                 </a>
               </div>
               <div className="contact-item">
                 <span className="subtitle">Email:</span>{" "}
-                <a className="contact-link" href="mailto:support@edunex.com">
-                  support@edunex.com
+                <a className="contact-link" href="mailto:hello@catalysthub.in">
+                  hello@catalysthub.in
                 </a>
               </div>
               <div className="contact-item">
                 <span className="subtitle">Location:</span>{" "}
                 <span className="contact-link">
-                  189 Congress, Suite 300 TX 78701, USA
+                  Headquarters – Mankav, Calicut, Keralam
                 </span>
               </div>
             </div>

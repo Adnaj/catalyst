@@ -41,12 +41,11 @@ const CampusBanner = () => {
                 </span>
 
                 <h1 className="banner-title tj-fade-anim" data-delay="0.3">
-                  Catalyst Skillhub {campus.name}
+                  {campus.heading}
                 </h1>
 
                 <div className="banner-desc tj-fade-anim" data-delay="0.5">
-                  Explore Upskilling programmes in Accounting, Marketing &amp; Management,
-                  and Technology at our {campus.name} Campus.
+                  {campus.description}
                 </div>
 
                 <div className="btn-area tj-fade-anim" data-delay=".6">
@@ -71,7 +70,7 @@ const CampusBanner = () => {
             </div>
             <div className="col-lg-6">
                    <div className="banner-img campus-img-banner">
-            <img src={campus.image} alt={`Catalyst Skillhub ${campus.name}`} />
+            <img src={campus.image} alt={campus.heading} />
           </div>
             </div>
           </div>

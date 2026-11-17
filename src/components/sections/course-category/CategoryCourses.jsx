@@ -56,14 +56,14 @@ const CategoryCourses = () => {
 
                   return (
                     <div className="tj-event-item tj-fade-anim" key={course.slug}>
-                      <div className="tj-event-img">
+                      {/* <div className="tj-event-img">
                         <Link to={coursePath(course.slug)}>
                           <img
                             src={course.thumb || course.image}
                             alt={course.title}
                           />
                         </Link>
-                      </div>
+                      </div> */}
 
                       <div className="tj-event-content">
                         <div className="tj-categories">

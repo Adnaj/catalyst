@@ -65,7 +65,7 @@ const Clients = () => {
         <div className="row">
           <div className="col">
             <div className="tj-client-heading tj-fs-h2">
-              {" Our Prominent Recruiters"}
+              {" Prominent Recruiters"}
             </div>
 
             <div

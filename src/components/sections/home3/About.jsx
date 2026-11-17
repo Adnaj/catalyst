@@ -24,13 +24,13 @@ const About = () => {
                 <div className="about-3-gallery-col">
                   <div className="about-3-img about-3-img-1">
                     <img
-                      src="/assets/images/about/h3-about-grid-1.png"
+                      src="/assets/images/about/Image_03.png"
                       alt="Student learning with headphones"
                     />
                   </div>
                   <div className="about-3-img about-3-img-2">
                     <img
-                      src="/assets/images/about/h3-about-grid-3.png"
+                      src="/assets/images/about/Image_02.png"
                       alt="Happy student"
                     />
                   </div>
@@ -38,7 +38,7 @@ const About = () => {
                 <div className="about-3-gallery-col about-3-gallery-col-wide">
                   <div className="about-3-img about-3-img-3">
                     <img
-                      src="/assets/images/about/h3-about-grid-2.png"
+                      src="/assets/images/about/Image_01.png"
                       alt="Student attending an online class"
                     />
                   </div>
@@ -51,7 +51,7 @@ const About = () => {
                     </span>{" "}
                     <h4 className="about-3-course-title">
                       {" "}
-                      Business growth strate masterclass 2026.{" "}
+                      Future-Ready Skills Masterclass 2026{" "}
                     </h4>
                   </div>
                 </div>

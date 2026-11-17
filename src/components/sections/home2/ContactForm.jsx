@@ -1,34 +1,9 @@
 import { useState } from "react";
 import Select from "react-select";
+import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
 
-const IMAGE = "/assets/images/hero/contactus.jpg";
+const IMAGE = "/assets/images/hero/contact.png";
 const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
-
-const SUBJECTS = [
-  { value: "1", label: "General question" },
-  { value: "2", label: "Course Information" },
-  { value: "3", label: "Pricing & Subscription" },
-  { value: "4", label: "Request a Refund" },
-  { value: "5", label: "Account & Login" },
-  { value: "6", label: "Billing & Payments" },
-];
-
-const MODES = [
-  { value: "online", label: "Online" },
-  { value: "offline", label: "Offline" },
-];
-
-const LOCATIONS = [
-  "Kannur",
-  "Vadakara",
-  "Calicut",
-  "Manjeri",
-  "Perinthalmanna",
-  "Kottakkal",
-  "Edappal",
-  "Thrissur",
-  "Kochi",
-].map((city) => ({ value: city.toLowerCase(), label: city }));
 
 const initial = {
   cfName: "",
@@ -113,7 +88,7 @@ const ContactSection = ({ image = IMAGE }) => {
         <div className="row g-0 align-items-stretch contact-card">
           <div className="col-lg-10 mx-auto">
             <div className="contact-form h-100 p-4 p-md-5 row">
-              <div className="col-lg-8">
+              <div className="col-lg-7">
                 <div className="form-title-wrap mb-4">
                   <h2 className="form-title">
                     Get the Right Guidance to choose the right Programme.
@@ -128,7 +103,7 @@ const ContactSection = ({ image = IMAGE }) => {
                   <div className="row">
                     {/* NAME */}
                     <div className="col-sm-6">
-                      <div className="form-input mb-4">
+                      <div className="form-input w-100 mb-4">
                         <label className="cf-label">Full name</label>
                         <input
                           type="text"
@@ -144,7 +119,7 @@ const ContactSection = ({ image = IMAGE }) => {
 
                     {/* MOBILE */}
                     <div className="col-sm-6">
-                      <div className="form-input mb-4">
+                      <div className="form-input w-100 mb-4">
                         <label className="cf-label">Phone number</label>
                         <input
                           type="text"
@@ -159,49 +134,53 @@ const ContactSection = ({ image = IMAGE }) => {
                     </div>
 
                     {/* SUBJECT */}
-                    <div className="col-4">
-                      <div className="form-input mb-4">
+                    <div className="col-sm-6">
+                      <div className="form-input w-100 mb-4">
                         <label className="cf-label">Choose programme</label>
-                        <Select
-                          options={SUBJECTS}
-                          value={form.cfSubject}
-                          onChange={handleSubjectChange}
-                          placeholder="Select programme:"
-                          isSearchable={false}
-                          classNamePrefix="contact-select"
-                        />
+                        <div className="tj-select">
+                          <Select
+                            options={SUBJECTS}
+                            value={form.cfSubject}
+                            onChange={handleSubjectChange}
+                            placeholder="General question"
+                            isSearchable={false}
+                            classNamePrefix="contact-select"
+                          />
+                        </div>
                       </div>
                     </div>
 
                     {/* MODE */}
-                    <div className={isOffline ? "col-sm-4" : "col-4"}>
-                      <div className="form-input mb-4">
+                    <div className="col-sm-6">
+                      <div className="form-input w-100 mb-4">
                         <label className="cf-label">Mode</label>
-                        <Select
-                        type='text'
-                          options={MODES}
-                          value={form.cfMode}
-                          onChange={handleModeChange}
-                          placeholder="Select mode"
-                          isSearchable={false}
-                          classNamePrefix="contact-select"
-                        />
+                        <div className="tj-select">
+                          <Select
+                            options={MODES}
+                            value={form.cfMode}
+                            onChange={handleModeChange}
+                            isSearchable={false}
+                            classNamePrefix="contact-select"
+                          />
+                        </div>
                       </div>
                     </div>
 
                     {/* LOCATION (only when offline) */}
                     {isOffline && (
-                      <div className="col-sm-4">
-                        <div className="form-input mb-4">
+                      <div className="col-12">
+                        <div className="form-input w-100 mb-4">
                           <label className="cf-label">Location</label>
-                          <Select
-                            options={LOCATIONS}
-                            value={form.cfLocation}
-                            onChange={handleLocationChange}
-                            placeholder="Select location"
-                            isSearchable={false}
-                            classNamePrefix="contact-select"
-                          />
+                          <div className="tj-select">
+                            <Select
+                              options={LOCATIONS}
+                              value={form.cfLocation}
+                              onChange={handleLocationChange}
+                              placeholder="Select location"
+                              isSearchable={false}
+                              classNamePrefix="contact-select"
+                            />
+                          </div>
                           {locationError && (
                             <small className="text-danger">
                               Please select a location.
@@ -213,7 +192,7 @@ const ContactSection = ({ image = IMAGE }) => {
 
                     {/* MESSAGE */}
                     <div className="col-12">
-                      <div className="form-input mb-4">
+                      <div className="form-input w-100 mb-4">
                         <label className="cf-label">Note</label>
                         <textarea
                           name="message"
@@ -264,7 +243,7 @@ const ContactSection = ({ image = IMAGE }) => {
                 </form>
               </div>
 
-              <div className="col-lg-4">
+              <div className="col-lg-5">
                 <img
                   src={image}
                   alt="Career guidance"

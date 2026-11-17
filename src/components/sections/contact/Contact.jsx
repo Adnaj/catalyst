@@ -1,42 +1,8 @@
-
 import { useState } from "react";
 import Select from "react-select";
+import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
 
 const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
-
-const SUBJECTS = [
- { value: "1", label: "Accounting Courses" },
-  { value: "2", label: "GCC Accounting" },
-  { value: "3", label: "Business Accounting" },
-  { value: "4", label: "SAP Accounting" },
-  { value: "5", label: "Certified Indian & Foreign Accounting (CIFA)" },
-  { value: "6", label: "Digital Marketing" },
-  { value: "7", label: "HR Management" },
-  { value: "8", label: "Office Administration" },
-  { value: "9", label: "Python Full-Stack Development with DevOps" },
-  { value: "10", label: "Data Analytics with Generative AI" },
-  { value: "11", label: "Cyber Security" }
-];
-
-const MODES = [
-  { value: "online", label: "Online" },
-  { value: "offline", label: "Offline" },
-];
-
-const LOCATIONS = [
-  "Kannur",
-  "Vadakara",
-  "Calicut",
-  "Manjeri",
-  "Perinthalmanna",
-  "Kottakkal",
-  "Edappal",
-  "Thrissur",
-  "Kochi",
-].map((city) => ({
-  value: city.toLowerCase(),
-  label: city,
-}));
 
 const initial = {
   cfName: "",
@@ -196,7 +162,7 @@ const ContactSection = () => {
 
                     {/* Full Name */}
                     <div className="col-sm-6">
-                      <div className="form-input">
+                      <div className="form-input w-100">
                         <label className="cf-label" htmlFor="cfName">
                           Full name
                         </label>
@@ -215,7 +181,7 @@ const ContactSection = () => {
 
                     {/* Phone Number */}
                     <div className="col-sm-6">
-                      <div className="form-input">
+                      <div className="form-input w-100">
                         <label className="cf-label" htmlFor="cfEmail">
                           Phone number
                         </label>
@@ -234,7 +200,7 @@ const ContactSection = () => {
 
                     {/* Choose Programme */}
                     <div className="col-sm-6">
-                      <div className="form-input">
+                      <div className="form-input w-100">
                         <label className="cf-label">
                           Choose programme
                         </label>
@@ -254,7 +220,7 @@ const ContactSection = () => {
 
                     {/* Mode */}
                     <div className="col-sm-6">
-                      <div className="form-input">
+                      <div className="form-input w-100">
                         <label className="cf-label">
                           Mode
                         </label>
@@ -274,7 +240,7 @@ const ContactSection = () => {
                     {/* Location - Only for Offline */}
                     {isOffline && (
                       <div className="col-12">
-                        <div className="form-input">
+                        <div className="form-input w-100">
                           <label className="cf-label">
                             Location
                           </label>
@@ -301,7 +267,7 @@ const ContactSection = () => {
 
                     {/* Note */}
                     <div className="col-12">
-                      <div className="form-input message-input">
+                      <div className="form-input message-input w-100">
                         <label className="cf-label" htmlFor="message">
                           Note
                         </label>
@@ -309,7 +275,7 @@ const ContactSection = () => {
                         <textarea
                           id="message"
                           name="message"
-                          rows="4"
+                          rows="2"
                           placeholder="Tell us how we can help..."
                           value={form.message}
                           onChange={handleChange}
@@ -365,13 +331,13 @@ const ContactSection = () => {
             <div className="col-lg-5">
               <div className="tj-contact-area">
                 <div className="sec-heading">
-                  <span
+                  {/* <span
                   className="sec-subtitle sec-subtitle-3 tj-fade-anim"
                   data-direction="top"
                 >
                   <i className="tji-subtitle-2"></i>
                   {" Get in Touch"}
-                </span>{" "}
+                </span>{" "} */}
 
                   <h2 className="sec-title tj-fade-anim">
                     Get in Touch.

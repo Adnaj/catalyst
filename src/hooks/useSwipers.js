@@ -48,23 +48,23 @@ const sliders = [
       },
     },
   },
-  {
-    el: ".tj-testimonial-slider-2",
-    options: {
-      slidesPerView: 1.15,
-      spaceBetween: 15,
-      loop: true,
-      speed: 1000,
-      loopAdditionalSlides: 2,
-      autoplay: { delay: 3000 },
-      navigation: { nextEl: ".slider-next-1", prevEl: ".slider-prev-1" },
-      pagination: { el: ".testimonial-pagination-2", clickable: true },
-      breakpoints: {
-        576: { slidesPerView: 1.25, spaceBetween: 20, centeredSlides: true },
-        1200: { slidesPerView: 2, spaceBetween: 30 },
-      },
-    },
-  },
+  // {
+  //   el: ".tj-testimonial-slider-2",
+  //   options: {
+  //     slidesPerView: 1.15,
+  //     spaceBetween: 15,
+  //     loop: true,
+  //     speed: 1000,
+  //     loopAdditionalSlides: 2,
+  //     autoplay: { delay: 3000 },
+  //     navigation: { nextEl: ".slider-next-1", prevEl: ".slider-prev-1" },
+  //     pagination: { el: ".testimonial-pagination-2", clickable: true },
+  //     breakpoints: {
+  //       576: { slidesPerView: 1.25, spaceBetween: 20, centeredSlides: true },
+  //       1200: { slidesPerView: 2, spaceBetween: 30 },
+  //     },
+  //   },
+  // },
 ];
 
 export default function useSwipers() {

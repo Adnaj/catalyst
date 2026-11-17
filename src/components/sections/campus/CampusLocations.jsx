@@ -37,7 +37,7 @@ const CampusLocations = () => {
                     {campus.locations.map((l) => {
                         const enquire = `/contact?campus=${campus.slug}&location=${encodeURIComponent(l.area)}`;
                         return (
-                            <div className="col-lg-6" key={l.name}>
+                            <div className="col-lg-4" key={l.name}>
                                 {/* left: image + badge */}
                                 <div className="cl-card tj-fade-anim" >
                                     <div className="cl-media">
@@ -57,7 +57,7 @@ const CampusLocations = () => {
                                             {categories.map((c) => (
                                                 <Link key={c.slug} className="cp-chip" to={categoryPath(c.slug)}>
                                                     {c.subtitle.replace("&", "and")} courses
-                                                    in {l.area}
+                                                    
                                                 </Link>
                                             ))}
                                         </div>
@@ -66,9 +66,9 @@ const CampusLocations = () => {
                                             <li className="cl-row">
                                                 <span className="cl-icon cl-icon--blue"><Map size={22} /></span>
                                                 <div>
-                                                    <strong>View Map</strong>
+                                                    {/* <strong>View Map</strong> */}
                                                     <a href={l.mapUrl} target="_blank" rel="noreferrer" className="cl-link">
-                                                        {l.mapUrl === "#" ? "Map link coming soon" : l.mapUrl}
+                                                        {l.mapUrl === "#" ? "Map link coming soon" : `${l.mapUrl.slice(0, 30)}...`}
                                                         <ExternalLink size={14} />
                                                     </a>
                                                 </div>
@@ -79,7 +79,7 @@ const CampusLocations = () => {
                                             <li className="cl-row">
                                                 <span className="cl-icon cl-icon--green"><Phone size={22} /></span>
                                                 <div>
-                                                    <strong>Connect us</strong>
+                                                    {/* <strong>Connect us</strong> */}
                                                     <a href={`tel:${l.phone}`} className="cl-phone">{l.phone}</a>
                                                 </div>
                                             </li>

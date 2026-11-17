@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import {
   BrowserRouter,
@@ -10,11 +9,14 @@ import {
 import Home3 from "./pages/Home3";
 import Home2 from "./pages/Home2";
 import CourseDetails from "./pages/CourseDetails";
+import OnlineCourseDetails from "./pages/OnlineCourseDetails";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Courses from "./pages/Courses";
+import OnlineCourses from "./pages/Onlinecourses";
 import CourseCategory from "./pages/CourseCategory";
 import Campus from "./pages/Campus";
+import Campuses from "./pages/Campuses";
 import SuccessStories from "./pages/SuccessStories";
 
 const ScrollToTop = () => {
@@ -40,13 +42,16 @@ const App = () => (
       <Route path="/home-2" element={<Home2 />} />
       <Route path="/about" element={<About />} />
       <Route path="/Contact" element={<Contact />} />
-      <Route path="/Courses" element={<Courses />} />
+      <Route path="/Courses-online" element={<OnlineCourses />} />
       <Route
-        path="/courses/:slug"
-        element={<CourseDetails />}
+        path="/courses-online/:slug"
+        element={<OnlineCourseDetails />}
       />
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/courses/:slug" element={<CourseDetails />} />
       <Route path="/category/:categorySlug" element={<CourseCategory />} />
       <Route path="/campus/:campusSlug" element={<Campus />} />
+      <Route path="/campus" element={<Campuses />} />
       <Route path="/success-stories" element={<SuccessStories />} />
     </Routes>
   </BrowserRouter>

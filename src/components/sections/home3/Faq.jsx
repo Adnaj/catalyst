@@ -1,6 +1,34 @@
+import { useState } from "react";
+import { generalFaqs } from "../../../data/faq";
 
-const Faq = () => (
-  <>
+// Data-driven FAQ section. With no props it shows the general FAQ (home page etc).
+// Props:
+//   faqs        array of { q, a }          (see data/faqs.js)
+//   idPrefix    unique id for the accordion (needed if 2 FAQs ever share a page)
+//   heading     big title            description   short text under the title
+//   categories  optional tabs: [{ key, label, faqs }]  (e.g. General / Online / Offline).
+//               When given, `faqs` is ignored and the tab list is shown above the questions.
+//   defaultCategory  key of the tab that is open first
+const Faq = ({
+  faqs = generalFaqs,
+  categories,
+  defaultCategory,
+  idPrefix = "home3",
+  heading = "FAQs",
+  description = "Everything you need to know about learning with Catalyst SkillHub. Can’t find what you’re looking for?",
+}) => {
+  const hasTabs = Array.isArray(categories) && categories.length > 0;
+  const [activeKey, setActiveKey] = useState(
+    defaultCategory || (hasTabs ? categories[0].key : "")
+  );
+  const active = hasTabs
+    ? categories.find((c) => c.key === activeKey) || categories[0]
+    : null;
+  const list = hasTabs ? active.faqs : faqs;
+  const groupId = hasTabs ? `${idPrefix}-${active.key}` : idPrefix;
+  const parentId = `tjAccordion-${groupId}`;
+
+  return (
     <section className="tj-faq-section-3 section-gap fix mb-5">
       <div className="container">
         <div className="row rg-50">
@@ -19,13 +47,10 @@ const Faq = () => (
                   className="sec-title sec-title-faq tj-fade-anim"
                   data-delay=".3"
                 >
-                  FAQs
+                  {heading}
                 </h2>
 
-                <p className="desc tj-fade-anim">
-                  Everything you need to know about learning with Catalyst
-                  SkillHub. Can’t find what you’re looking for?
-                </p>
+                <p className="desc tj-fade-anim">{description}</p>
               </div>
 
               <div
@@ -35,31 +60,20 @@ const Faq = () => (
               >
                 <ul className="tj-users-list">
                   <li>
-                    <img
-                      src="./assets/images/users/user-img-1.png"
-                      alt="USER"
-                    />
+                    <img src="/assets/images/users/Abinand.webp" alt="USER" />
                   </li>
                   <li>
-                    <img
-                      src="./assets/images/users/user-img-2.png"
-                      alt="USER"
-                    />
+                    <img src="/assets/images/users/Amina.webp" alt="USER" />
                   </li>
                   <li>
-                    <img
-                      src="./assets/images/users/user-img-3.png"
-                      alt="USER"
-                    />
+                    <img src="/assets/images/users/Siyas.webp" alt="USER" />
                   </li>
                   <li>
-                    <span>7K+</span>
+                    <span>35K+</span>
                   </li>
                 </ul>
 
-                <h3 className="support-title tj-fs-h4">
-                  Still have questions?
-                </h3>
+                <h3 className="support-title tj-fs-h4">Still have questions?</h3>
 
                 <p className="support-desc">
                   Our support team is here to help you every step of the way.
@@ -80,176 +94,78 @@ const Faq = () => (
 
           <div className="col-12 col-xl-8 col-lg-7">
             <div className="tj-faq-wrapper-2">
-              <div className="tj-faq tj-faq-2" id="tjAccordionHome3">
-
-                {/* FAQ 1 */}
+              {hasTabs && (
                 <div
-                  className="tj-accordion-item tj-fade-anim"
-                  data-delay=".2"
-                  data-duration="0.6"
+                  role="tablist"
+                  aria-label="FAQ categories"
+                  style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 24 }}
                 >
-                  <button
-                    className="tj-accordion-title collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#home3-accordion-1"
-                    aria-expanded="false"
-                  >
-                    Who can join Catalyst SkillHub courses?
-                  </button>
-
-                  <div
-                    id="home3-accordion-1"
-                    className="collapse"
-                    data-bs-parent="#tjAccordionHome3"
-                  >
-                    <div className="accordion-body tj-accordion-content">
-                      Catalyst SkillHub courses are suitable for students,
-                      graduates, job seekers, and working professionals at
-                      different stages of their careers. Whether you want to
-                      start a new career, switch fields, or upskill for better
-                      opportunities, our programmes are designed to help you
-                      build relevant, practical skills for the workplace.
-                    </div>
-                  </div>
+                  {categories.map((c) => {
+                    const on = c.key === active.key;
+                    return (
+                      <button
+                        key={c.key}
+                        type="button"
+                        role="tab"
+                        aria-selected={on}
+                        onClick={() => setActiveKey(c.key)}
+                        style={{
+                          padding: "10px 22px",
+                          borderRadius: 999,
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          border: "1px solid var(--tj-color-theme-primary)",
+                          background: on ? "var(--tj-color-theme-primary)" : "transparent",
+                          color: on ? "#fff" : "var(--tj-color-theme-primary)",
+                          transition: "all .2s ease",
+                        }}
+                      >
+                        {c.label}
+                      </button>
+                    );
+                  })}
                 </div>
+              )}
 
-                {/* FAQ 2 */}
-                <div
-                  className="tj-accordion-item tj-fade-anim"
-                  data-delay=".3"
-                  data-duration="0.6"
-                >
-                  <button
-                    className="tj-accordion-title collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#home3-accordion-2"
-                    aria-expanded="false"
-                  >
-                    Are SkillHub courses available online and offline?
-                  </button>
+              <div className="tj-faq tj-faq-2" id={parentId} key={groupId}>
+                {list.map((item, i) => {
+                  const itemId = `${groupId}-accordion-${i + 1}`;
+                  return (
+                    <div
+                      key={itemId}
+                      className={`tj-accordion-item${hasTabs ? "" : " tj-fade-anim"}`}
+                      data-delay={(0.2 + i * 0.1).toFixed(1)}
+                      data-duration="0.6"
+                    >
+                      <button
+                        className="tj-accordion-title collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#${itemId}`}
+                        aria-expanded="false"
+                      >
+                        {item.q}
+                      </button>
 
-                  <div
-                    id="home3-accordion-2"
-                    className="collapse"
-                    data-bs-parent="#tjAccordionHome3"
-                  >
-                    <div className="accordion-body tj-accordion-content">
-                      Yes. SkillHub offers both online and offline learning
-                      options across all programmes. Join classes at our
-                      offline centres in Kannur, Calicut, Vadakara, Manjeri,
-                      Kottakkal, Perinthalmanna, Edappal, Thrissur, and Kochi,
-                      or choose flexible online learning with live classes and
-                      recorded sessions for convenient learning and revision.
+                      <div
+                        id={itemId}
+                        className="collapse"
+                        data-bs-parent={`#${parentId}`}
+                      >
+                        <div className="accordion-body tj-accordion-content">
+                          {item.a}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* FAQ 3 */}
-                <div
-                  className="tj-accordion-item tj-fade-anim"
-                  data-delay=".4"
-                  data-duration="0.6"
-                >
-                  <button
-                    className="tj-accordion-title collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#home3-accordion-3"
-                    aria-expanded="false"
-                  >
-                    What courses are offered by Catalyst SkillHub?
-                  </button>
-
-                  <div
-                    id="home3-accordion-3"
-                    className="collapse"
-                    data-bs-parent="#tjAccordionHome3"
-                  >
-                    <div className="accordion-body tj-accordion-content">
-                      SkillHub offers programmes across three categories:
-                      Accounting courses including Certified Indian and Foreign
-                      Accounting (CIFA), GCC Accounting, Business Accounting,
-                      and SAP Accounting; Marketing and Management courses
-                      including Digital Marketing, HR Management, and Office
-                      Administration; and Tech courses including Python
-                      Full-Stack with DevOps, Data Analytics with Gen AI, and
-                      Cyber Security.
-                    </div>
-                  </div>
-                </div>
-
-                {/* FAQ 4 */}
-                <div
-                  className="tj-accordion-item tj-fade-anim"
-                  data-delay=".5"
-                  data-duration="0.6"
-                >
-                  <button
-                    className="tj-accordion-title collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#home3-accordion-4"
-                    aria-expanded="false"
-                  >
-                    Will I get practical learning along with the course?
-                  </button>
-
-                  <div
-                    id="home3-accordion-4"
-                    className="collapse"
-                    data-bs-parent="#tjAccordionHome3"
-                  >
-                    <div className="accordion-body tj-accordion-content">
-                      Yes. SkillHub courses include practical, industry-relevant
-                      learning to help you apply what you learn. Depending on
-                      the programme, you’ll work with practical tasks, projects,
-                      tools, case studies, and workplace-based activities to
-                      build skills you can use in real professional settings.
-                    </div>
-                  </div>
-                </div>
-
-                {/* FAQ 5 */}
-                <div
-                  className="tj-accordion-item tj-fade-anim"
-                  data-delay=".6"
-                  data-duration="0.6"
-                >
-                  <button
-                    className="tj-accordion-title collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#home3-accordion-5"
-                    aria-expanded="false"
-                  >
-                    Do you provide placement assistance for all courses?
-                  </button>
-
-                  <div
-                    id="home3-accordion-5"
-                    className="collapse"
-                    data-bs-parent="#tjAccordionHome3"
-                  >
-                    <div className="accordion-body tj-accordion-content">
-                      Yes. SkillHub provides placement assistance to help you
-                      prepare for relevant job opportunities. Depending on the
-                      programme, support may include job readiness sessions,
-                      CV and LinkedIn optimization, mock interviews, interview
-                      preparation, career guidance, and assistance in exploring
-                      suitable opportunities.
-                    </div>
-                  </div>
-                </div>
-
+                  );
+                })}
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  </>
-);
+  );
+};
 
 export default Faq;

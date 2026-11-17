@@ -8,7 +8,8 @@ import CampusLocations from "../components/sections/campus/CampusLocations";
 import Promo from "../components/sections/home3/Promo";
 import CareerPaths from "../components/sections/home3/CareerPaths";
 import Instructors from "../components/sections/home3/Instructors";
-import Faq from "../components/sections/home3/Faq";
+import Students from "../components/sections/home3/Students";
+import CampusFaq from "../components/sections/campus/CampusFaq";
 import ContactForm from "../components/sections/home2/ContactForm";
 
 const CampusInstructors = () => (
@@ -18,7 +19,7 @@ const CampusInstructors = () => (
   </div>
 );
 
-const sections = [CampusBanner, CampusLocations,CampusInstructors,Instructors,Faq , ContactForm];
+const sections = [CampusBanner, CampusLocations,CampusInstructors,Instructors, Students, CampusFaq, ContactForm];
 
 const Campus = () => {
   const { campusSlug } = useParams();

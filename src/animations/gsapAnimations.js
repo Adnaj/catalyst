@@ -48,7 +48,7 @@ export function initGsapAnimations() {
         let sectionTarget =
           btn.getAttribute("href") || btn.getAttribute("data-target");
         gsap.to(window, {
-          duration: 0.3,
+          duration: 0.2,
           scrollTo: { y: sectionTarget, offsetY: 0 },
         });
 
@@ -56,7 +56,7 @@ export function initGsapAnimations() {
         let sectionTarget2 =
           tabBtn.getAttribute("href") || tabBtn.getAttribute("data-target");
         gsap.to(window, {
-          duration: 0.3,
+          duration: 0.2,
           scrollTo: { y: sectionTarget2, offsetY: 160 },
         });
       });

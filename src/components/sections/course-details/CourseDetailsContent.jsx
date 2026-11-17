@@ -1,17 +1,35 @@
+// ONLINE course detail page  (route: /courses/:slug)
+// Content comes from data/courseDetailContent.js  ->  courseDetailContent.online
+// The online page has its own copy: Onlinecoursedetailscontent.jsx
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import {
+  Laptop,
+  MapPin,
+  BriefcaseBusiness,
+  UsersRound,
+  Wrench,
+  Sparkles,
+  Compass,
+  GraduationCap,
+  ChartNoAxesCombined,
+  UserRoundCheck,
+  Calculator,
+  Globe,
+  Network,
+  Layers,
+} from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { getCourse } from "../../../data/courses";
-import LearningOptions from "../../sections/course-details/LearningOptions";
+import { getCourse, courseListPath } from "../../../data/courses";
+import { getCourseDetail, getLearningOptions, getWhyChoose } from "../../../data/courseDetailContent";
 import "./LearningOptions.css";
 import Students from "../home3/Students";
 
-import Instructors from "../home3/Instructors";
-import AboutCounter from "../about/AboutCounter";
+import AboutCounter from "../about/Aboutcounter";
 import Review from "../home2/Testimonials";
 import Testimonials from "../home3/Testimonials";
 import Blog from "../home2/Blog";
-import Faq from "../home3/Faq";
+import CourseFaq from "../faq/Coursefaq";
 import Clients from "../home3/Clients";
 import CareerPaths from "../home3/CareerPaths";
 import MoreCourses from "../home3/MoreCourse";
@@ -22,43 +40,38 @@ import LeadPopup from "../../common/LeadPopup";
 // Every id here must exist on a section in the page below.
 const TABS = [
   ["overview", "Overview"],
-  ["benefits", "Benefits"],
   ["what-youll-learn", "What you'll learn"],
   ["tools-youll-learn", "Tools"],
   ["skills-youll-learn", "Skills"],
-  ["career-pathways", "Career pathways"],
-  ["eligibility", "Eligibility"],
-  ["certificate", "Certificate"],
-   ["career-tracks", "Career tracks"],
+  ["career-pathways", "Career opportunities"],
+  // ["eligibility", "Eligibility"],
+  // ["certificate", "Certificate"],
   ["learning-options", "Learning options"],
+  ["benefits", "Why Catalyst"],
+  ["career-tracks", "Career tracks"],
   ["stats", "Our impact"],
   ["clients", "Hiring partners"],
- 
   ["students", "Students"],
- 
   ["reviews", "Reviews"],
   ["testimonials", "Testimonials"],
-   ["more-courses", "More courses"],
-  
+  ["more-courses", "More courses"],
   ["faq", "FAQ"],
 ];
 
-// Districts for the "Preferred Location" dropdown: [name, comingSoon]
-const DISTRICTS = [
-  ["Kasaragod", false],
-  ["Kannur", false],
-  ["Kozhikode", false],
-  ["Malappuram", false],
-  ["Palakkad", false],
-  ["Thrissur", false],
-  ["Ernakulam", false],
 
-];
 
-const HIDE_HEADER_AFTER = 10; // px scrolled before the main navbar hides
+const HIDE_HEADER_AFTER = 100; // px scrolled before the main navbar hides
 const SHOW_TABS_AFTER = 2;    // show the tab nav after this many sections have been passed
 
-const EMPTY_LEAD = { name: "", phone: "", location: "", message: "" };
+const EMPTY_LEAD = { name: "", phone: "", message: "" };
+
+const OPTION_ICONS = { online: Laptop, offline: MapPin };
+
+// Icons for the "Why choose Catalyst" cards (data files refer to them by name)
+const WHY_ICONS = {
+  BriefcaseBusiness, UsersRound, Wrench, Sparkles, Compass, GraduationCap,
+  ChartNoAxesCombined, UserRoundCheck, Calculator, Globe, Network, Layers,
+};
 
 const Check = ({ children }) => (
   <li>
@@ -72,16 +85,33 @@ const scrollTo = (id) => (e) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
-const NotFound = () => (
+// Small card used for "What you'll learn", "Why choose Catalyst" and the online/offline blocks
+const InfoCard = ({ title, children }) => (
+  <div
+    style={{
+      height: "100%",
+      padding: "18px 20px",
+      border: "1px solid rgba(0,0,0,.1)",
+      borderRadius: 12,
+    }}
+  >
+    <h4 style={{ fontSize: 18, marginBottom: 8 }}>{title}</h4>
+    <p style={{ margin: 0 }}>{children}</p>
+  </div>
+);
+
+const mode = "offline"; // this file = the online page
+
+const NotFound = ({ mode }) => (
   <>
     <div className="space-for-header" />
     <section className="section-gap">
       <div className="container text-center">
         <h2 className="sec-title">Course not found</h2>
         <p className="mb-4">The course you are looking for does not exist.</p>
-        <Link className="tj-btn-primary style-2 flip-text-wrap" to="/">
+        <Link className="tj-btn-primary style-2 flip-text-wrap" to={courseListPath(mode)}>
           <span className="btn-icon"><i className="tji-arrow-right-2" /></span>
-          <span className="btn-text">Back to home</span>
+          <span className="btn-text">View all courses</span>
         </Link>
       </div>
     </section>
@@ -89,6 +119,7 @@ const NotFound = () => (
 );
 
 const CourseDetailsContent = () => {
+  const isOffline = mode === "offline";
   const { slug } = useParams();
   const course = getCourse(slug);
 
@@ -110,17 +141,14 @@ const CourseDetailsContent = () => {
   // Page scroll: show the sticky nav + scrollspy
   useEffect(() => {
     const onScroll = () => {
-      // hide the main navbar after scrolling 10px
       document.body.classList.toggle(
         "course-header-hidden",
         window.scrollY > HIDE_HEADER_AFTER
       );
 
-      // show the tab nav once the 3rd section has been scrolled past
       const gateEl = document.getElementById(TABS[SHOW_TABS_AFTER - 1][0]);
       if (gateEl) setShowNav(gateEl.getBoundingClientRect().bottom <= 0);
 
-      // scrollspy: last section whose top has passed the line under the bar
       const line = (navRef.current?.offsetHeight || 564) + 30;
       let current = TABS[0][0];
       for (const [id] of TABS) {
@@ -128,7 +156,6 @@ const CourseDetailsContent = () => {
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
 
-      // at the very bottom of the page, highlight the last tab
       const atBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
       if (atBottom) current = TABS[TABS.length - 1][0];
@@ -137,7 +164,6 @@ const CourseDetailsContent = () => {
     };
 
     onScroll();
-    // capture: true also catches scrolling inside wrapper elements (some themes scroll a div, not the window)
     window.addEventListener("scroll", onScroll, { passive: true, capture: true });
     window.addEventListener("resize", onScroll);
     return () => {
@@ -147,13 +173,11 @@ const CourseDetailsContent = () => {
     };
   }, [slug]);
 
-  // hide the default header only on this page, only while the new nav is visible
   useEffect(() => {
     document.body.classList.toggle("course-nav-active", showNav);
     return () => document.body.classList.remove("course-nav-active");
   }, [showNav]);
 
-  // Show/hide the arrows depending on whether the tab strip can scroll
   useEffect(() => {
     const el = linksRef.current;
     if (!el) return;
@@ -172,7 +196,6 @@ const CourseDetailsContent = () => {
     };
   }, [showNav, slug]);
 
-  // Move the tab strip so the active tab is centred (horizontal only, page doesn't jump)
   useEffect(() => {
     const box = linksRef.current;
     const tab = box?.querySelector(".course-nav-link.active");
@@ -182,12 +205,24 @@ const CourseDetailsContent = () => {
       behavior: "smooth",
     });
   }, [active, showNav]);
-  // ---- end hooks ----
 
   const [isEnrollOpen, setIsEnrollOpen] = useState(false);
+  const [enrollMode, setEnrollMode] = useState(""); // "" | "online" | "offline"
+  // ---- end hooks ----
 
-  if (!course) return <NotFound />;
+  if (!course) return <NotFound mode={mode} />;
   const c = course;
+  const d = getCourseDetail(slug, mode); // content from data/courseDetailContent.js (undefined -> generic fields of `course`)
+  const lo = getLearningOptions(slug, c.title, mode); // learning options content
+  const why = getWhyChoose(slug, mode); // "Why choose Catalyst" content
+  // highlight the last two words of the heading (e.g. "Choose the [Right Guidance]")
+  const whyWords = why.heading.split(" ");
+  const whyAccent = whyWords.length > 3 ? whyWords.slice(-2).join(" ") : "";
+  const whyLead = whyAccent ? whyWords.slice(0, -2).join(" ") : why.heading;
+  const openEnroll = (mode = "") => () => {
+    setEnrollMode(mode);
+    setIsEnrollOpen(true);
+  };
 
   const scrollTabs = (dir) => () => {
     const box = linksRef.current;
@@ -204,15 +239,15 @@ const CourseDetailsContent = () => {
     const digits = lead.phone.replace(/\D/g, "");
     if (lead.name.trim().length < 2) return setLeadError("Please enter your name.");
     if (digits.length < 10) return setLeadError("Please enter a valid phone number.");
-    if (!lead.location) return setLeadError("Please select your preferred location.");
+
     setLeadError("");
     setStatus("sending");
     try {
-      // TODO: replace with your real endpoint
+      // TODO: replace with your real endpoint (backend not connected yet)
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...lead, course: c.title, source: window.location.href }),
+        body: JSON.stringify({ ...lead, course: c.title, studyMode: mode, source: window.location.href }),
       });
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");
@@ -222,11 +257,17 @@ const CourseDetailsContent = () => {
     }
   };
 
+  // ---- values for the hero (Section 1) ----
+  const heading = d?.heading ?? c.title;
+  const summary = d?.summary ?? c.summary;
+  const type = d?.type ?? c.type;
+  const studyMode = isOffline ? "Offline" : "Online"; // follows the page, not the data
+
   return (
     <>
       <div className="space-for-header" />
 
-      {/* ===== Sticky page navbar (rendered into <body> so no theme wrapper can hide it) ===== */}
+      {/* ===== Sticky page navbar ===== */}
       {createPortal(
         <div
           ref={navRef}
@@ -292,7 +333,7 @@ const CourseDetailsContent = () => {
         document.body
       )}
 
-      {/* ===== Page header / hero ===== */}
+      {/* ===== SECTION 1: Landing / hero ===== */}
       <section ref={heroRef} className="tj-page-header tj-page-header-2 course-tj-main">
         <div className="container">
           <div className="row">
@@ -302,19 +343,19 @@ const CourseDetailsContent = () => {
                   <span><i className="tji-home" /></span>
                   <span><Link to="/">Home</Link></span>
                   <span><i className="tji-arrow-right-4" /></span>
-                  <span><span>Courses</span></span>
+                  <span><Link to={courseListPath(mode)}>{isOffline ? "Offline Courses" : "Courses"}</Link></span>
                   <span><i className="tji-arrow-right-4" /></span>
                   <span><span>{c.title}</span></span>
                 </div>
                 <div className="tj-categories"><span className="tj-cat">{c.category}</span></div>
-                <h1 className="tj-page-title">{c.title}</h1>
-                <p className="tj-page-desc">{c.summary}</p>
+                <h1 className="tj-page-title">{heading}</h1>
+                <p className="tj-page-desc">{summary}</p>
 
                 {/* Type / Study mode / Duration */}
                 <div className="course-info-box">
                   {[
-                    ["certified", "Type", c.type],
-                    ["calendar", "Study Mode", c.mode],
+                    ["certified", "Type", type],
+                    ["calendar", "Study Mode", studyMode],
                     ["clock", "Duration", c.duration],
                   ].map(([icon, label, value]) => (
                     <div className="course-info-item" key={label}>
@@ -332,7 +373,7 @@ const CourseDetailsContent = () => {
                 <div className="about-3-btns tj-fade-anim" data-delay=".5">
                   <Link
                     className="tj-btn-primary style-3 style-3-border flip-text-wrap"
-                    to="#"
+                    to={c.brochure || "#"}
                   >
                     <span className="btn-icon"></span>
                     <span className="btn-text">Download Brochure</span>
@@ -340,18 +381,18 @@ const CourseDetailsContent = () => {
                   <button
                     type="button"
                     className="tj-btn-primary style-2 flip-text-wrap"
-                    onClick={() => setIsEnrollOpen(true)}
+                    onClick={openEnroll(mode)}
                   >
                     <span className="btn-icon">
                       <i className="tji-arrow-right-2"></i>
                     </span>{" "}
-                    <span className="btn-text">Enroll Now</span>
+                    <span className="btn-text">Enrol Now</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* ===== Sidebar lead form ===== */}
+            {/* ===== Lead form (Name / Phone Number / Campus Location) ===== */}
             <div className="col-lg-5">
               <div className="course-sidebar-sticky">
                 <div className="tj-course-sidebar lead-sidebar">
@@ -369,7 +410,7 @@ const CourseDetailsContent = () => {
                       ) : (
                         <form onSubmit={onLeadSubmit} noValidate>
                           <div className="lead-field">
-                            <label htmlFor="lead-name">Full Name</label>
+                            <label htmlFor="lead-name">Name</label>
                             <input
                               id="lead-name"
                               name="name"
@@ -382,7 +423,7 @@ const CourseDetailsContent = () => {
                             />
                           </div>
 
-                          <div className="d-flex gap-3 lead-row">
+                          <div className="lead-row">
                             <div className="lead-field">
                               <label htmlFor="lead-phone">Phone Number</label>
                               <div className="lead-phone-input">
@@ -404,30 +445,9 @@ const CourseDetailsContent = () => {
                               </div>
                             </div>
 
-                            {/* Preferred Location (district dropdown) */}
-                            <div className="lead-field">
-                              <label htmlFor="lead-location">Preferred Location</label>
-                              <select
-                                id="lead-location"
-                                name="location"
-                                className="lead-select"
-                                value={lead.location}
-                                onChange={onLeadChange}
-                                required
-                              >
-                                <option value="" disabled>
-                                  Select district
-                                </option>
-                                {DISTRICTS.map(([name, soon]) => (
-                                  <option key={name} value={name}>
-                                    {soon ? `${name} (Coming soon)` : name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
+                    
                           </div>
 
-                          {/* Message */}
                           <div className="lead-field">
                             <label htmlFor="lead-message">Message</label>
                             <input
@@ -471,7 +491,7 @@ const CourseDetailsContent = () => {
         </div>
       </section>
 
-      {/* ===== Details ===== */}
+      {/* ===== Details (Sections 2, 3, 4) ===== */}
       <section className="tj-course-details tj-sticky-container-2">
         <div className="container">
           <div className="row">
@@ -480,82 +500,98 @@ const CourseDetailsContent = () => {
                 <div className="tj-course-overview">
                   <div className="tutor-course-details-content">
 
+                    {/* SECTION 2: Course introduction */}
                     <div id="overview" className="tj-course-details-box">
-                      <h3 className="title">Course description</h3>
-                      <p>
-                        This end-to-end programme takes you from programming basics to deploying
-                        production applications. You will build several projects and learn the
-                        DevOps workflow used by modern engineering teams.
-                        This end-to-end programme takes you from programming basics to deploying
-                        production applications. You will build several projects and learn the
-                        DevOps workflow used by modern engineering teams.
-                      </p>
-                    </div>
+                      <h3 className="title">{d?.overviewTitle ?? "Course description"}</h3>
+                      {d ? (
+                        <p>{d.overview}</p>
+                      ) : (
+                        c.description.map((p) => <p key={p}>{p}</p>)
+                      )}
 
-                    <div id="benefits" className="tj-course-details-box">
-                      <h3 className="title">Catalyst benefits - what you'll get</h3>
+                      <h4 className="title" style={{ marginTop: 24 }}>What You’ll Gain</h4>
                       <ul className="tj-list tj-list-2">
-                        {c.audience.map((a) => <Check key={a}>{a}</Check>)}
+                        {(d?.gain ?? c.audience).map((g) => <Check key={g}>{g}</Check>)}
                       </ul>
                     </div>
 
+                    {/* SECTION 3: What you'll learn */}
                     <div id="what-youll-learn" className="tj-course-details-box">
-                      <h3 className="title">What You Will Learn</h3>
-                      <ul className="tj-list">
-                        {c.goals.map((g) => <Check key={g}>{g}</Check>)}
-                      </ul>
+                      <h3 className="title">What You’ll Learn</h3>
+                      {d?.learn ? (
+                        <div className="row g-3">
+                          {d.learn.map((item) => (
+                            <div className="col-md-6" key={item.title}>
+                              <InfoCard title={item.title}>{item.text}</InfoCard>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <ul className="tj-list">
+                          {c.goals.map((g) => <Check key={g}>{g}</Check>)}
+                        </ul>
+                      )}
                     </div>
 
                     <div id="tools-youll-learn" className="tj-course-details-box">
-                      <h3 className="title">Tools You Will Learn</h3>
+                      <h3 className="title">Tools You’ll Learn</h3>
                       <div className="tj-skill-lists">
-                        {c.skills.map((s) => <span className="tj-skill-item" key={s}>{s}</span>)}
+                        {(d?.tools ?? c.tools ?? c.skills).map((t) => (
+                          <span className="tj-skill-item" key={t}>{t}</span>
+                        ))}
                       </div>
                     </div>
 
                     <div id="skills-youll-learn" className="tj-course-details-box">
-                      <h3 className="title">Skills you'll Learn</h3>
-                      {/* TODO: swap c.skills for your real skills data */}
+                      <h3 className="title">Skills You’ll Learn</h3>
                       <div className="tj-skill-lists">
-                        {c.skills.map((s) => <span className="tj-skill-item" key={s}>{s}</span>)}
+                        {(d?.skills ?? c.skills).map((s) => (
+                          <span className="tj-skill-item" key={s}>{s}</span>
+                        ))}
                       </div>
                     </div>
 
                     <div id="career-pathways" className="tj-course-details-box">
-                      <h3 className="title">Career options</h3>
-                      <p>
-                        This end-to-end programme takes you from programming basics to deploying
-                        production applications.
-                      </p>
+                      <h3 className="title">Career Opportunities</h3>
+                      <div className="tj-skill-lists">
+                        {(d?.careers ?? c.jobRoles ?? []).map((r) => (
+                          <span className="tj-skill-item" key={r}>{r}</span>
+                        ))}
+                      </div>
                     </div>
 
-                    <div id="eligibility" className="tj-course-details-box">
-                      <h3 className="title">Eligibility - Who can learn</h3>
+                    {/* <div id="eligibility" className="tj-course-details-box">
+                      <h3 className="title">{d?.eligibilityTitle ?? "Eligibility - Who can learn"}</h3>
                       <ul className="course-details-list">
-                        {c.requirements.map((r) => <li key={r}>{r}</li>)}
+                        {d
+                          ? d.eligibility.map((e) => (
+                            <li key={e.label}>
+                              <strong>{e.label}:</strong> {e.text}
+                            </li>
+                          ))
+                          : c.requirements.map((r) => <li key={r}>{r}</li>)}
                       </ul>
-                    </div>
+                    </div> */}
 
-                    <div id="certificate" className="tj-course-details-box">
-                      <h3 className="title">Course Certification</h3>
+                    {/* SECTION 4: Certification */}
+                    {/* <div id="certificate" className="tj-course-details-box">
+                      <h3 className="title">{d?.certificateTitle ?? "Course Certification"}</h3>
 
                       <p>
-                        Earn a certificate from Catalyst SkillHub upon successful
-                        completion of the course.
+                        {d?.certificateText ??
+                          "Earn a certificate from Catalyst SkillHub upon successful completion of the course."}
                       </p>
 
-                      {c.certificate && (
+                      {d?.certificate && (
                         <div className="course-certificate-image">
                           <img
-                            src={c.certificate}
-                            alt={`${c.title} course certificate`}
+                            src={d.certificate}
+                            alt={`${d.heading} course certificate`}
                             loading="lazy"
                           />
                         </div>
                       )}
-                    </div>
-
-
+                    </div> */}
 
                   </div>
                 </div>
@@ -565,33 +601,145 @@ const CourseDetailsContent = () => {
         </div>
       </section>
 
-      {/* ===== Learning options (full-width section, part of the nav) ===== */}
-      
-       <div id="clients"><Clients /></div>
+      {/* ===== Learning options (content from data/courseDetailContent.js) ===== */}
       <div id="learning-options">
-        <LearningOptions />
+        <section className="tj-categories-section-3 pt-5 pb-5 fix">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="sec-heading sec-heading-center">
+                  <span className="sec-subtitle sec-subtitle-3 tj-fade-anim" data-direction="top">
+                    <i className="tji-subtitle-2"></i>
+                    {lo.eyebrow}
+                  </span>{" "}
+                  <h2 className="sec-title tj-fade-anim" data-delay=".3">
+                    {lo.title[0]} <br /> {lo.title[1]}
+                  </h2>
+                </div>
+
+                <div className="learning-options-grid">
+                  {[
+                    ["online", lo.online],
+                    ["offline", lo.offline],
+                  ].map(([key, option]) => (
+                    <article key={key} className={`learning-option-card ${key}`}>
+                      <div className="learning-option-content">
+                        <span className="learning-option-label">
+                          <span className="learning-option-label-icon" aria-hidden="true">
+                            {(() => {
+                              const Icon = OPTION_ICONS[key];
+                              return <Icon size={16} strokeWidth={2.2} />;
+                            })()}
+                          </span>
+                          {option.label}
+                        </span>
+
+                        <h3>{option.title}</h3>
+
+                        <p className="learning-option-description">{option.description}</p>
+
+                        <div className="learning-option-detail">
+                          <span className="learning-option-detail-dot" />
+                          {option.detail}
+                        </div>
+
+                        <button
+                          type="button"
+                          className="tj-btn-primary style-2 flip-text-wrap btn1"
+                          onClick={openEnroll(key)}
+                        >
+                          <span className="btn-icon">
+                            <i className="tji-arrow-right-2"></i>
+                          </span>
+                          <span className="btn-text">{option.button}</span>
+                        </button>
+                      </div>
+
+                      <div className="learning-option-image" aria-hidden="true">
+                        <img src={option.image} alt="" loading="lazy" />
+                      </div>
+
+                      <div className="learning-option-decoration" aria-hidden="true" />
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
+
+
+      {/* ===== Other (shared) sections — unchanged ===== */}
       <div>
+        <div id="career-tracks"><CareerPaths /></div>
         <div id="stats"><AboutCounter /></div>
-          <div id="career-tracks"><CareerPaths /></div>
-          <div id="students"><Students /></div>
-       
-     
+        <div id="clients"><Clients /></div>
+        <div id="students"><Students /></div>
+        <div id="reviews"><Review /></div>
         <div id="testimonials"><Testimonials /></div>
-         <div id="reviews"><Review /></div>
-         <div id="Centers"><Centers /></div>
-          <div id="instructors"><Instructors /></div>
-           <div id="blog"><Blog /></div>
-        <div id="more-courses"><MoreCourses /></div>
-       
-        
-        
-       
-        <div id="faq"><Faq /></div>
-        <div id="contact"><ContactForm /></div>
+        <div id="Centers"><Centers /></div>
 
+        {/* ===== SECTION 7: Why choose Catalyst (content from data/courseDetailContent.js) ===== */}
+        <section id="benefits" className="about-section-4 section-gap-bottom fix">
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <div className="sec-heading sec-heading-center about-4-heading">
+                  <span className="sec-subtitle sec-subtitle-4 tj-fade-anim">
+                    <i className="tji-subtitle-2"></i>
+                    {why.label}
+                  </span>
+
+                  <h2 className="sec-title sec-title-2 tj-fade-anim">
+                    {whyLead}{" "}
+                    {whyAccent && <span className="accent underline">{whyAccent}</span>}
+                  </h2>
+
+                  <div className="circle-shape-wrap">
+                    <img className="circle-shape" src="/assets/images/shapes/circle.svg" alt="Shape" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="why-choose-grid">
+              {why.items.map((item) => {
+                const Icon = WHY_ICONS[item.icon] || Compass;
+                return (
+                  <div className="why-choose-card" key={item.title}>
+                    <div className="why-choose-icon">
+                      <Icon size={31} strokeWidth={1.8} />
+                    </div>
+                    <div className="why-choose-content">
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="choose-catalyst-button">
+              <Link className="tj-btn-primary style-2 flip-text-wrap" to="/about">
+                <span className="btn-icon">
+                  <i className="tji-arrow-right-2"></i>
+                </span>{" "}
+                <span className="btn-text">Know more about us</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
+
+        <div id="blog"><Blog /></div>
+        <div id="more-courses"><MoreCourses mode={mode} /></div>
+        <div id="faq"><CourseFaq slug={slug} title={c.title} mode={mode} /></div>
+        <div id="contact"><ContactForm /></div>
       </div>
+
       <LeadPopup
         isOpen={isEnrollOpen}
         onClose={() => setIsEnrollOpen(false)}
@@ -599,10 +747,11 @@ const CourseDetailsContent = () => {
         description="Share your details and our admissions team will call you with batch dates, fees and the next steps to join."
         submitLabel="Enroll Now"
         meta={{
-          source: "course-details-enroll",
+          source: isOffline ? "offline-course-details-enroll" : "course-details-enroll",
           course: c.slug,
           courseTitle: c.title,
           category: c.category,
+          studyMode: enrollMode || mode,
         }}
       />
     </>

@@ -310,7 +310,7 @@ h2,
 
   h2,
   .tj-fs-h2 {
-    font-size: 40px;
+    font-size: 35px;
   }
 }
 
@@ -463,12 +463,12 @@ input[type="email"],
 textarea {
   width: 100%;
   height: auto;
-  min-height: 52px;
+  min-height: 45px;
   font-size: var(--tj-fs-body);
   color: var(--tj-color-heading-primary);
   background-color: var(--tj-color-theme-bg-10);
   border: 1px solid var(--tj-color-border-3);
-  padding: 10px 25px;
+  padding: 8px 20px;
   outline: none;
   -webkit-box-shadow: 0 0 0;
   box-shadow: 0 0 0;
@@ -479,7 +479,9 @@ textarea {
   background-color: #faf8fe !important;
   border-radius: 60px !important;
   font-size: 14px;
-  padding: 10px 25px;
+  padding: 5px 25px;
+  min-height: 45px;
+  border-color: none;
   
 }
 .css-1dimb5e-singleValue{
@@ -2847,7 +2849,7 @@ START: Animate CSS
   font-size: 16px;
   letter-spacing: -0.01em;
   font-weight: var(--tj-fw-bold);
-  padding: 20px 26px 17px;
+  padding: 16px 26px 13px;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -2954,7 +2956,8 @@ START: Animate CSS
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-btn-primary {
-    padding: 16px 20px 13px;
+    padding: 12px 19px 5px;
+    font-size: 14px;
   }
 }
 
@@ -2971,14 +2974,20 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .tj-btn-primary-sm {
-  padding: 16px 26px 13px;
+  padding: 10px 26px 7px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px),
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-btn-primary-sm {
-    padding: 16px 20px 13px;
+     padding: 12px 26px 5px;
+     height: 50px;
+  }
+
+  .tj-btn-primary-border-sm{
+    height: 50px;
+    padding: 12px 26px 5px;
   }
 }
 
@@ -3015,7 +3024,15 @@ only screen and (min-width: 576px) and (max-width: 767px),
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-btn-primary-light {
-    padding: 15px 20px 12px;
+    padding: 12px 19px 5px;
+  }
+  .tj-btn-primary .btn-icon{
+    display: inline-block;
+    font-size: 14px;
+    line-height: 2.2;
+  }
+  .c-category-btn{
+    flex-direction: column;
   }
 }
 
@@ -3033,7 +3050,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .tj-btn-primary-border-sm {
-  padding: 14px 26px 11px;
+  padding: 10px 26px 7px;
 }
 
 .tj-btn-primary-2 {
@@ -3137,6 +3154,9 @@ only screen and (min-width: 576px) and (max-width: 767px),
 @media only screen and (min-width: 768px) and (max-width: 991px),
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
+  .tj-btn-primary-2{
+    font-size: 14px;
+  }
   .tj-btn-primary-2 .btn-icon {
     width: 40px;
     height: 40px;
@@ -3414,7 +3434,8 @@ only screen and (min-width: 576px) and (max-width: 767px),
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-btn-primary.style-2 {
-    padding: 15px 21px 12px;
+    padding: 12px 19px 5px;
+    font-size: 14px;
   }
 
   .tj-btn-primary.style-2 .btn-icon::before {
@@ -3468,7 +3489,17 @@ only screen and (min-width: 576px) and (max-width: 767px),
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-btn-primary.style-3 {
-    padding: 16px 22px 13px;
+     padding: 12px 19px 5px;
+    font-size: 14px;
+  }
+  .tj-cat-level-wrap{
+    flex-direction: column-reverse;
+    align-items: start !important;
+    justify-content: start !important;
+    gap: 10px;
+  }
+  .cp-content{
+    width: 100% !important;
   }
 }
 
@@ -3925,7 +3956,6 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .header-area.header-3.header-duplicate {
-  border-radius: 0 0 24px 24px;
   -webkit-box-shadow: 0 10px 30px var(--tj-color-shadow-2);
   box-shadow: 0 10px 30px var(--tj-color-shadow-2);
 }
@@ -6430,6 +6460,9 @@ only screen and (min-width: 576px) and (max-width: 767px),
   -webkit-transition: all 0.4s ease-in-out 0s;
   transition: all 0.4s ease-in-out 0s;
 }
+.hamburger_menu .mean-container .mean-nav ul li ul li a{
+  font-size: 14px;
+}
 
 .hamburger_menu .mean-container .mean-nav ul li a:hover {
   color: var(--tj-color-theme-primary);
@@ -8598,8 +8631,8 @@ START: Hero CSS
   z-index: 1;
   background: var(--tj-color-gradient-5);
   padding-top: 135px;
-  padding-bottom: 135px;
-  min-height: 770px;
+  padding-bottom: 100px;
+  /* min-height: 770px; */
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1399px),
@@ -8633,6 +8666,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
 .banner-content .banner-title {
   margin-bottom: 13px;
+  font-size: 52px;
 }
 
 .banner-content .btn-area {
@@ -10040,8 +10074,8 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .banner-3-students .banner-3-avatars img {
-  -webkit-filter: grayscale(1);
-  filter: grayscale(1);
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
 }
 
 .banner-3-students .banner-3-avatars img,
@@ -10310,6 +10344,8 @@ only screen and (min-width: 768px) and (max-width: 991px) {
   .banner-3-stats .stat .counter-label {
     font-size: 13px;
     text-wrap: wrap;
+    text-align: left;
+    padding-inline-start: 13px;
   }
 }
 
@@ -11540,7 +11576,10 @@ START: Marquee CSS
 @media only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-text-marquee-title {
-    font-size: 24px;
+    font-size: 20px;
+  }
+  .tj-text-marquee{
+    padding: 10px 0;
   }
 }
 
@@ -12549,9 +12588,9 @@ START: Courses CSS
 .tj-course-item:hover {
   -webkit-box-shadow: 0 20px 40px var(--tj-color-shadow-2);
   box-shadow: 0 20px 40px var(--tj-color-shadow-2);
-  -webkit-transform: translateY(-10px);
+  /* -webkit-transform: translateY(-10px);
   -ms-transform: translateY(-10px);
-  transform: translateY(-10px);
+  transform: translateY(-10px); */
 }
 
 .tj-course-item:hover .tj-course-img img {
@@ -14014,7 +14053,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 @media only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .about-4-heading {
-    padding: 60px 0;
+    padding: 30px 0 0px 0;
   }
 }
 
@@ -14033,7 +14072,13 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 @media only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .about-4-heading .sec-title {
-    font-size: 50px;
+    font-size: 35px;
+  }
+  .sec-subtitle-4 i,.sec-subtitle-3 i,.sec-subtitle-2 i,.sec-subtitle i{
+    font-size: 13px;
+  }
+  .sec-subtitle-4, .sec-subtitle-3, .sec-subtitle-2, .sec-subtitle-1{
+    font-size: 13px;
   }
 }
 
@@ -14736,7 +14781,7 @@ START: Testimonial CSS
 }
 
 .tj-testimonial-item .desc {
-  font-size: 20px;
+  font-size: 15px;
   line-height: 1.5;
   letter-spacing: 0;
   font-weight: var(--tj-fw-medium);
@@ -14824,6 +14869,7 @@ only screen and (min-width: 992px) and (max-width: 1199px) {
   gap: 30px;
   max-width: 750px;
   width: 100%;
+  height: 360px;
 }
 
 .tj-testimonial-item-2 .tj-testimonial-content-wrap {
@@ -14841,6 +14887,7 @@ only screen and (min-width: 992px) and (max-width: 1199px) {
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 10px 0;
+  height: 100%;
 }
 
 .tj-testimonial-item-2 .tj-testimonial-content {
@@ -15385,7 +15432,7 @@ START: Event CSS
 }
 
 .tj-event-item {
-  background-color: var(--tj-color-blur-4);
+  background-color: #fff;
   backdrop-filter: blur(15px);
   border-radius: 22px;
   padding: 20px;
@@ -15463,8 +15510,6 @@ only screen and (min-width: 576px) and (max-width: 767px),
   -ms-flex: 1;
   flex: 1;
   padding: 18px 0;
-  -webkit-border-end: 1px solid var(--tj-color-border-2);
-  border-inline-end: 1px solid var(--tj-color-border-2);
 }
 
 .tj-event-content .title {
@@ -17790,6 +17835,7 @@ START: Promo CSS (Home 3 dual cards)
 
   .tj-promo-card .tj-promo-content .desc {
     margin-bottom: 24px;
+    font-size: 14px;
   }
 }
 
@@ -17851,16 +17897,11 @@ START: Promo CSS (Home 3 dual cards)
   .tj-promo-card .tj-promo-img {
     width: 100%;
     aspect-ratio: 16/16;
+    height: 100px !important;
   }
 }
 
-.tj-promo-card:hover {
-  -webkit-box-shadow: 0 20px 40px var(--tj-color-shadow-2);
-  box-shadow: 0 20px 40px var(--tj-color-shadow-2);
-  -webkit-transform: translateY(-10px);
-  -ms-transform: translateY(-10px);
-  transform: translateY(-10px);
-}
+
 
 @media (max-width: 575px) {
   .tj-promo-card {
@@ -17875,6 +17916,7 @@ START: Promo CSS (Home 3 dual cards)
     gap: 18px;
     padding: 15px;
     padding-bottom: 32px;
+    border-radius: 8px;
   }
 
   .tj-promo-card .tj-promo-content .sec-subtitle {
@@ -19179,7 +19221,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .contact-form {
-  padding: 40px 50px 50px;
+  padding: 20px 25px 25px;
   background-color: var(--tj-color-common-white);
   border: 1px solid var(--tj-color-border-3);
   -webkit-box-shadow: 0 15px 30px var(--tj-color-shadow-1);
@@ -19201,7 +19243,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
   line-height: 1.4;
   font-weight: var(--tj-fw-sbold);
   color: var(--tj-color-heading-primary);
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 }
 
 .contact-form .cf-label span {
@@ -19209,7 +19251,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .contact-form .form-input {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -19234,7 +19276,15 @@ only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .contact-form .form-input {
     margin-bottom: 20px;
+    width: max-content;
   }
+  .css-13cymwt-control{
+    padding: 5px 25px;
+  }
+  .nice-select, select, input[type="password"], input[type="search"], input[type="url"], input[type="tel"], input[type="text"], input[type="email"], .contact-select__control, textarea {
+  padding: 5px 25px;
+  }
+
 }
 
 .contact-form .nice-select .list {
@@ -19253,6 +19303,11 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 (max-width: 575px) {
   .contact-form {
     padding: 30px 15px;
+    margin: 15px;
+  }
+  .contact-form .form-title {
+    font-size: 30px !important;
+
   }
 }
 
@@ -20698,6 +20753,54 @@ only screen and (min-width: 576px) and (max-width: 767px),
   padding-bottom: 80px;
   overflow: visible;
 }
+.offline-detail-sec{
+      background: #180761 !important;
+}
+.offline-detail-sec .tj-page-title{
+  color: #fff !important;
+}
+.offline-detail-sec .tj-page-desc{
+  color: #fff !important;
+}
+.offline-detail-sec .tj-page-link.course-tj span a {
+    color: #ffffffc4 !important;
+}
+.offline-detail-sec .tj-page-link.course-tj span i {
+    color: #ffffffc4 !important;
+}
+.offline-detail-sec .tj-page-link.course-tj span{
+  color: #ffffffc4 !important;
+}
+.offline-detail-sec .tj-btn-primary.style-3-border {
+    border-color: #fff !important;
+    color: #fff !important;
+}
+
+.offline-detail-sec .tj-btn-primary.style-2 {
+    background-color: #fff !important; 
+    color: var(--tj-color-theme-primary) !important;
+}
+.offline-detail-sec .tj-btn-primary.style-2 .btn-icon::before{
+  background-color: var(--tj-color-theme-primary) !important;
+}
+/* .offline-detail-sec .tj-btn-primary.style-2:hover .btn-icon::before {
+    display: none;
+} */
+ .offline-detail-sec .tj-btn-primary.style-2:hover {
+    background-color: var(--tj-color-theme-primary) !important;
+    color: #fff !important;
+}
+ .offline-detail-sec .tj-cat{
+  color: #fff !important;
+}
+ .offline-detail-sec .row{
+  align-items: center;
+}
+
+.offline-course-tab h3{
+  margin-top: 0 !important;
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 991px),
 only screen and (min-width: 576px) and (max-width: 767px),
@@ -20731,7 +20834,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
 @media (max-width: 575px) {
   .tj-page-header-2 .tj-page-title {
-    font-size: 42px;
+    font-size: 35px;
   }
 }
 
@@ -20742,7 +20845,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 .tj-page-header-2.course-tj-main .tj-page-desc {
   color: #111;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .tj-page-header-2 .course-meta {
@@ -23713,7 +23816,10 @@ START: Course Details CSS
 @media only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-course-details-wrapper .tj-list-2 li {
-    padding: 20px 20px;
+    padding: 0px;
+  }
+  .course-nav-row .tj-btn-primary{
+    display: none;
   }
 }
 
@@ -25419,7 +25525,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
   object-fit: cover;
   display: block;
   object-position: center;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .students-marquee { width: 100%; overflow: hidden; margin-top: 30px; } .students-marquee-track { display: flex; width: max-content; gap: 30px; will-change: transform; } .student-image { flex: 0 0 auto; width: 260px; height: 320px; overflow: hidden; border-radius: 20px; } .student-image img { width: 100%; height: 100%; display: block; object-fit: cover; } /* Mobile */ @media (max-width: 767px) { .student-image { width: 180px; height: 230px; } .students-marquee-track { gap: 15px; } .students-marquee { margin-top: 15px; } }
@@ -25556,6 +25662,73 @@ only screen and (min-width: 576px) and (max-width: 767px),
     transform: scale(1.4);
     opacity: 0;
   }
+}
+
+.floating-call {
+  position: fixed;
+  right: 25px;
+  bottom: 138px;
+  width: 70px;
+  height: 70px;
+  background: #42c5e4;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.floating-call:hover {
+  background: #313085;
+  color: #fff;
+  transform: translateY(-4px);
+}
+
+.call-tooltip {
+  position: absolute;
+  right: 98px;
+  top: 50%;
+
+  transform: translateY(-50%) translateX(15px) scale(0.95);
+
+  background: linear-gradient(135deg, #202124, #303438);
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+
+  padding: 11px 16px;
+  border-radius: 10px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.call-tooltip::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+
+  width: 10px;
+  height: 10px;
+
+  background: #292c30;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.floating-call:hover .call-tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Tooltip */
@@ -25745,7 +25918,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 /* Tablet and mobile */
 @media (max-width: 991px) {
   .course-info-box {
-    gap: 10px;
+    gap: 0px;
   }
 
   .course-info-item {
@@ -25772,6 +25945,12 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 @media (max-width: 575px) {
+        .course-info-icon {
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+    }
+  
   .course-info-box {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -25779,12 +25958,12 @@ only screen and (min-width: 576px) and (max-width: 767px),
   }
 
   .course-info-item {
-    padding: 15px 16px;
+    padding: 10px 11px;
     gap: 10px;
   }
 
   .course-info-value {
-    padding-left: 39px;
+    padding-left: 0px;
     font-size: 15px;
   }
 }
@@ -25975,6 +26154,12 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
   .lead-sidebar .tj-course-share {
     padding: 0 18px 18px;
+  }
+  .tj-page-header-2.course-tj-main .tj-page-desc{
+    font-size: 16px;
+  }
+  .tj-page-link span{
+    font-size: 13px;
   }
 }
 

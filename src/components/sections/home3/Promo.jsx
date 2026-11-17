@@ -14,7 +14,7 @@ const Promo = () => {
       slug: "accounting",
       description:
         "Build expertise in accounting and finance and gain the financial qualifications needed for a career in finance. Learn CIFA, GCC Accounting, Business Accounting, SAP Accounting and more.",
-      image: "/assets/images/shapes/shapes4.png",
+      image: "/assets/images/categories/Accounting-3.png",
       imageClass: "#232350",
       btnClass: 'btn1',
       alt: "Start your learning journey",
@@ -24,7 +24,7 @@ const Promo = () => {
       slug: "marketing-management",
       description:
         "Develop practical marketing and management skills across areas such as Digital Marketing, HR Management, Office Administration and more.",
-      image: "/assets/images/shapes/shapes1.png",
+      image: "/assets/images/categories/marketing-3.png",
       imageClass: "#9f9ee7",
       btnClass: 'btn1',
       alt: "Lead the next generation",
@@ -35,7 +35,7 @@ const Promo = () => {
       slug: "tech",
       description:
         "Build in demand technology skills in areas such as python full-stack with DevOps, Data analytics with gen ai, and cyber security",
-      image: "/assets/images/shapes/shapes3.png",
+      image: "/assets/images/categories/tech-3.png",
       imageClass: "#01abde",
       btnClass: 'btn1',
       alt: "Start your learning journey",
@@ -69,7 +69,7 @@ const Promo = () => {
           width: 100%;
           min-height: 420px;
           overflow: hidden;
-          border-radius: 24px;
+          border-radius: 14px;
           background: #0d0d12;
           color: #fff;
           border:none;
@@ -148,7 +148,7 @@ const Promo = () => {
           className="tj-promo-swiper"
           modules={[Pagination, Autoplay]}
           spaceBetween={30}
-          slidesPerView={1.5}            /* mobile: 1 card */
+          slidesPerView={1.2}            /* mobile: 1 card */
           pagination={{ clickable: true }}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
           breakpoints={{

@@ -51,12 +51,12 @@ const Banner = () => (
                   data-autoplay="true"
                   data-vbtype="video"
                   data-maxwidth="1200px"
-                  href="https://www.youtube.com/@Catalyst_Skill_Hub"
+                  href="/contact"
                 >
                   <span className="btn-icon">
-                    <i className="tji-play"></i>
+                  
                   </span>{" "}
-                  <span className="btn-text">Show reels</span>
+                  <span className="btn-text">connect us </span>
                 </a>
               </div>
               <div
@@ -66,21 +66,21 @@ const Banner = () => (
               >
                 <div className="banner-3-avatars">
                   <img
-                    src="/assets/images/users/user-img-1.png"
+                    src="/assets/images/users/Abinand.webp"
                     alt="Student"
                   />{" "}
                   <img
-                    src="/assets/images/users/user-img-2.png"
+                    src="/assets/images/users/Amina.webp"
                     alt="Student"
                   />{" "}
                   <img
-                    src="/assets/images/users/user-img-3.png"
+                    src="/assets/images/users/Sabith.webp"
                     alt="Student"
                   />{" "}
                   <span className="more">8K+</span>
                 </div>
                 <div className="banner-3-students-text">
-                  <strong>2000+</strong> <span> Students Join Us.</span>
+                  <strong>35000+</strong> <span> Students Join Us.</span>
                 </div>
               </div>
 
@@ -88,21 +88,21 @@ const Banner = () => (
                 <div className="stat">
                   <div className="tj-counter">
                     <div className="counter-number">
-                      <span className="counter" data-target="50">
-                        50
+                      <span className="counter" data-target="1000">
+                        100
                       </span>{" "}
-                      <span className="suffix">+</span>
+                      <span className="suffix"> +</span>
                     </div>
-                    <div className="counter-label">Expert Mentors</div>
+                    <div className="counter-label">Expert Faculty</div>
                   </div>
                 </div>
                 <div className="stat">
                   <div className="tj-counter">
                     <div className="counter-number">
-                      <span className="counter" data-target="15">
-                        15
+                      <span className="counter" data-target="100">
+                        10
                       </span>{" "}
-                      <span className="suffix">+</span>
+                      <span className="suffix">  +</span>
                     </div>
                     <div className="counter-label">Skill based courses</div>
                   </div>
@@ -110,12 +110,23 @@ const Banner = () => (
                 <div className="stat">
                   <div className="tj-counter">
                     <div className="counter-number">
-                      <span className="counter" data-target="100">
-                        100
+                      <span className="counter" data-target="100 ">
+                        100 
                       </span>{" "}
-                      <span className="suffix">%</span>
+                      <span className="suffix"> %</span>
                     </div>
-                    <div className="counter-label">Placement Support</div>
+                    <div className="counter-label">Placement Assistance</div>
+                  </div>
+                </div>
+                <div className="stat">
+                  <div className="tj-counter">
+                    <div className="counter-number">
+                      <span className="counter" data-target="5">
+                        1
+                      </span>{" "}
+                      <span className="suffix">  +</span>
+                    </div>
+                    <div className="counter-label">Languages</div>
                   </div>
                 </div>
               </div>

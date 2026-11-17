@@ -9,7 +9,7 @@ const facultyData = [
   {
     id: 1,
     name: "Aiswarya",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Learn accounting fundamentals, financial reporting, and practical accounting skills from experienced faculty.",
     image:
@@ -19,7 +19,7 @@ const facultyData = [
   {
     id: 2,
     name: "Ameera",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Gain practical knowledge of accounting principles, financial management, and industry-relevant practices.",
     image:
@@ -29,7 +29,7 @@ const facultyData = [
   {
     id: 3,
     name: "Prajila",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Develop job-ready accounting skills through practical learning and expert academic guidance.",
     image:
@@ -39,7 +39,7 @@ const facultyData = [
   {
     id: 4,
     name: "Febna",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -49,7 +49,7 @@ const facultyData = [
   {
     id: 5,
     name: "Rithika Rajan",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -59,7 +59,7 @@ const facultyData = [
   {
     id: 6,
     name: "Romisha",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -69,7 +69,7 @@ const facultyData = [
   {
     id: 7,
     name: "Shuhail",
-    designation: "DM Faculty",
+    designation: "Marketing Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -79,7 +79,7 @@ const facultyData = [
   {
     id: 8,
     name: "Gopika",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:
@@ -89,7 +89,7 @@ const facultyData = [
   {
     id: 9,
     name: "Sreerag",
-    designation: "CIFA Faculty",
+    designation: "Accounting Faculty",
     description:
       "Strengthen your accounting knowledge with structured lessons and practical, career-focused training.",
     image:

@@ -1,12 +1,13 @@
-
 import { useEffect, useState } from "react";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Phone } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
 const BackToTop = () => {
   const [show, setShow] = useState(false);
 
   const whatsappNumber = "974XXXXXXXX";
+  const phoneNumber = "+974XXXXXXXX";
+
   const message = encodeURIComponent(
     "Hello! I would like to know more about your courses."
   );
@@ -21,9 +22,7 @@ const BackToTop = () => {
   }, []);
 
   return (
-    <div
-      className='back-to-top-btn-show'
-    >
+    <div className="back-to-top-btn-show">
       {/* WhatsApp */}
       <a
         href={`https://wa.me/${whatsappNumber}?text=${message}`}
@@ -37,23 +36,18 @@ const BackToTop = () => {
         <span className="whatsapp-tooltip">Chat with us</span>
       </a>
 
-      {/* Back to top */}
-      {/* <button
-        id="back-to-top"
-        type="button"
-        className="back-to-top-btn"
-        aria-label="Back to top"
-        onClick={() =>
-          window.scrollTo({ top: 0, behavior: "smooth" })
-        }
+      {/* Call Button */}
+      <a
+        href={`tel:${phoneNumber}`}
+        className="floating-call"
+        aria-label="Call us"
+        title="Call us"
       >
-        <span className="back-to-top-icon">
-          <ArrowUp size={23} strokeWidth={2.5} />
-        </span>
-      </button> */}
+        <Phone className="call-icon" size={30} />
+        <span className="call-tooltip">Call us</span>
+      </a>
     </div>
   );
 };
 
 export default BackToTop;
-

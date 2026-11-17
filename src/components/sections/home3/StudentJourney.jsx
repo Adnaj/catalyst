@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -86,7 +86,11 @@ const StudentJourney = () => {
     steps.length * CARD_W +
     (steps.length - 1) * GAP;
 
-  useLayoutEffect(() => {
+  // NOTE: must be useEffect (NOT useLayoutEffect). When arriving from another
+  // page, the old page's useGsap() cleanup runs ScrollTrigger.getAll().kill()
+  // in the passive-effect phase, which comes AFTER layout effects. A trigger
+  // created in a layout effect was therefore killed immediately.
+  useEffect(() => {
     const section = sectionRef.current;
     const track = trackRef.current;
     const fill = fillRef.current;
@@ -117,9 +121,8 @@ const StudentJourney = () => {
     };
 
     const render = (progress) => {
-      track.style.transform = `translate3d(${
-        -distance * progress
-      }px, 0, 0)`;
+      track.style.transform = `translate3d(${-distance * progress
+        }px, 0, 0)`;
 
       fill.style.transform = `scaleX(${progress})`;
 
@@ -180,11 +183,15 @@ const StudentJourney = () => {
       window.addEventListener("load", refresh, {
         once: true,
       });
+    } else {
+      // client-side navigation: "load" already fired, so refresh manually
+      requestAnimationFrame(refresh);
     }
 
     // ScrollSmoother is created after load by useGsap(); refresh once
     // more afterwards so the pin positions are measured correctly.
     const lateRefresh = setTimeout(refresh, 600);
+    const lateRefresh2 = setTimeout(refresh, 1800); // lazy images shift the layout
 
     return () => {
       cancelAnimationFrame(resizeFrame);
@@ -193,11 +200,12 @@ const StudentJourney = () => {
       window.removeEventListener("load", refresh);
 
       clearTimeout(lateRefresh);
+      clearTimeout(lateRefresh2);
       trigger.kill(true);
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     ScrollTrigger.refresh();
   }, [sidePad]);
 
@@ -236,8 +244,8 @@ const StudentJourney = () => {
           /* Beat the global section-spacing.css rule
              (.site-main section {padding: 70px !important}) */
           .site-main section.tj-journey-section.about-section-4.tj-journey-section {
-            padding-top: 40px !important;
-            padding-bottom: 40px !important;
+            padding-top: 70px !important;
+            padding-bottom: 70px !important;
           }
 
           .tj-journey-section *,
@@ -442,27 +450,41 @@ const StudentJourney = () => {
           }
 
           @media (max-width: 767px) {
-            .tj-journey-section {
-              gap: 24px;
-              padding: 32px 0;
-            }
+  .tj-journey-section {
+    height: auto;          /* let content decide the height */
+    min-height: 100svh;    /* but never shorter than the screen */
+    gap: 24px;
+    padding: 48px 0;
+  }
 
-            .tj-head p {
-              font-size: 15px;
-            }
+  /* Same selector as your global override, so it wins on mobile */
+  .site-main section.tj-journey-section.about-section-4.tj-journey-section {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
 
-            .tj-card {
-              padding: 24px 22px;
-            }
+  .tj-head p {
+    font-size: 15px;
+  }
 
-            .tj-card-heading {
-              gap: 20px;
-            }
+  .tj-item {
+    padding-top: 88px;     /* was 104px */
+  }
 
-            .tj-card h3 {
-              font-size: 19px;
-            }
-          }
+  .tj-card {
+    min-height: 0;         /* was 268px, which forces extra height */
+    padding: 22px 20px;
+  }
+
+  .tj-card-heading {
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .tj-card h3 {
+    font-size: 19px;
+  }
+}
 
           @media (max-height: 650px) and (min-width: 768px) {
             .tj-journey-section {
@@ -491,14 +513,14 @@ const StudentJourney = () => {
 
         {/* Original heading and paragraph */}
         <div className="tj-head">
- 
-             <span
-                  className="sec-subtitle sec-subtitle-3 tj-fade-anim"
-                  data-direction="top"
-                >
-                  <i className="tji-subtitle-2"></i>
-                  {" Student journey"}
-                </span>{" "}
+
+          <span
+            className="sec-subtitle sec-subtitle-3 tj-fade-anim"
+            data-direction="top"
+          >
+            <i className="tji-subtitle-2"></i>
+            {" Student journey"}
+          </span>{" "}
 
           <h2 className="sec-title sec-title-2">
             Your journey from learning <br />

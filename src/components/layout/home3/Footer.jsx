@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 // Footer matching the Catalyst Skill Hub design mockup
 import {
   FaFacebookF,
@@ -7,36 +8,52 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 
+// `to` = internal route. Items without `to` have no page yet (render as inert links).
+const L = (label, to) => ({ label, to });
+
+// Campus names -> the campus page that contains them (same mapping as the navbar)
 const campuses = [
-  "Kannur",
-  "Vadakara",
-  "Calicut",
-  "Manjeri",
-  "Perinthalmanna",
-  "Kottakkal",
-  "Edappal",
-  "Thrissur",
-  "Kochi",
+  L("Kannur", "/campus/kannur"),
+  L("Vadakara", "/campus/kozhikode"),
+  L("Calicut", "/campus/kozhikode"),
+  L("Manjeri", "/campus/malappuram"),
+  L("Perinthalmanna", "/campus/malappuram"),
+  L("Kottakkal", "/campus/malappuram"),
+  L("Edappal", "/campus/malappuram"),
+  L("Thrissur", "/campus/thrissur"),
+  L("Kochi", "/campus/ernakulam"),
 ];
 
-const marketing = ["Digital Marketing", "Office Administration", "HR Management"];
-const accounting = ["CIFA", "SAP Accounting", "Business Accounting"];
-const tech = ["Python full-stack with devops", "Data analytics with gen ai", "Cyber Security"];
-
-const catalystLinks = ["Success stories", "Blogs & Insights", "Contact", "Careers", "Apply as mentor"];
-const moreLinks = ["About", "Terms & Conditions", "Privacy policy"];
-
-const learnOnline = [
-  "Digital Marketing",
-  "Office Administration",
-  "HR Management",
-  "CIFA",
-  "SAP Accounting",
-  "Business Accounting",
-  "Python full-stack with devops",
-  "Data analytics with gen ai",
-  "Cyber Security",
+const marketing = [
+  L("Digital Marketing", "/courses/digital-marketing"),
+  L("Office Administration", "/courses/office-administration"),
+  L("HR Management", "/courses/human-resource-management"),
 ];
+const accounting = [
+  L("CIFA", "/courses/certified-indian-foreign-accounting"),
+  L("SAP Accounting", "/courses/sap-accounting"),
+  L("Business Accounting", "/courses/business-accounting"),
+];
+const tech = [
+  L("Python full-stack with devops", "/courses/python-full-stack-devops"),
+  L("Data analytics with gen ai", "/courses/data-analytics-gen-ai"),
+  L("Cyber Security", "/courses/cyber-security"),
+];
+
+const catalystLinks = [
+  L("Success stories", "/success-stories"),
+  L("Blogs & Insights"), // no page yet
+  L("Contact", "/contact"),
+  L("Careers"), // no page yet
+  L("Apply as mentor"), // no page yet
+];
+const moreLinks = [
+  L("About", "/about"),
+  L("Terms & Conditions"), // no page yet
+  L("Privacy policy"), // no page yet
+];
+
+const learnOnline = [...marketing, ...accounting, ...tech];
 
 const socials = [
   { name: "Facebook", href: "https://facebook.com", Icon: FaFacebookF },
@@ -46,11 +63,23 @@ const socials = [
   { name: "YouTube", href: "https://youtube.com", Icon: FaYoutube },
 ];
 
+// Internal link when `to` exists, otherwise an inert placeholder (no jump to top)
+const FooterLink = ({ to, children, ...rest }) =>
+  to ? (
+    <Link to={to} {...rest}>
+      {children}
+    </Link>
+  ) : (
+    <a href="#" onClick={(e) => e.preventDefault()} {...rest}>
+      {children}
+    </a>
+  );
+
 const LinkList = ({ items }) => (
   <ul className="csh-list">
     {items.map((item) => (
-      <li key={item}>
-        <a href="#">{item}</a>
+      <li key={item.label}>
+        <FooterLink to={item.to}>{item.label}</FooterLink>
       </li>
     ))}
   </ul>
@@ -144,9 +173,9 @@ const Footer = () => (
         <div className="csh-grid">
           {/* Brand + contact */}
           <div className="csh-col-brand">
-            <a href="/" className="csh-logo">
+            <Link to="/" className="csh-logo">
               <img src="/assets/images/hero/logo.png" alt="Catalyst Skill Hub" />
-            </a>
+            </Link>
             <p className="csh-tagline">South Indias NO.1 Upskilling Platform</p>
 
             <div className="csh-block">
@@ -159,8 +188,8 @@ const Footer = () => (
             <div className="csh-block">
               <strong>Connect Us</strong>
               <div className="csh-contact">
-                <a className="csh-box is-phone" href="tel:9745200500">
-                  +91 45200500
+                <a className="csh-box is-phone" href="tel:+91 9207300700">
+                  +91 9207300700
                 </a>
                 <a className="csh-box" href="mailto:Hello@catalysthub.in">
                   Hello@catalysthub.in
@@ -174,15 +203,21 @@ const Footer = () => (
             <h3 className="csh-heading">Programmes</h3>
 
             <div className="csh-group">
-              <h4 className="csh-sub">Marketing &amp; Management</h4>
+              <h4 className="csh-sub">
+                <Link to="/category/marketing-management">Marketing &amp; Management</Link>
+              </h4>
               <LinkList items={marketing} />
             </div>
             <div className="csh-group">
-              <h4 className="csh-sub">Accounting</h4>
+              <h4 className="csh-sub">
+                <Link to="/category/accounting">Accounting</Link>
+              </h4>
               <LinkList items={accounting} />
             </div>
             <div className="csh-group">
-              <h4 className="csh-sub">Tech Courses</h4>
+              <h4 className="csh-sub">
+                <Link to="/category/tech">Tech Courses</Link>
+              </h4>
               <LinkList items={tech} />
             </div>
           </div>
@@ -209,9 +244,9 @@ const Footer = () => (
         <div className="csh-campus">
           <strong>Campus:</strong>
           {campuses.map((c) => (
-            <a key={c} href="#">
-              {c}
-            </a>
+            <Link key={c.label} to={c.to}>
+              {c.label}
+            </Link>
           ))}
         </div>
 

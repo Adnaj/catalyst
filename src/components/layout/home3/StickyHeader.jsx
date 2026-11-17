@@ -16,12 +16,12 @@ const StickyHeader = () => {
               <div className="col-12">
                 <div className="header-wrapper">
                   <div className="site_logo">
-                    <a className="logo" href="#">
+                    <Link className="logo" to="/">
                       <img
                         src="/assets/images/hero/logo.png"
                         alt="Logo"
                       />
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="menu-area d-none d-lg-inline-flex align-items-center">

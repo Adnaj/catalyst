@@ -23,8 +23,6 @@ const DEFAULT_DESCRIPTION =
 const emptyForm = {
   name: "",
   phone: "",
-  location: "",
-  message: "",
 };
 
 // one group per campus, each listing its locations, then "Other"
@@ -55,6 +53,7 @@ export default function LeadPopup({
   submitLabel,
   defaultLocation = "",
   meta = {},
+  downloadUrl = "",
 }) {
   const headingId = useId();
   const [form, setForm] = useState(emptyForm);
@@ -65,10 +64,8 @@ export default function LeadPopup({
   // reset the form every time it is opened (fresh title / meta / location)
   useEffect(() => {
     if (!isOpen) return;
-    setForm({
-      ...emptyForm,
-      location: ALL_LOCATIONS.includes(defaultLocation) ? defaultLocation : "",
-    });
+
+    setForm(emptyForm);
     setSuccess(false);
     setError("");
     setSubmitting(false);
@@ -116,16 +113,9 @@ export default function LeadPopup({
       const payload = {
         name: form.name,
         phone: form.phone,
-        location:
-          form.location === "Other"
-            ? form.otherLocation.trim() || "Other"
-            : form.location,
-        message: form.message,
-
-        // ---- unique data for this Enquire Now button ----
         formTitle: title,
         source: meta.source || "unknown",
-        meta, // everything passed by the button (course, campus, ...)
+        meta,
         pageUrl: window.location.href,
         pagePath: window.location.pathname,
         submittedAt: new Date().toISOString(),
@@ -140,9 +130,22 @@ export default function LeadPopup({
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-          throw new Error("Unable to submit your enquiry.");
-        }
+        // if (!response.ok) {
+        //   throw new Error("Unable to submit your enquiry.");
+        // }
+      }
+
+      // Download brochure only after successful enquiry submission
+      if (downloadUrl) {
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = "";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
 
       setSuccess(true);
@@ -177,9 +180,9 @@ export default function LeadPopup({
         </button>
 
         <aside className="clp-promo">
-        
 
-          <p className="clp-eyebrow">YOUR NEXT CHAPTER STARTS HERE</p>
+
+          {/* <p className="clp-eyebrow">YOUR NEXT CHAPTER STARTS HERE</p> */}
 
           <h2>
             Get Expert Guidance for Your <span>Career Goals</span>
@@ -192,12 +195,12 @@ export default function LeadPopup({
 
           <div className="clp-student-image">
             <img
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=85"
+              src="/assets/images/hero/thozhil.png"
               alt="Students learning together"
             />
           </div>
 
-          <div className="clp-benefits">
+          {/* <div className="clp-benefits">
             <div className="clp-benefit">
               <span><GraduationCap size={21} /></span>
               <div>
@@ -221,9 +224,9 @@ export default function LeadPopup({
                 <small>Get guidance for your next career move</small>
               </div>
             </div>
-          </div>
+          </div> */}
 
-         
+
         </aside>
 
         <div className="clp-form-panel">
@@ -279,44 +282,7 @@ export default function LeadPopup({
                   />
                 </label>
 
-                <label className="clp-field">
-                  <MapPin size={20} aria-hidden="true" />
-                  <select
-                    name="location"
-                    value={form.location}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select Location *
-                    </option>
 
-                    {LOCATION_GROUPS.map((group) => (
-                      <optgroup key={group.label} label={group.label}>
-                        {group.options.map((place) => (
-                          <option key={`${group.label}-${place}`} value={place}>
-                            {place}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-
-                    <option value="Other">Other</option>
-                  </select>
-                </label>
-
-        
-
-                <label className="clp-field clp-message-field">
-                  <MessageSquare size={20} aria-hidden="true" />
-                  <textarea
-                    name="message"
-                    placeholder="Your Message (Optional)"
-                    rows={3}
-                    value={form.message}
-                    onChange={handleChange}
-                  />
-                </label>
 
                 {error && (
                   <p className="clp-error" role="alert">
@@ -333,13 +299,12 @@ export default function LeadPopup({
                   {!submitting && <ArrowRight size={21} />}
                 </button>
 
-                <p className="clp-privacy">
+                {/* <p className="clp-privacy">
                   <LockKeyhole size={17} />
                   <span>
-                    Your information is safe with us. We respect your privacy
-                    and never share your details without authorization.
+                    Your information is safe and confidential.
                   </span>
-                </p>
+                </p> */}
               </form>
             </>
           )}

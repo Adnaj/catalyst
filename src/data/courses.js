@@ -70,7 +70,7 @@ export const courses = [
     duration: "3 Months",
     mode: "Online / Offline",
     lessons: 40,
-    image:'/assets/images/course/allcourses/GCC-ACCOUNTING.png',
+    image:'/assets/images/course/allcourses/GCC-ACCOUNTING.webp',
     certificate:'/assets/images/certificate/CAT-Certificate.webp',
     tools: [
       "Tally Prime",
@@ -113,7 +113,7 @@ export const courses = [
     duration: "3 Months",
     mode: "Online / Offline",
     lessons: 36,
-    image: '/assets/images/course/allcourses/BUSINESS-ACCOUNTING.png',
+    image: '/assets/images/course/allcourses/BUSINESS-ACCOUNTING.webp',
     certificate:'/assets/images/certificate/CAT-Certificate.webp',
     tools: [
       "Tally Prime",
@@ -159,7 +159,7 @@ export const courses = [
     mode: "Online / Offline",
     certificate:'/assets/images/certificate/CAT-Certificate.webp',
     lessons: 30,
-    image: '/assets/images/course/allcourses/SAP-ACCOUNTING.png',
+    image: '/assets/images/course/allcourses/SAP-ACCOUNTING.webp',
     tools: [
       "SAP S/4HANA FICO",
       "Tally Prime",
@@ -203,7 +203,7 @@ export const courses = [
     duration: "4 Months",
     mode: "Online / Offline",
     certificate:'/assets/images/certificate/CAT-Certificate.webp',
-    image: '/assets/images/course/allcourses/INDIAN-AND-FOREIGN-ACCOUNTING.png',
+    image: '/assets/images/course/allcourses/INDIAN-AND-FOREIGN-ACCOUNTING.webp',
     lessons: 48,
     summary: "Build practical accounting skills for indian and international business environments with the CIFA Course. Learn SAP FICO, Tally Prime, taxation, financial reporting, and industry-relevant accounting tools through flexible online and offline training.",
     level: "Intermediate",
@@ -338,7 +338,7 @@ export const courses = [
     jobRoles: ["Digital Marketing Executive", "SEO Strategist", "Social Media Manager"],
     mode: "Online / Offline",
     certificate:'/assets/images/certificate/digital-marketing.webp',
-    image: '/assets/images/course/allcourses/DIGITAL-MARKETING.png',
+    image: '/assets/images/course/allcourses/DIGITAL-MARKETING.webp',
     title: "Digital Marketing",
     category: "Marketing & Management",
     duration: "3 Months",
@@ -367,7 +367,7 @@ export const courses = [
     tools: ["MS Excel for HR", "HRMS & HR Software", "Payroll & Attendance Systems", "HR Analytics Tools", "AI Tools for HR"],
     jobRoles: ["HR Executive", "HR Generalist", "Talent Acquisition Executive", "Payroll Executive", "HR Recruiter", "HR Operations Executive", "HR Analyst"],
     title: "Human Resource Management",
-    image: '/assets/images/course/allcourses/HUMAN-RESOURCE-MANAGEMENT.png',
+    image: '/assets/images/course/allcourses/HUMAN-RESOURCE-MANAGEMENT.webp',
     mode: "Online / Offline",
     certificate:'/assets/images/certificate/digital-marketing.webp',
     category: "Marketing & Management",
@@ -400,7 +400,7 @@ export const courses = [
     mode: "Online / Offline",
     title: "Office Administration",
     category: "Marketing & Management",
-    image: '/assets/images/course/allcourses/OFFICE-ADMINISTRATION.png',
+    image: '/assets/images/course/allcourses/OFFICE-ADMINISTRATION.webp',
     duration: "2 Months",
     lessons: 28,
     summary: "Practical office skills: MS Office, business communication, documentation and workplace management.",
@@ -425,6 +425,9 @@ export const courses = [
 export const getCourse = (slug) => courses.find((c) => c.slug === slug);
 export const courseByTitle = (title) => courses.find((c) => c.title === title);
 export const coursePath = (slug) => `/courses/${slug}`;
+
+export const courseListPath = (mode = "online") =>
+  mode === "offline" ? "/offline-courses" : "/courses";
 
 // ---- category helpers (used by /category/:categorySlug) ----
 export const coursesByCategory = (categoryLabel) =>

@@ -1,38 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { getCampus, campusPath } from "../../../data/campuses";
+import { campuses, campusPath } from "../../../data/campuses";
 
-// Every Kerala district in display order.
-// A district with a `slug` that exists in data/campuses.js is LIVE
-// (linked + real centre count). Any other district shows "Coming Soon".
-// To launch a district: add it to campuses.js and give it a `slug` here.
-const districts = [
-  { name: "Kasaragod", image: "/assets/images/cities/kasargod.jpg" },
-  { name: "Kannur", slug: "kannur", image: "/assets/images/cities/kannur.jpg" },
-  { name: "Wayanad", image: "/assets/images/cities/wayanad.jpg" },
-  { name: "Kozhikode", slug: "kozhikode", image: "/assets/images/cities/kozhikode.jpg" },
-  { name: "Malappuram", slug: "malappuram", image: "/assets/images/cities/malappuram.jpg" },
-  { name: "Palakkad", image: "/assets/images/cities/palakkad.jpg" },
-  { name: "Thrissur", slug: "thrissur", image: "/assets/images/cities/thrissur.jpg" },
-  { name: "Ernakulam", slug: "ernakulam", image: "/assets/images/cities/ernakulam.jpg" },
-  { name: "Idukki", image: "/assets/images/cities/kasargod.jpg" },
-  { name: "Kottayam", image: "/assets/images/cities/KOTTAYAM.png" },
-  { name: "Alappuzha", image: "/assets/images/cities/ALAPPUZHA.png" },
-  { name: "Kollam", image: "/assets/images/cities/KOLLAM.png" },
-  { name: "Thiruvananthapuram", image: "/assets/images/cities/THIRUVANANTHAPURAM.png" },
-];
-
-const cities = districts.map((d) => {
-  const campus = d.slug ? getCampus(d.slug) : null;
-  return campus
-    ? {
-        ...d,
-        comingSoon: false,
-        centres: campus.locations.length,
-        link: campusPath(campus.slug),
-      }
-    : { ...d, comingSoon: true };
-});
+// The districts come from data/campuses.js - add a campus there and it shows up here.
+// Name, image, centre count and link are all taken from the campus entry.
+// Optional fields on a campus entry:
+//   cityImage   a different picture just for this grid (falls back to `image`)
+//   comingSoon  true -> shows "Coming Soon" instead of a link
+const cities = campuses.map((c) => ({
+  name: c.name,
+  image: c.cityImage || c.image,
+  centres: c.locations.length,
+  link: campusPath(c.slug),
+  comingSoon: Boolean(c.comingSoon),
+}));
 
 const Centres = () => {
 
@@ -152,19 +133,32 @@ const Centres = () => {
 
         @media (max-width: 575px) {
           .tj-centres-grid {
-            grid-template-columns: 1fr;
-            gap: 28px;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
           }
+            .tj-centre-item{
+            gap:10px
+            }
 
           .tj-centre-item .tj-centre-img {
-            flex-basis: 72px;
-            width: 72px;
-            height: 72px;
+            flex-basis: 60px;
+            width: 60px;
+            height: 60px;
           }
 
           .tj-centre-item .tj-centre-name {
-            font-size: 18px;
+            font-size: 14px;
           }
+            .tj-centre-item .tj-centre-meta{
+            font-size:12px;
+            }
+            .tj-centre-item .tj-centre-arrow {
+    width: 12px;
+    height: 12px;
+      }
+    .tj-centre-item .tj-centre-status {
+    font-size:8px;
+      }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -251,9 +245,8 @@ const Centres = () => {
                 className="tj-centre-item"
                 to={city.link}
                 key={city.name}
-                aria-label={`${city.name}: ${city.centres} ${
-                  city.centres === 1 ? "centre" : "centres"
-                }`}
+                aria-label={`${city.name}: ${city.centres} ${city.centres === 1 ? "centre" : "centres"
+                  }`}
               >
                 {body}
               </Link>

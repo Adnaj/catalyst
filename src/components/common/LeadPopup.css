@@ -43,7 +43,7 @@
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.98fr) !important;
   flex: 0 0 auto !important;
-  width: min(1080px, 100%) !important;
+  width: min(800px, 100%) !important;
   min-width: 0 !important;
   min-height: 400px;
   max-width: 1080px !important;
@@ -209,7 +209,7 @@
   margin: 0 !important;
   padding: 0 !important;
   color: #fff !important;
-  font-size: clamp(27px, 2.6vw, 36px) !important;
+  font-size: 32px !important;
   font-weight: 750;
   line-height: 1.2 !important;
   letter-spacing: -1px;
@@ -230,14 +230,10 @@
 
 .clp-student-image {
   display: block !important;
-  width: 100%;
-  height: 155px;
-  flex-shrink: 0;
-  margin: 0 0 21px !important;
-  padding: 0 !important;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 13px;
+  position: absolute;
+  bottom: 35px;
+  left: 20px;
+  max-width: 300px;
 }
 
 .clp-student-image img {
@@ -312,7 +308,7 @@
   align-self: stretch;
   min-width: 0 !important;
   margin: 0 !important;
-  padding: 51px 40px 32px !important;
+  padding: 35px 20px 35px !important;
   overflow-wrap: anywhere;
   color: #17223c !important;
   background: #fff !important;
@@ -343,10 +339,11 @@
   margin: 0 !important;
   padding: 0 5px 0 0 !important;
   color: #101c38 !important;
-  font-size: clamp(26px, 2.5vw, 34px) !important;
+  font-size: 30px!important;
   font-weight: 750;
   line-height: 1.2 !important;
   letter-spacing: -0.8px;
+  font-size: 30px;
 }
 
 .clp-form-heading > p {
@@ -440,7 +437,7 @@
   gap: 12px;
   width: 100% !important;
   min-height: 54px;
-  margin: 0 !important;
+  margin-top: 100px !important;
   padding: 14px 20px !important;
   color: #fff !important;
   font: inherit;
