@@ -64,14 +64,14 @@ const CampusLocations = () => {
 
                                         <ul className="cl-rows">
                                             <li className="cl-row">
-                                                <span className="cl-icon cl-icon--blue"><Map size={22} /></span>
+                                                {/* <span className="cl-icon cl-icon--blue"><Map size={22} /></span>
                                                 <div>
-                                                    {/* <strong>View Map</strong> */}
+                                                 
                                                     <a href={l.mapUrl} target="_blank" rel="noreferrer" className="cl-link">
                                                         {l.mapUrl === "#" ? "Map link coming soon" : `${l.mapUrl.slice(0, 30)}...`}
                                                         <ExternalLink size={14} />
                                                     </a>
-                                                </div>
+                                                </div> */}
                                             </li>
 
 

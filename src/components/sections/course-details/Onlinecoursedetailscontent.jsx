@@ -1,11 +1,8 @@
-// OFFLINE course detail page  (route: /offline-courses/:slug)
-// Content comes from data/courseDetailContent.js  ->  courseDetailContent.offline
-// Starts as a copy of CourseDetailsContent.jsx - edit this file freely to redesign the offline page.
-import { useState, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
+// ONLINE course detail page  (route: /courses/:slug)
+// Content comes from data/courseDetailContent.js
+import { useState } from "react";
 import {
   Laptop,
-  MapPin,
   BriefcaseBusiness,
   UsersRound,
   Wrench,
@@ -18,10 +15,19 @@ import {
   Globe,
   Network,
   Layers,
+  Play,
+  CalendarDays,
+  Clock
 } from "lucide-react";
+
 import { Link, useParams } from "react-router-dom";
-import { getCourse, courseListPath } from "../../../data/courses";
-import { getCourseDetail, getLearningOptions, getWhyChoose } from "../../../data/courseDetailContent";
+import {
+  getCourseDetail,
+  getLearningOptions,
+  getWhyChoose,
+  courseListPath,
+} from "../../../data/courseDetailContent";
+
 import "./LearningOptions.css";
 import Students from "../home3/Students";
 
@@ -37,24 +43,20 @@ import ContactForm from "../home2/ContactForm";
 import Centers from "../home3/Centers";
 import LeadPopup from "../../common/LeadPopup";
 
-
-
 // Districts for the "Campus Location" dropdown: [name, comingSoon]
-const DISTRICTS = [
-  ["Kasaragod", false],
-  ["Kannur", false],
-  ["Kozhikode", false],
-  ["Malappuram", false],
-  ["Palakkad", false],
-  ["Thrissur", false],
-  ["Ernakulam", false],
+
+
+// Tabs for the course details block: [id, label]
+const COURSE_TABS = [
+  ["overview", "Overview"],
+  ["gain", "What You’ll Gain"],
+  ["learn", "What You’ll Learn"],
+  ["tools", "Tools You’ll Learn"],
+  ["skills", "Skills You’ll Learn"],
+  ["careers", "Career Opportunities"],
 ];
 
-
-
-const EMPTY_LEAD = { name: "", phone: "", location: "", message: "" };
-
-
+const EMPTY_LEAD = { name: "", phone: "", message: "" };
 
 // Icons for the "Why choose Catalyst" cards (data files refer to them by name)
 const WHY_ICONS = {
@@ -62,26 +64,7 @@ const WHY_ICONS = {
   ChartNoAxesCombined, UserRoundCheck, Calculator, Globe, Network, Layers,
 };
 
-
-
-
-
-// Small card used for "What you'll learn", "Why choose Catalyst" and the online/offline blocks
-const InfoCard = ({ title, children }) => (
-  <div
-    style={{
-      height: "100%",
-      padding: "18px 20px",
-      border: "1px solid rgba(0,0,0,.1)",
-      borderRadius: 12,
-    }}
-  >
-    <h4 style={{ fontSize: 18, marginBottom: 8 }}>{title}</h4>
-    <p style={{ margin: 0 }}>{children}</p>
-  </div>
-);
-
-const mode = "online"; // this file = the offline page
+const mode = "online"; // this file = the online page
 
 const NotFound = ({ mode }) => (
   <>
@@ -102,38 +85,41 @@ const NotFound = ({ mode }) => (
 const OnlineCourseDetailsContent = () => {
   const isOffline = mode === "offline";
   const { slug } = useParams();
-  const course = getCourse(slug);
+  const d = getCourseDetail(slug, mode);
 
   // ---- ALL hooks live above the early return ----
   const [lead, setLead] = useState(EMPTY_LEAD);
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [leadError, setLeadError] = useState("");
 
-
-
-
-  const [activeOverviewTab, setActiveOverviewTab] = useState("overview");
-const [isBrochureOpen, setIsBrochureOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [isBrochureOpen, setIsBrochureOpen] = useState(false);
 
   const [isEnrollOpen, setIsEnrollOpen] = useState(false);
   const [enrollMode, setEnrollMode] = useState(""); // "" | "online" | "offline"
   // ---- end hooks ----
 
-  if (!course) return <NotFound mode={mode} />;
-  const c = course;
-  const d = getCourseDetail(slug, mode); // content from data/courseDetailContent.js (undefined -> generic fields of `course`)
-  const lo = getLearningOptions(slug, c.title, mode); // learning options content
+  if (!d) return <NotFound mode={mode} />;
+  const c = {
+    title: d.label,
+    slug: d.slug,
+    category: d.category,
+    duration: d.duration,
+    brochure: d.brochure,
+  };
+
+  const lo = getLearningOptions(slug, c.title, mode);
+
   const why = getWhyChoose(slug, mode); // "Why choose Catalyst" content
   // highlight the last two words of the heading (e.g. "Choose the [Right Guidance]")
   const whyWords = why.heading.split(" ");
   const whyAccent = whyWords.length > 3 ? whyWords.slice(-2).join(" ") : "";
   const whyLead = whyAccent ? whyWords.slice(0, -2).join(" ") : why.heading;
+
   const openEnroll = (mode = "") => () => {
     setEnrollMode(mode);
     setIsEnrollOpen(true);
   };
-
-
 
   const onLeadChange = (e) => {
     const { name, value } = e.target;
@@ -145,7 +131,7 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
     const digits = lead.phone.replace(/\D/g, "");
     if (lead.name.trim().length < 2) return setLeadError("Please enter your name.");
     if (digits.length < 10) return setLeadError("Please enter a valid phone number.");
-    if (!lead.location) return setLeadError("Please select your campus location.");
+    
     setLeadError("");
     setStatus("sending");
     try {
@@ -164,87 +150,18 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
   };
 
   // ---- values for the hero (Section 1) ----
-  const heading = d?.heading ?? c.title;
-  const summary = d?.summary ?? c.summary;
-  const brochure = d?.brochure
-  const type = d?.type ?? c.type;
+  const heading = d.heading;
+  const summary = d.summary;
+  const brochure = d.brochure;
+  const type = d.type;
   const studyMode = isOffline ? "Offline" : "Online"; // follows the page, not the data
 
   return (
     <>
       <div className="space-for-header" />
 
-      {/* ===== Sticky page navbar ===== */}
-      {/* {createPortal(
-        <div
-          ref={navRef}
-          className={`course-nav${showNav ? " is-visible" : ""}`}
-          aria-hidden={!showNav}
-        >
-          <div className="container course-nav-row">
-            <div className="course-nav-title" title={c.title}>{c.title}</div>
-
-            <div className="course-nav-links-wrap">
-              <button
-                type="button"
-                className={`course-nav-arrow left${canLeft ? " show" : ""}`}
-                onClick={scrollTabs(-1)}
-                aria-label="Scroll tabs left"
-                tabIndex={canLeft && showNav ? 0 : -1}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-              </button>
-
-              <nav ref={linksRef} className="course-nav-links" aria-label="Course sections">
-                {TABS.map(([id, label]) => (
-                  <a
-                    key={id}
-                    href={`#${id}`}
-                    onClick={scrollTo(id)}
-                    tabIndex={showNav ? 0 : -1}
-                    className={`course-nav-link${active === id ? " active" : ""}`}
-                    aria-current={active === id ? "true" : undefined}
-                  >
-                    {label}
-                  </a>
-                ))}
-              </nav>
-
-              <button
-                type="button"
-                className={`course-nav-arrow right${canRight ? " show" : ""}`}
-                onClick={scrollTabs(1)}
-                aria-label="Scroll tabs right"
-                tabIndex={canRight && showNav ? 0 : -1}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </button>
-            </div>
-
-            <Link
-              className="tj-btn-primary style-2 style-2-sm flip-text-wrap"
-              to="/contact"
-              tabIndex={showNav ? 0 : -1}
-            >
-              <span className="btn-icon">
-                <i className="tji-arrow-right-2"></i>
-              </span>{" "}
-              <span className="btn-text">Enquire now</span>
-            </Link>
-          </div>
-        </div>,
-        document.body
-      )} */}
-
       {/* ===== SECTION 1: Landing / hero ===== */}
-      <section className="tj-page-header tj-page-header-2 offline-detail-sec course-tj-main"
-
-
-      >
+      <section className="tj-page-header tj-page-header-2 offline-detail-sec course-tj-main">
         <div className="container">
           <div className="row">
             <div className="col-lg-7">
@@ -260,25 +177,57 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
                 <div className="tj-categories"><span className="tj-cat">{c.category}</span></div>
                 <h1 className="tj-page-title">{heading}</h1>
                 <p className="tj-page-desc">{summary}</p>
+                <div>
+                  <div className="blog-category-two course-highlights-modern">
+                    {[
+                      {
+                        icon: <GraduationCap size={37} />,
+                        label: "Course Type",
+                        value: type,
+                        color: "purple",
+                      },
+                      {
+                        icon: <Laptop size={33} />,
+                        label: "Study Mode",
+                        value: studyMode,
+                        color: "blue",
+                      },
+                      {
+                        icon: <CalendarDays size={33} />,
+                        label: "Course Duration",
+                        value: c.duration,
+                        color: "cyan",
+                      },
+                    ].map((item) => (
+                      <div className="category-item" key={item.label}>
+                        <div className={`cate-icons ${item.color}`}>
+                          {item.icon}
+                        </div>
 
-                {/* Type / Study mode / Duration */}
-                {/* <div className="course-info-box">
-                  {[
-                    ["certified", "Type", type],
-                    ["calendar", "Study Mode", studyMode],
-                    ["clock", "Duration", c.duration],
-                  ].map(([icon, label, value]) => (
-                    <div className="course-info-item" key={label}>
-                      <div className="course-info-heading">
-                        <span className="course-info-icon">
-                          <i className={`tji-${icon}`} aria-hidden="true" />
-                        </span>
-                        <span className="course-info-label">{label}</span>
+                        <div className="cate-text">
+                          <span className="designation">{item.label}</span>
+                          <h6 className="text">{item.value}</h6>
+                        </div>
                       </div>
-                      <strong className="course-info-value">{value}</strong>
-                    </div>
+                    ))}
+                  </div>
+                </div>
+
+
+                {/* <div className="ct-skills-wrap">
+                  {(d.skills).slice(0, 5).map((item) => (
+                    <span className="ct-skill-chip" key={item}>
+                      {item}
+                    </span>
                   ))}
+
+                  {(d.skills).length > 5 && (
+                    <span className="ct-skill-chip ct-skill-more">
+                      +{(d.skills).length - 5} more skills
+                    </span>
+                  )}
                 </div> */}
+
 
                 <div className="about-3-btns tj-fade-anim" data-delay=".5">
                   <button
@@ -334,7 +283,7 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
                             />
                           </div>
 
-                          <div className="d-md-flex gap-3 lead-row">
+                          <div className="lead-row">
                             <div className="lead-field">
                               <label htmlFor="lead-phone">Phone Number</label>
                               <div className="lead-phone-input">
@@ -354,27 +303,6 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
                                   required
                                 />
                               </div>
-                            </div>
-
-                            <div className="lead-field">
-                              <label htmlFor="lead-location">Campus Location</label>
-                              <select
-                                id="lead-location"
-                                name="location"
-                                className="lead-select"
-                                value={lead.location}
-                                onChange={onLeadChange}
-                                required
-                              >
-                                <option value="" disabled>
-                                  Select campus
-                                </option>
-                                {DISTRICTS.map(([name, soon]) => (
-                                  <option key={name} value={name}>
-                                    {soon ? `${name} (Coming soon)` : name}
-                                  </option>
-                                ))}
-                              </select>
                             </div>
                           </div>
 
@@ -422,400 +350,119 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
       </section>
 
 
-      {/* ===== COURSE HIGHLIGHTS ===== */}
-      <div className="course-highlights-section">
+
+      {/* ===== COURSE TABS (Overview / Gain / Learn / Tools / Skills / Careers) ===== */}
+      <section id="overview" className="course-tabs-wrap">
         <div className="container">
-          <div className="course-highlights-grid">
-            {[
-              {
-                icon: <GraduationCap size={25} />,
-                label: "Course Type",
-                value: type,
-                description: "Industry-focused certification",
-                color: "purple",
-              },
-              {
-                icon: <Laptop size={25} />,
-                label: "Study Mode",
-                value: studyMode,
-                description: "Learn with expert guidance",
-                color: "blue",
-              },
-              {
-                icon: <Wrench size={25} />,
-                label: "Course Duration",
-                value: c.duration,
-                description: "Structured learning program",
-                color: "cyan",
-              },
-            ].map((item) => (
-              <div className="course-highlight-card" key={item.label}>
-                <div className={`course-highlight-icon ${item.color}`}>
-                  {item.icon}
-                </div>
-
-                <div className="course-highlight-content">
-                  <span className="course-highlight-label">
-                    {item.label}
-                  </span>
-
-                  <h3>{item.value}</h3>
-
-                  <p>{item.description}</p>
-                </div>
-
-              </div>
+          <div className="ct-bar" role="tablist" aria-label="Course details">
+            {COURSE_TABS.map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                aria-selected={activeTab === id}
+                className={`ct-tab${activeTab === id ? " active" : ""}`}
+                onClick={() => setActiveTab(id)}
+              >
+                {label}
+              </button>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* ===== Details (Sections 2, 3, 4) ===== */}
-      <section className="tj-course-details tj-sticky-container-2">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 mx-auto">
-              <div className="tj-course-details-wrapper">
-                <div className="tj-course-overview">
-                  <div className="tutor-course-details-content">
+          <div className="ct-panel" role="tabpanel">
+            {activeTab === "overview" && (
+              <>
+                <h3>{d?.overviewTitle ?? "About This Course"}</h3>
+                {d ? <p>{d.overview}</p> : c.description.map((p) => <p key={p}>{p}</p>)}
+              </>
+            )}
 
-
-                    {/* COURSE OVERVIEW + WHAT YOU'LL GAIN TABS */}
-                    <div id="overview" className="tj-course-details-box course-tabs-section">
-
-                      {/* Tab Navigation */}
-                      <div className="course-overview-tabs">
-
-                        <button
-                          type="button"
-                          className={`course-overview-tab ${activeOverviewTab === "overview" ? "active" : ""
-                            }`}
-                          onClick={() => setActiveOverviewTab("overview")}
-                        >
-                          <span className="tab-number">1</span>
-                          <span>Course Overview</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          className={`course-overview-tab ${activeOverviewTab === "gain" ? "active" : ""
-                            }`}
-                          onClick={() => setActiveOverviewTab("gain")}
-                        >
-                          <span className="tab-number">2</span>
-                          <span>What You’ll Gain</span>
-                        </button>
-
-                      </div>
-
-                      {/* Tab Content */}
-                      <div className="course-overview-tab-content offline-course-tab">
-
-                        {activeOverviewTab === "overview" && (
-                          <div className="course-tab-panel overview-panel">
-
-                            <div className="course-tab-panel-inner">
-
-                              <span className="course-tab-eyebrow">
-                                <i className="tji-subtitle-2"></i>
-                                OVERVIEW
-                              </span>
-
-                              <h3>
-                                {d?.overviewTitle ?? "About This Course"}
-                              </h3>
-
-                              <div className="course-tab-description">
-                                {d ? (
-                                  <p>{d.overview}</p>
-                                ) : (
-                                  c.description.map((p) => <p key={p}>{p}</p>)
-                                )}
-                              </div>
-
-                            </div>
-
-                          </div>
-                        )}
-
-                        {activeOverviewTab === "gain" && (
-                          <div className="course-tab-panel gain-panel">
-
-                            <div className="course-tab-panel-inner">
-
-                              <span className="course-tab-eyebrow">
-                                <i className="tji-subtitle-2"></i>
-                                BENEFITS
-                              </span>
-
-                              <h3>What You’ll Gain</h3>
-
-                              <p className="course-gain-intro">
-                                Explore the knowledge, skills and opportunities
-                                you can gain through this course.
-                              </p>
-
-                              <div className="course-gain-grid">
-                                {(d?.gain ?? c.audience).map((item, index) => (
-                                  <div className="course-gain-card" key={item}>
-
-
-
-                                    <div className="course-gain-card-content">
-                                      <span className="course-gain-check">
-                                        <i className="tji-check"></i>
-                                      </span>
-
-                                      <h4>{item}</h4>
-                                    </div>
-
-                                  </div>
-                                ))}
-                              </div>
-
-                            </div>
-
-                          </div>
-                        )}
-
-                      </div>
+            {activeTab === "gain" && (
+              <>
+                <h3>What You’ll Gain</h3>
+                <p>Explore the knowledge, skills and opportunities you can gain through this course.</p>
+                <div className="ct-grid">
+                  {(d.gain).map((item) => (
+                    <div className="ct-item" key={item}>
+                      <span className="ct-check"><i className="tji-check" /></span>
+                      <span>{item}</span>
                     </div>
-
-
-
-
-                    {/* <div id="eligibility" className="tj-course-details-box">
-                      <h3 className="title">{d?.eligibilityTitle ?? "Eligibility - Who can learn"}</h3>
-                      <ul className="course-details-list">
-                        {d
-                          ? d.eligibility.map((e) => (
-                            <li key={e.label}>
-                              <strong>{e.label}:</strong> {e.text}
-                            </li>
-                          ))
-                          : c.requirements.map((r) => <li key={r}>{r}</li>)}
-                      </ul>
-                    </div> */}
-
-                    {/* SECTION 4: Certification */}
-                    {/* <div id="certificate" className="tj-course-details-box">
-                      <h3 className="title">{d?.certificateTitle ?? "Course Certification"}</h3>
-
-                      <p>
-                        {d?.certificateText ??
-                          "Earn a certificate from Catalyst SkillHub upon successful completion of the course."}
-                      </p>
-
-                      {d?.certificate && (
-                        <div className="course-certificate-image">
-                          <img
-                            src={d.certificate}
-                            alt={`${d.heading} course certificate`}
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
-                    </div> */}
-
-                  </div>
+                  ))}
                 </div>
-              </div>
-            </div>
+              </>
+            )}
+
+            {activeTab === "learn" && (
+              <>
+                <h3>What You’ll Learn</h3>
+                <p>Explore the knowledge and practical skills you'll develop throughout this course.</p>
+                <div className="ct-grid ct-grid-1">
+                  {d?.learn
+                    ? d.learn.map((item) => (
+                      <div className="ct-card" key={item.title}>
+                        <h4>  <Play size={18} fill="#180761" strokeWidth={0} style={{ marginRight: "7px" }} />{item.title}</h4>
+
+
+
+                        <p>{item.text}</p>
+                      </div>
+                    ))
+                    : c.goals.map((item) => (
+                      <div className="ct-card" key={item}>
+                        <h4>{item}</h4>
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
+
+            {activeTab === "tools" && (
+              <>
+                <h3>Tools You’ll Learn</h3>
+                <p>Get familiar with the essential tools and technologies used in your chosen field.</p>
+                <div className="ct-grid">
+                  {(d.tools).map((item) => (
+                    <div className="ct-item" key={item}>
+                      <span className="ct-check"><i className="tji-check" /></span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {activeTab === "skills" && (
+              <>
+                <h3>Skills You’ll Learn</h3>
+                <p>Develop practical abilities and professional skills to prepare for real-world opportunities.</p>
+                <div className="ct-grid">
+                  {(d.skills).map((item) => (
+                    <div className="ct-item" key={item}>
+                      <span className="ct-check"><i className="tji-check" /></span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {activeTab === "careers" && (
+              <>
+                <h3>Career Opportunities</h3>
+                <p>Explore career paths you can pursue after completing this course.</p>
+                <div className="ct-grid">
+                  {(d.careers).map((role) => (
+                    <div className="ct-item" key={role}>
+                      <span className="ct-check"><i className="tji-check" /></span>
+                      <span>{role}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
-
-
-      {/* SECTION 3: WHAT YOU'LL LEARN */}
-
-      <div
-        id="what-youll-learn"
-        className="tj-course-details-box course-learn-dark"
-      >
-
-        <div className="course-learn-dark-inner">
-
-          {/* Heading */}
-          <div className="course-learn-dark-header">
-            <div>
-
-
-              <h3>
-                What You’ll <span>Learn</span>
-              </h3>
-
-              <p>
-                Explore the knowledge and practical skills you'll develop
-                throughout this course.
-              </p>
-            </div>
-
-
-          </div>
-
-
-
-          {/* Learning Cards */}
-          <div className="course-learn-dark-grid">
-
-            {d?.learn ? (
-              d.learn.map((item, index) => (
-                <article className="course-learn-dark-card" key={item.title}>
-
-
-
-                  <h4>{item.title}</h4>
-
-                  <p>{item.text}</p>
-
-                </article>
-              ))
-            ) : (
-              c.goals.map((item, index) => (
-                <article className="course-learn-dark-card" key={item}>
-
-                  <div className="course-learn-dark-card-top">
-                    <span className="course-learn-dark-number">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <span className="course-learn-dark-arrow">
-                      <i className="tji-arrow-right-2"></i>
-                    </span>
-                  </div>
-
-                  <h4>{item}</h4>
-
-                </article>
-              ))
-            )}
-
-          </div>
-
-
-        </div>
-      </div>
-
-      <div>
-        <div className="container">
-
-          {/* COURSE LEARNING, TOOLS & SKILLS */}
-
-          <div className="course-feature-cards">
-
-
-
-            {/* TOOLS YOU'LL LEARN */}
-            <article
-              id="tools-youll-learn"
-              className="course-feature-card"
-            >
-
-
-              <div className="course-feature-content">
-
-                <h3>Tools You’ll Learn</h3>
-
-                <p className="course-feature-description">
-                  Get familiar with the essential tools and technologies
-                  used in your chosen field.
-                </p>
-
-                <h5>Tools & Technologies</h5>
-
-                <div className="course-feature-list">
-                  {(d?.tools ?? c.tools ?? c.skills).map((item) => (
-                    <div className="course-feature-item" key={item}>
-                      <span>{item}</span>
-                      <i className="tji-arrow-right-2"></i>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-            </article>
-
-
-            {/* SKILLS YOU'LL LEARN */}
-            <article
-              id="skills-youll-learn"
-              className="course-feature-card"
-            >
-
-
-              <div className="course-feature-content">
-
-                <h3>Skills You’ll Learn</h3>
-
-                <p className="course-feature-description">
-                  Develop practical abilities and professional skills
-                  to prepare yourself for real-world opportunities.
-                </p>
-
-                <h5>Skills Development</h5>
-
-                <div className="course-feature-list">
-                  {(d?.skills ?? c.skills).map((item) => (
-                    <div className="course-feature-item" key={item}>
-                      <span>{item}</span>
-                      <i className="tji-arrow-right-2"></i>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-            </article>
-
-
-            {/* CAREER OPPORTUNITIES */}
-            <article
-              id="career-pathways"
-              className="course-feature-card"
-            >
-
-
-              <div className="course-feature-content">
-
-                <h3>Career Opportunities</h3>
-
-                <p className="course-feature-description">
-                  Explore exciting career paths and professional opportunities
-                  you can pursue after completing this course.
-                </p>
-
-                <h5>Potential Career Paths</h5>
-
-                <div className="course-feature-list">
-                  {(d?.careers ?? c.jobRoles ?? []).map((role) => (
-                    <div className="course-feature-item" key={role}>
-                      <span>{role}</span>
-                      <i className="tji-arrow-right-2"></i>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-            </article>
-
-
-          </div>
-
-        </div>
-      </div>
-
-
-      {/* <div className="sec-heading sec-heading-center pt-5">
-        <span className="sec-subtitle sec-subtitle-3 tj-fade-anim" data-direction="top">
-          <i className="tji-subtitle-2"></i>
-          Learning Path
-        </span>{" "}
-        <h2 className="sec-title tj-fade-anim" data-delay=".3">
-          Learn Your Way.
-          Build Your Future.
-        </h2>
-      </div> */}
-
-
 
       {/* ===== Other (shared) sections — unchanged ===== */}
       <div>
@@ -878,8 +525,6 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
           </div>
         </section>
 
-
-
         <div id="blog"><Blog /></div>
         <div id="more-courses"><MoreCourses mode={mode} /></div>
         <div id="faq"><CourseFaq slug={slug} title={c.title} mode={mode} /></div>
@@ -893,11 +538,11 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
         description="Share your details and our admissions team will call you with batch dates, fees and the next steps to join."
         submitLabel="Enroll Now"
         meta={{
-          source: isOffline ? "offline-course-details-enroll" : "course-details-enroll",
-          course: c.slug,
-          courseTitle: c.title,
-          category: c.category,
-          studyMode: "offline",
+          source: "online-course-details-enroll",
+          course: d.slug,
+          courseTitle: d.title,
+          category: d.category,
+          studyMode: "online",
         }}
       />
       <LeadPopup
@@ -908,11 +553,11 @@ const [isBrochureOpen, setIsBrochureOpen] = useState(false);
         submitLabel="Submit & Download"
         downloadUrl={brochure || c.brochure}
         meta={{
-          source: "offline-course-brochure",
+          source: "online-course-brochure",
           course: c.slug,
           courseTitle: c.title,
           category: c.category,
-          studyMode: "offline",
+          studyMode: "online",
         }}
       />
     </>

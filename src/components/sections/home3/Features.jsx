@@ -85,7 +85,7 @@ const Features = () => (
                 <img src="/assets/images/icons/fire.svg" alt="" />
                 {" Popular"}
               </span>{" "}
-              <p>Learn with 200+ world-class courses.</p>
+              <p>Learn with 100+ world-class courses.</p>
               <div>
                <Link className="tj-text-btn-2" to="/courses">
   <span className="btn-text">

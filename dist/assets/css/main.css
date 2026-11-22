@@ -1279,7 +1279,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .space-for-header {
-    padding-top: 77px;
+    padding-top: 69px;
   }
 }
 
@@ -3436,6 +3436,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
   .tj-btn-primary.style-2 {
     padding: 12px 19px 5px;
     font-size: 14px;
+    height: 45px;
   }
 
   .tj-btn-primary.style-2 .btn-icon::before {
@@ -3443,6 +3444,9 @@ only screen and (min-width: 576px) and (max-width: 767px),
     width: 9px;
     height: 9px;
     inset-inline-start: 22px;
+  }
+  .tj__slider-wrapper{
+    padding: 15px;
   }
 
   .tj-btn-primary.style-2-full .btn-icon::before {
@@ -6444,6 +6448,9 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .hamburger_menu .mean-container .mean-nav ul li {
   position: relative;
 }
+.hamburger_menu .mean-container .mean-nav ul li ul {
+  padding-left: 15px;
+}
 
 .hamburger_menu .mean-container .mean-nav ul li a {
   color: var(--tj-color-heading-primary);
@@ -8649,7 +8656,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .tj-banner-section {
     padding-top: 50px;
-    padding-bottom: 0;
+    padding-bottom: 50px;
   }
 }
 
@@ -17210,7 +17217,10 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .tj_filter_item .blog-item {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
+}
+.tj_filter_item{
+  margin-bottom: 25px;
 }
 
 /* Blog (Home 3) */
@@ -19302,8 +19312,11 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 @media only screen and (min-width: 576px) and (max-width: 767px),
 (max-width: 575px) {
   .contact-form {
-    padding: 30px 15px;
-    margin: 15px;
+    padding: 20px 20px !important;
+    margin: 0px;
+  }
+  .form-submit{
+    margin-bottom: 25px;
   }
   .contact-form .form-title {
     font-size: 30px !important;
@@ -23882,7 +23895,7 @@ START: Course Details CSS
 
 @media (max-width: 575px) {
   .tj-course-details-box {
-    padding: 30px 20px;
+    padding: 15px 0px;
   }
 }
 
@@ -24617,6 +24630,18 @@ only screen and (min-width: 576px) and (max-width: 767px),
   .tj-course-sidebar {
     -webkit-margin-start: 0;
     margin-inline-start: 0;
+  }
+}
+@media(max-width: 575px) {
+   .tj-course-sidebar {
+    margin-top: 50px !important;
+    padding: 0;
+  }
+  .lead-form-content .lead-field input{
+    height: 50px;
+  }
+  .lead-phone-input {
+  height: 50px;
   }
 }
 
@@ -25945,6 +25970,16 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 @media (max-width: 575px) {
+
+  .floating-call {
+  position: fixed;
+  right: 13px;
+  bottom: 17px;
+  width: 54px;
+  height: 54px;
+  font-size: 27px;
+
+}
         .course-info-icon {
         width: 14px;
         height: 14px;
@@ -26298,4 +26333,199 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
 #testimonials{
   background: #f1fdff;
+}
+
+
+
+
+/* Life at CatalystSkillHub */
+
+.life-catalyst-section {
+  background: #f8f9fc;
+  overflow: hidden;
+}
+
+.life-gallery-desc {
+  max-width: 650px;
+  margin: 18px auto 0;
+  color: #777b89;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.life-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 280px 280px;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.life-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  cursor: pointer;
+  background: #e9eaf0;
+}
+
+.life-gallery-tall {
+  grid-row: span 2;
+}
+
+.life-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.life-gallery-item:hover img {
+  transform: scale(1.07);
+}
+
+.life-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 25px;
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    rgba(12, 17, 39, 0.78) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.life-gallery-item:hover .life-gallery-overlay {
+  opacity: 1;
+}
+
+.life-gallery-overlay h3 {
+  color: #fff;
+  font-size: 21px;
+  font-weight: 600;
+  margin: 7px 0 0;
+}
+
+.life-gallery-label {
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.life-gallery-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #6539b7;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+/* Lightbox */
+
+.life-gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(8, 10, 25, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.life-gallery-lightbox img {
+  max-width: 90%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.life-gallery-close {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* Tablet */
+
+@media (max-width: 991px) {
+  .life-gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 260px 220px 220px;
+    gap: 15px;
+  }
+
+  .life-gallery-tall {
+    grid-row: span 2;
+  }
+
+  .life-gallery-item:nth-child(5) {
+    grid-column: span 2;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 575px) {
+  .life-gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 240px 170px 170px;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .life-gallery-tall {
+    grid-row: span 2;
+  }
+
+  .life-gallery-item:nth-child(5) {
+    grid-column: span 2;
+  }
+
+  .life-gallery-item {
+    border-radius: 12px;
+  }
+
+  .life-gallery-overlay {
+    opacity: 1;
+    padding: 12px;
+  }
+
+  .life-gallery-overlay h3 {
+    font-size: 14px;
+  }
+
+  .life-gallery-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .life-gallery-lightbox {
+    padding: 15px;
+  }
+
+  .life-gallery-lightbox img {
+    max-width: 100%;
+  }
 }

@@ -238,7 +238,7 @@ const StudentJourney = () => {
             gap: 32px;
             overflow: hidden;
             padding: 40px 0;
-            background:#f3f3f3;
+            background:#eef2fa;
           }
 
           /* Beat the global section-spacing.css rule

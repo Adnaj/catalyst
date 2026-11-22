@@ -1,0 +1,15 @@
+.guard {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--muted);
+}
+.guard__box { max-width: 420px; }
+.guard__title { font-family: var(--font-display); font-size: 26px; letter-spacing: -0.02em; color: var(--text); margin-bottom: 10px; }
+.guard__text { margin-bottom: 20px; }
+.guard__btn {
+  height: 42px; padding: 0 18px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+}
+.guard__btn:hover { border-color: var(--ink); }

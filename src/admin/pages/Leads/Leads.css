@@ -1,0 +1,6 @@
+/* Lead forms page styles (shared page header styles live in styles/admin-base.css) */
+.leads-page__empty {
+  border: 1px dashed #b9c7ce; border-radius: 12px; padding: 40px 28px; background: var(--surface);
+}
+.leads-page__empty-title { font-weight: 600; margin-bottom: 4px; }
+.leads-page__empty-text { color: var(--muted); }

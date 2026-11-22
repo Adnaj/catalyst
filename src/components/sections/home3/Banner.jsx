@@ -74,10 +74,14 @@ const Banner = () => (
                     alt="Student"
                   />{" "}
                   <img
+                    src="/assets/images/users/Siyas.webp"
+                    alt="Student"
+                  />{" "}
+                  <img
                     src="/assets/images/users/Sabith.webp"
                     alt="Student"
                   />{" "}
-                  <span className="more">8K+</span>
+                 
                 </div>
                 <div className="banner-3-students-text">
                   <strong>35000+</strong> <span> Students Join Us.</span>
@@ -147,10 +151,11 @@ const Banner = () => (
                   alt="Hero image"
                 />
               </div>
+
               <div className="banner-3-badge">
                 <div className="tj-badge-rounded">
                   <div className="badge-text">
-                    <img src="/assets/images/shapes/badge-text.svg" alt="" />
+                    <img src="/assets/images/shapes/badge-text-1.svg" alt="" />
                   </div>{" "}
                   <span className="badge-icon">
                     <img src="/assets/images/icons/graduation-cap.svg" alt="" />

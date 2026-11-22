@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
 
 const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
@@ -91,6 +92,7 @@ const ContactSection = () => {
       setStatus("sent");
       setForm({ ...initial });
       setLocationError(false);
+      navigate("/thank-you");
     } catch (error) {
       console.error("Contact form submission error:", error);
       setStatus("error");

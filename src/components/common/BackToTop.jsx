@@ -5,8 +5,8 @@ import { FaWhatsapp } from "react-icons/fa";
 const BackToTop = () => {
   const [show, setShow] = useState(false);
 
-  const whatsappNumber = "974XXXXXXXX";
-  const phoneNumber = "+974XXXXXXXX";
+  const whatsappNumber = "+919207300700";
+  const phoneNumber = "+919207300700";
 
   const message = encodeURIComponent(
     "Hello! I would like to know more about your courses."

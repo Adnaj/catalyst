@@ -48,7 +48,7 @@ const SuccessStoriesBanner = () => {
 
             <div className="col-lg-6">
               <div className="banner-img campus-img-banner d-flex justify-content-center">
-                <img src="/assets/images/hero/success-stories.png" alt="Catalyst Skillhub Success Stories" />
+                <img src="/assets/images/gallery/gallery10.webp" alt="Catalyst Skillhub Success Stories" />
               </div>
             </div>
           </div>

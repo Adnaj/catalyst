@@ -42,15 +42,15 @@ const tech = [
 
 const catalystLinks = [
   L("Success stories", "/success-stories"),
-  L("Blogs & Insights"), // no page yet
+  L("Blogs & Insights", "/blog"),
   L("Contact", "/contact"),
   L("Careers"), // no page yet
-  L("Apply as mentor"), // no page yet
+  L("Apply as mentor", "/contact"), // no page yet
 ];
 const moreLinks = [
   L("About", "/about"),
   L("Terms & Conditions"), // no page yet
-  L("Privacy policy"), // no page yet
+  L("Privacy policy", "/privacy-policy"),
 ];
 
 const learnOnline = [...marketing, ...accounting, ...tech];

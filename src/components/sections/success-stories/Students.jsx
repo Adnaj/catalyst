@@ -5,13 +5,13 @@ const Students = () => {
   const stories = [
     { type: "image", src: "/assets/images/placements/Agna-P-P.webp" },
     { type: "image", src: "/assets/images/placements/Anjana-Krishna.webp" },
-    { type: "instagram", src: "DaNKUk5gM_g" },
+
     { type: "image", src: "/assets/images/placements/Fadiya.webp" },
     { type: "image", src: "/assets/images/placements/Fathima-Fidha.webp" },
-    { type: "instagram", src: "DaS4lWKDLJZ" },
+
     { type: "image", src: "/assets/images/placements/Hamna-Abdul-Kamal.webp" },
     { type: "image", src: "/assets/images/placements/MUHAMMED-SHAMIL.webp" },
-    { type: "instagram", src: "DavJ0EtkwP6" },
+
     { type: "image", src: "/assets/images/placements/Muhammed-Unais.webp" },
     { type: "image", src: "/assets/images/placements/Thahira.webp" },
     { type: "image", src: "/assets/images/placements/Vismaya.webp" },
@@ -22,8 +22,7 @@ const Students = () => {
       <style>{`
       
         .tj-features-section .students-category-row {
-          margin-top: 35px;
-          padding: 0 30px;
+          margin-top: 0px;
         }
 
         .tj-features-section .students-category-title {
@@ -62,6 +61,11 @@ const Students = () => {
           gap: 18px;
           align-items: start;
         }
+          .tj-features-section .students-category-videos {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            max-width: 1100px;
+            margin: 0 auto;
+          }
 
         .tj-features-section .students-category-images .student-image {
           position: relative;
@@ -71,6 +75,7 @@ const Students = () => {
           border-radius: 14px;
           
         }
+       
           .tj-features-section iframe{
           width:100%;
           height:100%;
@@ -91,6 +96,9 @@ const Students = () => {
         @media (min-width: 1400px) {
           .tj-features-section .students-category-images .student-image {
             height: 100%;
+          }
+          .tj-features-section .students-category-images .student-videos {
+            height: 460px;
           }
         }
 
@@ -134,7 +142,7 @@ const Students = () => {
       `}</style>
 
       <section className="tj-features-section section-gap fix">
-        <div className="container-fluid p-0">
+        <div className="container">
 
           {/* Heading - unchanged */}
           <div className="row">

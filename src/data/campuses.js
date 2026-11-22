@@ -17,7 +17,7 @@ export const DEFAULT_PHONE = "9207300700";
 
 // Dummy map link until the real Google Business Profile link is added (page shows "Map link coming soon").
 const MAP_TODO = "https://share.google/NvJZOTXOd03VB9K6K";
-const DEFAULT_IMAGE = "/assets/images/event/event-img-1.webp";
+const DEFAULT_IMAGE = "/assets/images/cities/placeholder.png";
 
 const loc = (name, area, mapUrl, image) => ({
   name,                 // shown in "Upskilling Platform in <name>"

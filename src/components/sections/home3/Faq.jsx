@@ -69,8 +69,11 @@ const Faq = ({
                     <img src="/assets/images/users/Siyas.webp" alt="USER" />
                   </li>
                   <li>
-                    <span>35K+</span>
+                    <img src="/assets/images/users/Sabith.webp" alt="USER" />
                   </li>
+                  {/* <li>
+                    <span>35K+</span>
+                  </li> */}
                 </ul>
 
                 <h3 className="support-title tj-fs-h4">Still have questions?</h3>

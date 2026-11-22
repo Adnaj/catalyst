@@ -18,6 +18,13 @@ import CourseCategory from "./pages/CourseCategory";
 import Campus from "./pages/Campus";
 import Campuses from "./pages/Campuses";
 import SuccessStories from "./pages/SuccessStories";
+import Blog from "./pages/Blog";
+import BlogDetails from "./pages/BlogDetails";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import NotFound from "./pages/NotFound";
+import ThankYou from "./pages/ThankYou";
+import AdminApp from "./admin/AdminApp";
+
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -53,6 +60,12 @@ const App = () => (
       <Route path="/campus/:campusSlug" element={<Campus />} />
       <Route path="/campus" element={<Campuses />} />
       <Route path="/success-stories" element={<SuccessStories />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogDetails />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+       <Route path="/thank-you" element={<ThankYou />} />
+      <Route path="*" element={<NotFound />} />
+      <Route path="/admin/*" element={<AdminApp />} />
     </Routes>
   </BrowserRouter>
 );

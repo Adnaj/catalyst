@@ -45,6 +45,10 @@ export const courseDetailContent = {
     // ---------------- Accounting (online) ----------------
     accounting: {
       "gcc-accounting": {
+        slug: "gcc-accounting-online",
+        label: "GCC Accounting + AI",
+        category: "Accounting",
+        duration: "3 Months",
         heading: "GCC Accounting Course | Gulf Accounting Course in Kerala",
         summary:
           "Learn GCC Accounting Course with practical training in IFRS, GCC VAT, Corporate tax, audit, and compliance. Gain the knowledge and practical skills needed to pursue accounting and finance career opportunities in GCC Countries.",
@@ -124,7 +128,7 @@ export const courseDetailContent = {
 
         certificateTitle: "GCC Accounting Course Certification",
         certificateText: "Earn a certificate that recognises your skills",
-        certificate:'/assets/images/certificate/GCC-Accounting.webp',
+        certificate: '/assets/images/certificate/GCC-Accounting.webp',
 
         learningOptions: learningOptions("GCC Accounting"),
 
@@ -143,6 +147,10 @@ export const courseDetailContent = {
       },
 
       "business-accounting": {
+        slug: "business-accounting-online",
+        label: "Business Accounting + AI",
+        category: "Accounting",
+    duration: "3 Months",
         heading: "Business Accounting Course in Kerala",
         summary:
           "Master Accounting, GST and Taxation, Payroll, reconciliation, financial reporting, audit, advanced Excel, ERP, and modern accounting software through a structured professional programme.",
@@ -223,6 +231,11 @@ export const courseDetailContent = {
       },
 
       "sap-accounting": {
+        slug: "sap-accounting-online",
+        label: "SAP Accounting + AI",
+        featured:true,
+        category: "Accounting",
+        duration: "2 Months",
         heading: "SAP Accounting Course in Kerala",
         summary:
           "Build Practical accounting and finance skills for today's evolving financial industry. Learn accounting fundamentals, taxation, financial reporting, compliance, analytics, ERP, and SAP FICO S/4HANA through a structured programme designed to connect accounting knowledge with modern financial technology.",
@@ -289,7 +302,7 @@ export const courseDetailContent = {
 
         certificateTitle: "SAP Accounting Course Certification",
         certificateText: "Earn a certificate that recognises your skills",
-        certificate:'/assets/images/certificate/SAP.webp',
+        certificate: '/assets/images/certificate/SAP.webp',
 
         learningOptions: learningOptions("SAP Accounting"),
 
@@ -309,6 +322,10 @@ export const courseDetailContent = {
       },
 
       "certified-indian-foreign-accounting": {
+        slug: "certified-indian-foreign-accounting-online",
+        label: "Certified Indian & Foreign Accounting + AI",
+        category: "Accounting",
+    duration: "4 Months",
         heading: "Certified Indian and Foreign Accounting Course",
         summary:
           "Build practical accounting skills for Indian and international business environments with the CIFA Course. Learn SAP FICO, Tally Prime, taxation, financial reporting, and industry-relevant accounting tools through flexible online and offline training.",
@@ -393,6 +410,10 @@ export const courseDetailContent = {
     // ---------------- Tech (online) ----------------
     tech: {
       "python-full-stack-devops": {
+        slug: "https://www.catalysttech.in/course/python-full-stack-development-with-devops",
+        label: "Python Full-Stack with DevOps + AI",
+        category: "Tech",
+    duration: "6 Months",
         heading: "Python Full-Stack with DevOps Course in Kerala",
         summary:
           "Learn to build complete web applications with Python, front-end technologies, databases and backend development, and gain practical experience in deployment, automation and DevOps workflows.",
@@ -470,6 +491,10 @@ export const courseDetailContent = {
       },
 
       "data-analytics-gen-ai": {
+        slug: "https://www.catalysttech.in/course/data-analytics-with-generative-ai",
+        label: "Data Analytics with Gen AI",
+        category: "Tech",
+    duration: "5 Months",
         heading: "Data Analytics with Gen AI Course in Kerala",
         summary:
           "Learn to analyse data, identify business trends and build meaningful reports using Excel, SQL, Python, Power BI and generative AI tools, with practical projects across the complete analytics workflow.",
@@ -546,6 +571,10 @@ export const courseDetailContent = {
       },
 
       "cyber-security": {
+        slug: "https://www.catalysttech.in/course/cyber-security",
+        label: "Cyber Security + AI",
+        category: "Tech",
+    duration: "5 Months",
         heading: "Cyber Security Course in Kerala",
         summary:
           "Learn the fundamentals of cyber security, network security, threat detection and vulnerability assessment through lab-driven training that builds practical skills to identify risks and respond to security incidents.",
@@ -625,6 +654,11 @@ export const courseDetailContent = {
     // ---------------- Marketing & Management (online) ----------------
     "marketing-management": {
       "digital-marketing": {
+        slug: "digital-marketing-online",
+        label: "Digital Marketing + AI",
+        category: "Marketing & Management",
+    duration: "3 Months",
+    featured:true,
         heading: "Digital Marketing Course in Kerala",
         summary:
           "Learn digital marketing through practical training in SEO, Social media marketing, Google Ads, Content marketing, Email marketing, and analytics. Develop practical skills in digital marketing tools and AI-assisted workflows to understand how campaigns are planned, managed, and improved.",
@@ -682,7 +716,7 @@ export const courseDetailContent = {
 
         certificateTitle: "Digital Marketing Course Certification",
         certificateText: "Earn a certificate that recognises your skills",
-        certificate:'/assets/images/certificate/digital-marketing.webp',
+        certificate: '/assets/images/certificate/digital-marketing.webp',
 
         learningOptions: learningOptions("Digital Marketing", {
           online: {
@@ -709,6 +743,10 @@ export const courseDetailContent = {
       },
 
       "human-resource-management": {
+        slug: "human-resource-management-online",
+        label: "Human Resource Management + AI",
+        category: "Marketing & Management",
+    duration: "3 Months",
         heading: "HR Management Course in Kerala",
         summary:
           "Master Human Resource Management skills through industry-focused training, real-world projects, and expert guidance.",
@@ -795,6 +833,11 @@ export const courseDetailContent = {
       },
 
       "office-administration": {
+        slug: "office-administration-online",
+        label: "Office Administration + AI",
+        category: "Marketing & Management",
+    image: '/assets/images/course/allcourses/OFFICE-ADMINISTRATION.webp',
+    duration: "2 Months",
         heading: "Best Office Administration Course in Kerala with Certification",
         summary:
           "Master office administration skills, Microsoft Office Excel, documentation, communication, business support, and AI-powered productivity tools through practical, career-focused training.",
@@ -899,6 +942,10 @@ export const courseDetailContent = {
     // ---------------- Accounting (offline) ----------------
     accounting: {
       "gcc-accounting": {
+        slug: "gcc-accounting",
+        label: "GCC Accounting + AI",
+        category: "Accounting",
+    duration: "3 Months",
         heading: "GCC Accounting Course | Gulf Accounting Course in Kerala",
         summary:
           "Learn GCC Accounting Course with practical training in IFRS, GCC VAT, Corporate tax, audit, and compliance. Gain the knowledge and practical skills needed to pursue accounting and finance career opportunities in GCC Countries.",
@@ -978,7 +1025,7 @@ export const courseDetailContent = {
 
         certificateTitle: "GCC Accounting Course Certification",
         certificateText: "Earn a certificate that recognises your skills",
-        certificate:'/assets/images/certificate/GCC-Accounting.webp',
+        certificate: '/assets/images/certificate/GCC-Accounting.webp',
 
         learningOptions: learningOptions("GCC Accounting"),
 
@@ -997,6 +1044,10 @@ export const courseDetailContent = {
       },
 
       "business-accounting": {
+        slug: "business-accounting",
+  label: "Business Accounting + AI",
+  category: "Accounting",
+    duration: "3 Months",
         heading: "Business Accounting Course in Kerala",
         summary:
           "Master Accounting, GST and Taxation, Payroll, reconciliation, financial reporting, audit, advanced Excel, ERP, and modern accounting software through a structured professional programme.",
@@ -1077,6 +1128,10 @@ export const courseDetailContent = {
       },
 
       "sap-accounting": {
+        slug: "sap-accounting",
+  label: "SAP Accounting + AI",
+  category: "Accounting",
+    duration: "2 Months",
         heading: "SAP Accounting Course in Kerala",
         summary:
           "Build Practical accounting and finance skills for today's evolving financial industry. Learn accounting fundamentals, taxation, financial reporting, compliance, analytics, ERP, and SAP FICO S/4HANA through a structured programme designed to connect accounting knowledge with modern financial technology.",
@@ -1143,7 +1198,7 @@ export const courseDetailContent = {
 
         certificateTitle: "SAP Accounting Course Certification",
         certificateText: "Earn a certificate that recognises your skills",
-        certificate:'/assets/images/certificate/SAP.webp',
+        certificate: '/assets/images/certificate/SAP.webp',
 
         learningOptions: learningOptions("SAP Accounting"),
 
@@ -1163,6 +1218,10 @@ export const courseDetailContent = {
       },
 
       "certified-indian-foreign-accounting": {
+        slug: "certified-indian-foreign-accounting",
+  label: "Certified Indian & Foreign Accounting + AI",
+  category: "Accounting",
+    duration: "4 Months",
         heading: "Certified Indian and Foreign Accounting Course",
         summary:
           "Build practical accounting skills for Indian and international business environments with the CIFA Course. Learn SAP FICO, Tally Prime, taxation, financial reporting, and industry-relevant accounting tools through flexible online and offline training.",
@@ -1247,6 +1306,10 @@ export const courseDetailContent = {
     // ---------------- Tech (offline) ----------------
     tech: {
       "python-full-stack-devops": {
+        slug: "https://www.catalysttech.in/course/python-full-stack-development-with-devops",
+  label: "Python Full-Stack with DevOps + AI",
+  category: "Tech",
+    duration: "6 Months",
         heading: "Python Full-Stack with DevOps Course in Kerala",
         summary:
           "Learn to build complete web applications with Python, front-end technologies, databases and backend development, and gain practical experience in deployment, automation and DevOps workflows.",
@@ -1324,6 +1387,10 @@ export const courseDetailContent = {
       },
 
       "data-analytics-gen-ai": {
+        slug: "https://www.catalysttech.in/course/data-analytics-with-generative-ai",
+  label: "Data Analytics with Gen AI",
+  category: "Tech",
+    duration: "5 Months",
         heading: "Data Analytics with Gen AI Course in Kerala",
         summary:
           "Learn to analyse data, identify business trends and build meaningful reports using Excel, SQL, Python, Power BI and generative AI tools, with practical projects across the complete analytics workflow.",
@@ -1400,6 +1467,10 @@ export const courseDetailContent = {
       },
 
       "cyber-security": {
+        slug: "https://www.catalysttech.in/course/cyber-security",
+  label: "Cyber Security + AI",
+  category: "Tech",
+    duration: "5 Months",
         heading: "Cyber Security Course in Kerala",
         summary:
           "Learn the fundamentals of cyber security, network security, threat detection and vulnerability assessment through lab-driven training that builds practical skills to identify risks and respond to security incidents.",
@@ -1479,6 +1550,10 @@ export const courseDetailContent = {
     // ---------------- Marketing & Management (offline) ----------------
     "marketing-management": {
       "digital-marketing": {
+        slug: "digital-marketing",
+  label: "Digital Marketing + AI",
+  category: "Marketing & Management",
+    duration: "3 Months",
         heading: "Digital Marketing Course in Kerala",
         summary:
           "Learn digital marketing through practical training in SEO, Social media marketing, Google Ads, Content marketing, Email marketing, and analytics. Develop practical skills in digital marketing tools and AI-assisted workflows to understand how campaigns are planned, managed, and improved.",
@@ -1536,7 +1611,7 @@ export const courseDetailContent = {
 
         certificateTitle: "Digital Marketing Course Certification",
         certificateText: "Earn a certificate that recognises your skills",
-        certificate:'/assets/images/certificate/digital-marketing.webp',
+        certificate: '/assets/images/certificate/digital-marketing.webp',
 
         learningOptions: learningOptions("Digital Marketing", {
           online: {
@@ -1563,6 +1638,10 @@ export const courseDetailContent = {
       },
 
       "human-resource-management": {
+        slug: "human-resource-management",
+  label: "Human Resource Management + AI",
+  category: "Marketing & Management",
+    duration: "3 Months",
         heading: "HR Management Course in Kerala",
         summary:
           "Master Human Resource Management skills through industry-focused training, real-world projects, and expert guidance.",
@@ -1649,6 +1728,10 @@ export const courseDetailContent = {
       },
 
       "office-administration": {
+        slug: "office-administration",
+  label: "Office Administration + AI",
+  category: "Marketing & Management",
+    duration: "2 Months",
         heading: "Best Office Administration Course in Kerala with Certification",
         summary:
           "Master office administration skills, Microsoft Office Excel, documentation, communication, business support, and AI-powered productivity tools through practical, career-focused training.",
@@ -1753,13 +1836,19 @@ export const courseDetailContent = {
 // ---------------------------------------------------------------------
 // Lookups used by the pages (mode = "online" | "offline")
 // ---------------------------------------------------------------------
+
 export const getCourseDetail = (slug, mode = "online") => {
   const categories = courseDetailContent[mode] || {};
   for (const courses of Object.values(categories)) {
-    if (courses[slug]) return courses[slug];
+    for (const course of Object.values(courses)) {
+      if (course.slug === slug) return course;
+    }
   }
   return undefined;
 };
+
+export const courseListPath = (mode = "online") =>
+  mode === "offline" ? "/courses" : "/courses-online";
 
 // Learning Path content for a slug; courses without their own entry get the generic text.
 export const getLearningOptions = (slug, courseTitle = "", mode = "online") =>

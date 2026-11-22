@@ -1,5 +1,5 @@
-// ONLINE course detail page  (route: /courses/:slug)
-// Content comes from data/courseDetailContent.js  ->  courseDetailContent.online
+// OFFLINE course detail page  (route: /courses/:slug)
+// Content comes from data/courseDetailContent.js  ->  courseDetailContent.offline
 // The online page has its own copy: Onlinecoursedetailscontent.jsx
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -20,8 +20,12 @@ import {
   Layers,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { getCourse, courseListPath } from "../../../data/courses";
-import { getCourseDetail, getLearningOptions, getWhyChoose } from "../../../data/courseDetailContent";
+import {
+  getCourseDetail,
+  getLearningOptions,
+  getWhyChoose,
+  courseListPath,
+} from "../../../data/courseDetailContent";
 import "./LearningOptions.css";
 import Students from "../home3/Students";
 
@@ -58,12 +62,21 @@ const TABS = [
   ["faq", "FAQ"],
 ];
 
-
-
 const HIDE_HEADER_AFTER = 100; // px scrolled before the main navbar hides
 const SHOW_TABS_AFTER = 2;    // show the tab nav after this many sections have been passed
 
-const EMPTY_LEAD = { name: "", phone: "", message: "" };
+// Districts for the "Campus Location" dropdown: [name, comingSoon]
+const DISTRICTS = [
+  ["Kasaragod", false],
+  ["Kannur", false],
+  ["Kozhikode", false],
+  ["Malappuram", false],
+  ["Palakkad", false],
+  ["Thrissur", false],
+  ["Ernakulam", false],
+];
+
+const EMPTY_LEAD = { name: "", phone: "", location: "", message: "" };
 
 const OPTION_ICONS = { online: Laptop, offline: MapPin };
 
@@ -100,7 +113,7 @@ const InfoCard = ({ title, children }) => (
   </div>
 );
 
-const mode = "offline"; // this file = the online page
+const mode = "offline"; // this file = the offline page
 
 const NotFound = ({ mode }) => (
   <>
@@ -121,7 +134,7 @@ const NotFound = ({ mode }) => (
 const CourseDetailsContent = () => {
   const isOffline = mode === "offline";
   const { slug } = useParams();
-  const course = getCourse(slug);
+  const d = getCourseDetail(slug, mode); // everything comes from data/courseDetailContent.js
 
   // ---- ALL hooks live above the early return ----
   const [lead, setLead] = useState(EMPTY_LEAD);
@@ -210,9 +223,17 @@ const CourseDetailsContent = () => {
   const [enrollMode, setEnrollMode] = useState(""); // "" | "online" | "offline"
   // ---- end hooks ----
 
-  if (!course) return <NotFound mode={mode} />;
-  const c = course;
-  const d = getCourseDetail(slug, mode); // content from data/courseDetailContent.js (undefined -> generic fields of `course`)
+  if (!d) return <NotFound mode={mode} />;
+
+  // small object so the rest of the page can keep using c.title, c.category ...
+  const c = {
+    title: d.label,
+    slug: d.slug,
+    category: d.category,
+    duration: d.duration,
+    brochure: d.brochure,
+  };
+
   const lo = getLearningOptions(slug, c.title, mode); // learning options content
   const why = getWhyChoose(slug, mode); // "Why choose Catalyst" content
   // highlight the last two words of the heading (e.g. "Choose the [Right Guidance]")
@@ -239,6 +260,7 @@ const CourseDetailsContent = () => {
     const digits = lead.phone.replace(/\D/g, "");
     if (lead.name.trim().length < 2) return setLeadError("Please enter your name.");
     if (digits.length < 10) return setLeadError("Please enter a valid phone number.");
+    if (!lead.location) return setLeadError("Please select your campus location.");
 
     setLeadError("");
     setStatus("sending");
@@ -258,9 +280,9 @@ const CourseDetailsContent = () => {
   };
 
   // ---- values for the hero (Section 1) ----
-  const heading = d?.heading ?? c.title;
-  const summary = d?.summary ?? c.summary;
-  const type = d?.type ?? c.type;
+  const heading = d.heading;
+  const summary = d.summary;
+  const type = d.type;
   const studyMode = isOffline ? "Offline" : "Online"; // follows the page, not the data
 
   return (
@@ -392,7 +414,7 @@ const CourseDetailsContent = () => {
               </div>
             </div>
 
-            {/* ===== Lead form (Name / Phone Number / Campus Location) ===== */}
+            {/* ===== Lead form (Name / Phone Number / Campus Location / Message) ===== */}
             <div className="col-lg-5">
               <div className="course-sidebar-sticky">
                 <div className="tj-course-sidebar lead-sidebar">
@@ -423,7 +445,7 @@ const CourseDetailsContent = () => {
                             />
                           </div>
 
-                          <div className="lead-row">
+                          <div className="d-md-flex gap-3 lead-row">
                             <div className="lead-field">
                               <label htmlFor="lead-phone">Phone Number</label>
                               <div className="lead-phone-input">
@@ -445,7 +467,26 @@ const CourseDetailsContent = () => {
                               </div>
                             </div>
 
-                    
+                            <div className="lead-field">
+                              <label htmlFor="lead-location">Campus Location</label>
+                              <select
+                                id="lead-location"
+                                name="location"
+                                className="lead-select"
+                                value={lead.location}
+                                onChange={onLeadChange}
+                                required
+                              >
+                                <option value="" disabled>
+                                  Select campus
+                                </option>
+                                {DISTRICTS.map(([name, soon]) => (
+                                  <option key={name} value={name}>
+                                    {soon ? `${name} (Coming soon)` : name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
                           </div>
 
                           <div className="lead-field">
@@ -502,41 +543,31 @@ const CourseDetailsContent = () => {
 
                     {/* SECTION 2: Course introduction */}
                     <div id="overview" className="tj-course-details-box">
-                      <h3 className="title">{d?.overviewTitle ?? "Course description"}</h3>
-                      {d ? (
-                        <p>{d.overview}</p>
-                      ) : (
-                        c.description.map((p) => <p key={p}>{p}</p>)
-                      )}
+                      <h3 className="title">{d.overviewTitle ?? "Course description"}</h3>
+                      <p>{d.overview}</p>
 
                       <h4 className="title" style={{ marginTop: 24 }}>What You’ll Gain</h4>
                       <ul className="tj-list tj-list-2">
-                        {(d?.gain ?? c.audience).map((g) => <Check key={g}>{g}</Check>)}
+                        {d.gain.map((g) => <Check key={g}>{g}</Check>)}
                       </ul>
                     </div>
 
                     {/* SECTION 3: What you'll learn */}
                     <div id="what-youll-learn" className="tj-course-details-box">
                       <h3 className="title">What You’ll Learn</h3>
-                      {d?.learn ? (
-                        <div className="row g-3">
-                          {d.learn.map((item) => (
-                            <div className="col-md-6" key={item.title}>
-                              <InfoCard title={item.title}>{item.text}</InfoCard>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <ul className="tj-list">
-                          {c.goals.map((g) => <Check key={g}>{g}</Check>)}
-                        </ul>
-                      )}
+                      <div className="row g-3">
+                        {d.learn.map((item) => (
+                          <div className="col-md-6" key={item.title}>
+                            <InfoCard title={item.title}>{item.text}</InfoCard>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     <div id="tools-youll-learn" className="tj-course-details-box">
                       <h3 className="title">Tools You’ll Learn</h3>
                       <div className="tj-skill-lists">
-                        {(d?.tools ?? c.tools ?? c.skills).map((t) => (
+                        {d.tools.map((t) => (
                           <span className="tj-skill-item" key={t}>{t}</span>
                         ))}
                       </div>
@@ -545,7 +576,7 @@ const CourseDetailsContent = () => {
                     <div id="skills-youll-learn" className="tj-course-details-box">
                       <h3 className="title">Skills You’ll Learn</h3>
                       <div className="tj-skill-lists">
-                        {(d?.skills ?? c.skills).map((s) => (
+                        {d.skills.map((s) => (
                           <span className="tj-skill-item" key={s}>{s}</span>
                         ))}
                       </div>
@@ -554,35 +585,33 @@ const CourseDetailsContent = () => {
                     <div id="career-pathways" className="tj-course-details-box">
                       <h3 className="title">Career Opportunities</h3>
                       <div className="tj-skill-lists">
-                        {(d?.careers ?? c.jobRoles ?? []).map((r) => (
+                        {d.careers.map((r) => (
                           <span className="tj-skill-item" key={r}>{r}</span>
                         ))}
                       </div>
                     </div>
 
                     {/* <div id="eligibility" className="tj-course-details-box">
-                      <h3 className="title">{d?.eligibilityTitle ?? "Eligibility - Who can learn"}</h3>
+                      <h3 className="title">{d.eligibilityTitle ?? "Eligibility - Who can learn"}</h3>
                       <ul className="course-details-list">
-                        {d
-                          ? d.eligibility.map((e) => (
-                            <li key={e.label}>
-                              <strong>{e.label}:</strong> {e.text}
-                            </li>
-                          ))
-                          : c.requirements.map((r) => <li key={r}>{r}</li>)}
+                        {d.eligibility.map((e) => (
+                          <li key={e.label}>
+                            <strong>{e.label}:</strong> {e.text}
+                          </li>
+                        ))}
                       </ul>
                     </div> */}
 
                     {/* SECTION 4: Certification */}
                     {/* <div id="certificate" className="tj-course-details-box">
-                      <h3 className="title">{d?.certificateTitle ?? "Course Certification"}</h3>
+                      <h3 className="title">{d.certificateTitle ?? "Course Certification"}</h3>
 
                       <p>
-                        {d?.certificateText ??
+                        {d.certificateText ??
                           "Earn a certificate from Catalyst SkillHub upon successful completion of the course."}
                       </p>
 
-                      {d?.certificate && (
+                      {d.certificate && (
                         <div className="course-certificate-image">
                           <img
                             src={d.certificate}
@@ -669,8 +698,6 @@ const CourseDetailsContent = () => {
         </section>
       </div>
 
-
-
       {/* ===== Other (shared) sections — unchanged ===== */}
       <div>
         <div id="career-tracks"><CareerPaths /></div>
@@ -731,8 +758,6 @@ const CourseDetailsContent = () => {
             </div>
           </div>
         </section>
-
-
 
         <div id="blog"><Blog /></div>
         <div id="more-courses"><MoreCourses mode={mode} /></div>

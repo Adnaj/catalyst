@@ -21,6 +21,7 @@ import Students from "../components/sections/home3/Students";
 import Centers from "../components/sections/home3/Centers";
 import StudentJourney from "../components/sections/home3/StudentJourney";
 import Timeline from "../components/sections/home3/Timeline";
+import LifeAtCatalyst from "../components/sections/home3/LifeAtCatalyst";
 
 // Reorder / remove sections here.
 const sections = [
@@ -38,7 +39,9 @@ const sections = [
     
 // Features,
   Testimonials,
+  LifeAtCatalyst,
   TextMarquee,
+
     Blog,
   Faq,
 

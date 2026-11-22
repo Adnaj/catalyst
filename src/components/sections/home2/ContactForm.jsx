@@ -2,7 +2,7 @@ import { useState } from "react";
 import Select from "react-select";
 import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
 
-const IMAGE = "/assets/images/hero/contact.png";
+const IMAGE = "/assets/images/hero/contact.jpg";
 const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
 
 const initial = {

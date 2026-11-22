@@ -1,0 +1,16 @@
+<svg width="173" height="173" viewBox="0 0 173 173" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip0_2183_1868">
+      <rect width="173" height="173" fill="white"/>
+    </clipPath>
+    <!-- Circular baseline for the replacement badge text -->
+    <path id="badgeTextPath" d="M 86.5,14.5 A 72,72 0 1,1 86.49,14.5" />
+  </defs>
+  <g clip-path="url(#clip0_2183_1868)">
+    <text fill="white" fill-opacity="0.9" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="600" letter-spacing="0.45">
+      <textPath href="#badgeTextPath" startOffset="50%" text-anchor="middle">33 campuses Across kerala</textPath>
+    </text>
+    <circle cx="144.121" cy="47.2093" r="1.75369" fill="white"/>
+    <circle cx="26.8865" cy="123.115" r="1.75369" fill="white"/>
+  </g>
+</svg>
