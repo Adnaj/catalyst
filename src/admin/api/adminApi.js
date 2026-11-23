@@ -23,16 +23,18 @@ const parse = async (res) => {
   return data;
 };
 
-const call = (path, { method = "GET", body, auth = false } = {}) =>
-  fetch(`${API_URL}${path}`, {
+const call = (path, { method = "GET", body, auth = false } = {}) => {
+  const isForm = body instanceof FormData; // multipart: the browser must set Content-Type (with the boundary) itself
+  return fetch(`${API_URL}${path}`, {
     method,
     credentials: "include", // sends / receives the refresh cookie
     headers: {
-      ...(body && { "Content-Type": "application/json" }),
+      ...(body && !isForm && { "Content-Type": "application/json" }),
       ...(auth && accessToken && { Authorization: `Bearer ${accessToken}` }),
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: body ? (isForm ? body : JSON.stringify(body)) : undefined,
   });
+};
 
 // Only ONE refresh request may run at a time. Your backend rotates refresh tokens, so two
 // parallel refreshes (e.g. React StrictMode in dev) would look like token theft and log you out.

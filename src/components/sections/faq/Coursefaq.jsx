@@ -11,14 +11,15 @@ const CourseFaq = ({ slug, title, mode = "online" }) => {
   const modeTab = isOffline
     ? { key: "offline", label: "Offline", faqs: f.offline }
     : { key: "online", label: "Online", faqs: f.online };
+    
 
   return (
     <Faq
       idPrefix={`course-${mode}-${slug}`}
-      heading={`${title} FAQs`}
+      heading={`FAQs`}
       description={`Common questions about the ${title} ${isOffline ? "offline" : "online"} course. Can’t find what you’re looking for?`}
       defaultCategory={modeTab.key}
-      categories={[modeTab, { key: "general", label: "General", faqs: f.general }]}
+      categories={[modeTab]}
     />
   );
 };

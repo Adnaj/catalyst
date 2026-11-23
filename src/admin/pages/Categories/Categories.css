@@ -1,0 +1,9 @@
+.cat-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.admin-page.cat-page { max-width: 1040px; }
+.cat-counts { display: flex; flex-wrap: wrap; gap: 6px; }
+.cat-counts .ui-pill { text-decoration: none; transition: filter 0.15s; }
+.cat-counts .ui-pill:hover { filter: brightness(0.95); }
+.cat-form { display: grid; gap: 16px; }
+.cat-form__image { display: flex; align-items: center; gap: 10px; }
+.cat-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+@media (max-width: 520px) { .cat-form__row { grid-template-columns: 1fr; } }

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Select from "react-select";
 import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
-
+import { sendLead } from "../../../api/leads";
 const IMAGE = "/assets/images/hero/contact.jpg";
-const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
+
 
 const initial = {
   cfName: "",
@@ -12,9 +12,11 @@ const initial = {
   cfMode: MODES[1], // Offline by default
   cfLocation: null,
   message: "",
+
 };
 
 const ContactSection = ({ image = IMAGE }) => {
+  const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState(initial);
   const [status, setStatus] = useState("idle");
   const [locationError, setLocationError] = useState(false);
@@ -48,36 +50,31 @@ const ContactSection = ({ image = IMAGE }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // react-select has no native "required", so validate manually
     if (isOffline && !form.cfLocation) {
       setLocationError(true);
       return;
     }
 
     setStatus("sending");
+    setErrorMsg("");
 
     try {
-      const payload = {
+      await sendLead("guidance", {
         cfName: form.cfName,
-        cfEmail: form.cfEmail,
+        cfEmail: form.cfEmail, // phone number
         cfSubject: form.cfSubject.value,
         cfMode: form.cfMode.value,
-        cfLocation: isOffline ? form.cfLocation.value : null,
+        cfLocation: isOffline ? form.cfLocation.value : undefined,
         message: form.message,
-      };
-
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Failed to submit");
+      alert("Thanks! Our advisors will contact you shortly.");
 
       setStatus("sent");
       setForm(initial);
+      setLocationError(false);
     } catch (error) {
-      console.error(error);
+      setErrorMsg(error.message);
       setStatus("error");
     }
   };
@@ -224,19 +221,18 @@ const ContactSection = ({ image = IMAGE }) => {
                       </div>
                     </div>
 
-                    {status === "sent" && (
+                    {/* {status === "sent" && (
                       <div className="col-12">
-                        <p className="cf-status success">
+                        <div className="alert alert-success d-flex align-items-center" role="alert">
+                          <i className="bi bi-check-circle-fill me-2"></i>
                           Thanks! Our advisors will contact you shortly.
-                        </p>
+                        </div>
                       </div>
-                    )}
+                    )} */}
 
                     {status === "error" && (
                       <div className="col-12">
-                        <p className="cf-status error">
-                          Something went wrong. Please try again.
-                        </p>
+                        <p className="cf-status error">{errorMsg || "Something went wrong. Please try again."}</p>
                       </div>
                     )}
                   </div>

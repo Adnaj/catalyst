@@ -34,6 +34,7 @@ const Faq = ({
         <div className="row rg-50">
           <div className="col-12 col-xl-4 col-lg-5">
             <div className="tj-faq-3-info">
+
               <div className="sec-heading">
                 <span
                   className="sec-subtitle sec-subtitle-3 tj-fade-anim"
@@ -97,7 +98,7 @@ const Faq = ({
 
           <div className="col-12 col-xl-8 col-lg-7">
             <div className="tj-faq-wrapper-2">
-              {hasTabs && (
+              {/* {hasTabs && (
                 <div
                   role="tablist"
                   aria-label="FAQ categories"
@@ -128,7 +129,7 @@ const Faq = ({
                     );
                   })}
                 </div>
-              )}
+              )} */}
 
               <div className="tj-faq tj-faq-2" id={parentId} key={groupId}>
                 {list.map((item, i) => {

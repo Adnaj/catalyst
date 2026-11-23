@@ -1,0 +1,37 @@
+.admin-page.cf { max-width: 960px; }
+.cf-back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 600; font-size: 14px; text-decoration: none; margin-bottom: 14px; }
+.cf-back:hover { color: var(--accent); }
+.cf-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cf-head .admin-page__title { margin: 0; }
+
+.cf-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: 18px; }
+.cf-card__head { padding: 18px 22px 0; }
+.cf-card__head h2 { font-family: var(--font-display); font-size: 19px; letter-spacing: -0.01em; }
+.cf-card__head p { color: var(--muted); font-size: 14px; margin-top: 2px; }
+.cf-card__body { padding: 18px 22px 22px; display: grid; gap: 16px; }
+
+.cf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; align-items: start; }
+.cf-grid--tight { gap: 10px; }
+.cf-wide { grid-column: 1 / -1; }
+.cf-stack { display: grid; gap: 16px; }
+.cf-switch { align-self: center; padding-top: 6px; }
+.cf-withthumb { display: flex; align-items: center; gap: 10px; }
+
+.cf-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.cf-fieldset { margin: 0; min-width: 0; display: grid; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.cf-fieldset legend { padding: 0 8px; font-weight: 600; font-size: 14px; color: var(--accent); }
+
+.cf-bar {
+  position: sticky; bottom: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  margin: 8px -12px 0; padding: 14px 12px; border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(10px);
+}
+.cf-bar__state { color: var(--muted); font-size: 14px; }
+.cf-bar__state.is-dirty { color: var(--chip-ink); font-weight: 600; }
+.cf-bar__state.is-dirty::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--spark); }
+.cf-bar__btns { display: flex; gap: 10px; }
+
+@media (max-width: 720px) {
+  .cf-grid, .cf-cols { grid-template-columns: 1fr; }
+  .cf-card__head, .cf-card__body { padding-left: 16px; padding-right: 16px; }
+}

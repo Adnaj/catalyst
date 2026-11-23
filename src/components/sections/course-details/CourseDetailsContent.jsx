@@ -18,6 +18,7 @@ import {
   Globe,
   Network,
   Layers,
+  CircleCheck
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -33,13 +34,14 @@ import AboutCounter from "../about/Aboutcounter";
 import Review from "../home2/Testimonials";
 import Testimonials from "../home3/Testimonials";
 import Blog from "../home2/Blog";
-import CourseFaq from "../faq/Coursefaq";
+import { getCourseFaqs } from "../../../data/faq";
 import Clients from "../home3/Clients";
 import CareerPaths from "../home3/CareerPaths";
 import MoreCourses from "../home3/MoreCourse";
 import ContactForm from "../home2/ContactForm";
 import Centers from "../home3/Centers";
 import LeadPopup from "../../common/LeadPopup";
+import { sendLead } from "../../../api/leads";
 
 // Every id here must exist on a section in the page below.
 const TABS = [
@@ -236,7 +238,15 @@ const CourseDetailsContent = () => {
 
   const lo = getLearningOptions(slug, c.title, mode); // learning options content
   const why = getWhyChoose(slug, mode); // "Why choose Catalyst" content
-  // highlight the last two words of the heading (e.g. "Choose the [Right Guidance]")
+
+  // ---- FAQ (inline, no separate component) ----
+  const faqData = getCourseFaqs(slug, c.title);
+  const faqList = isOffline ? faqData.offline : faqData.online;
+  const faqGroupId = `course-${mode}-${slug}`;
+  const faqParentId = `tjAccordion-${faqGroupId}`;
+  const faqHeading = "FAQs";
+  const faqDescription = `Common questions about the ${c.title} ${isOffline ? "offline" : "online"} course. Can’t find what you’re looking for?`;
+
   const whyWords = why.heading.split(" ");
   const whyAccent = whyWords.length > 3 ? whyWords.slice(-2).join(" ") : "";
   const whyLead = whyAccent ? whyWords.slice(0, -2).join(" ") : why.heading;
@@ -265,17 +275,19 @@ const CourseDetailsContent = () => {
     setLeadError("");
     setStatus("sending");
     try {
-      // TODO: replace with your real endpoint (backend not connected yet)
-      const res = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...lead, course: c.title, studyMode: mode, source: window.location.href }),
+      await sendLead("offline-course", {
+        name: lead.name,
+        phone: lead.phone,
+        location: lead.location,
+        message: lead.message,
+        course: c.title,
+        source: window.location.href,
       });
-      if (!res.ok) throw new Error("Request failed");
       setStatus("success");
       setLead(EMPTY_LEAD);
-    } catch {
-      setStatus("error");
+    } catch (err) {
+      setLeadError(err.message);   // shows the API error message
+      setStatus("idle");
     }
   };
 
@@ -639,58 +651,95 @@ const CourseDetailsContent = () => {
                 <div className="sec-heading sec-heading-center">
                   <span className="sec-subtitle sec-subtitle-3 tj-fade-anim" data-direction="top">
                     <i className="tji-subtitle-2"></i>
-                    {lo.eyebrow}
+                    Learning Path
                   </span>{" "}
                   <h2 className="sec-title tj-fade-anim" data-delay=".3">
-                    {lo.title[0]} <br /> {lo.title[1]}
+                    Learn Your Way. <br />
+                    Build Your Future.
                   </h2>
                 </div>
 
                 <div className="learning-options-grid">
-                  {[
-                    ["online", lo.online],
-                    ["offline", lo.offline],
-                  ].map(([key, option]) => (
-                    <article key={key} className={`learning-option-card ${key}`}>
-                      <div className="learning-option-content">
-                        <span className="learning-option-label">
-                          <span className="learning-option-label-icon" aria-hidden="true">
-                            {(() => {
-                              const Icon = OPTION_ICONS[key];
-                              return <Icon size={16} strokeWidth={2.2} />;
-                            })()}
-                          </span>
-                          {option.label}
+                  {/* Online Option */}
+                  <article className="learning-option-card online">
+                    <div className="learning-option-content">
+                      <span className="learning-option-label">
+                        <span className="learning-option-label-icon" aria-hidden="true">
+                          <Laptop size={16} strokeWidth={2.2} />
                         </span>
+                        Learn Online
+                      </span>
 
-                        <h3>{option.title}</h3>
+                      <h3>{lo.online.title}</h3>
 
-                        <p className="learning-option-description">{option.description}</p>
+                      <p className="learning-option-description">
+                        {lo.online.description}
+                      </p>
 
-                        <div className="learning-option-detail">
-                          <span className="learning-option-detail-dot" />
-                          {option.detail}
-                        </div>
-
-                        <button
-                          type="button"
-                          className="tj-btn-primary style-2 flip-text-wrap btn1"
-                          onClick={openEnroll(key)}
-                        >
-                          <span className="btn-icon">
-                            <i className="tji-arrow-right-2"></i>
-                          </span>
-                          <span className="btn-text">{option.button}</span>
-                        </button>
+                      <div className="learning-option-detail">
+                        <span className="learning-option-detail-dot" />
+                        Join Online
                       </div>
 
-                      <div className="learning-option-image" aria-hidden="true">
-                        <img src={option.image} alt="" loading="lazy" />
+                      <button
+                        type="button"
+                        className="tj-btn-primary style-2 flip-text-wrap btn1"
+                        onClick={openEnroll("online")}
+                      >
+                        <span className="btn-icon">
+                          <i className="tji-arrow-right-2"></i>
+                        </span>
+                        <span className="btn-text">
+                          Enrol Online</span>
+                      </button>
+                    </div>
+
+                    <div className="learning-option-image" aria-hidden="true">
+                      <img src='/assets/images/course/mode1.jpg' alt="" loading="lazy" />
+                    </div>
+
+                    <div className="learning-option-decoration" aria-hidden="true" />
+                  </article>
+
+                  {/* Offline Option */}
+                  <article className="learning-option-card offline">
+                    <div className="learning-option-content">
+                      <span className="learning-option-label">
+                        <span className="learning-option-label-icon" aria-hidden="true">
+                          <MapPin size={16} strokeWidth={2.2} />
+                        </span>
+                        {lo.offline.label}
+                      </span>
+
+                      <h3>{lo.offline.title}</h3>
+
+                      <p className="learning-option-description">
+                        {lo.offline.description}
+                      </p>
+
+                      <div className="learning-option-detail">
+                        <span className="learning-option-detail-dot" />
+                        Learn From Campus
                       </div>
 
-                      <div className="learning-option-decoration" aria-hidden="true" />
-                    </article>
-                  ))}
+                      <button
+                        type="button"
+                        className="tj-btn-primary style-2 flip-text-wrap btn1"
+                        onClick={openEnroll("offline")}
+                      >
+                        <span className="btn-icon">
+                          <i className="tji-arrow-right-2"></i>
+                        </span>
+                        <span className="btn-text">Learn Offline</span>
+                      </button>
+                    </div>
+
+                    <div className="learning-option-image" aria-hidden="true">
+                      <img src='/assets/images/course/mode2.jpg' alt="" loading="lazy" />
+                    </div>
+
+                    <div className="learning-option-decoration" aria-hidden="true" />
+                  </article>
                 </div>
               </div>
             </div>
@@ -733,11 +782,11 @@ const CourseDetailsContent = () => {
 
             <div className="why-choose-grid">
               {why.items.map((item) => {
-                const Icon = WHY_ICONS[item.icon] || Compass;
+                // const Icon = WHY_ICONS[item.icon] || Compass;
                 return (
                   <div className="why-choose-card" key={item.title}>
                     <div className="why-choose-icon">
-                      <Icon size={31} strokeWidth={1.8} />
+                      <CircleCheck size={31} strokeWidth={1.8} />
                     </div>
                     <div className="why-choose-content">
                       <h3>{item.title}</h3>
@@ -761,7 +810,102 @@ const CourseDetailsContent = () => {
 
         <div id="blog"><Blog /></div>
         <div id="more-courses"><MoreCourses mode={mode} /></div>
-        <div id="faq"><CourseFaq slug={slug} title={c.title} mode={mode} /></div>
+        <div id="faq">
+          <section className="tj-faq-section-3 section-gap fix mb-5">
+            <div className="container">
+              <div className="row rg-50">
+                {/* ---- Left: heading + support box ---- */}
+                <div className="col-12 col-xl-4 col-lg-5">
+                  <div className="tj-faq-3-info">
+                    <div className="sec-heading">
+                      <span
+                        className="sec-subtitle sec-subtitle-3 tj-fade-anim"
+                        data-direction="top"
+                      >
+                        <i className="tji-subtitle-2"></i>
+                        {" FAQ"}
+                      </span>
+
+                      <h2 className="sec-title sec-title-faq tj-fade-anim" data-delay=".3">
+                        {faqHeading}
+                      </h2>
+
+                      <p className="desc tj-fade-anim">{faqDescription}</p>
+                    </div>
+
+                    <div
+                      className="support-box support-box-2 tj-fade-anim"
+                      data-delay=".3"
+                      data-duration=".6"
+                    >
+                      <ul className="tj-users-list">
+                        <li><img src="/assets/images/users/Abinand.webp" alt="USER" /></li>
+                        <li><img src="/assets/images/users/Amina.webp" alt="USER" /></li>
+                        <li><img src="/assets/images/users/Siyas.webp" alt="USER" /></li>
+                        <li><img src="/assets/images/users/Sabith.webp" alt="USER" /></li>
+                      </ul>
+
+                      <h3 className="support-title tj-fs-h4">Still have questions?</h3>
+
+                      <p className="support-desc">
+                        Our support team is here to help you every step of the way.
+                      </p>
+
+                      <a
+                        className="tj-btn-primary style-2 style-2-sm flip-text-wrap"
+                        href="#contact"
+                      >
+                        <span className="btn-icon">
+                          <i className="tji-arrow-right-2"></i>
+                        </span>
+                        <span className="btn-text">Contact support</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ---- Right: accordion ---- */}
+                <div className="col-12 col-xl-8 col-lg-7">
+                  <div className="tj-faq-wrapper-2">
+                    <div className="tj-faq tj-faq-2" id={faqParentId} key={faqGroupId}>
+                      {faqList.map((item, i) => {
+                        const itemId = `${faqGroupId}-accordion-${i + 1}`;
+                        return (
+                          <div
+                            key={itemId}
+                            className="tj-accordion-item"
+                            data-delay={(0.2 + i * 0.1).toFixed(1)}
+                            data-duration="0.6"
+                          >
+                            <button
+                              className="tj-accordion-title collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={`#${itemId}`}
+                              aria-expanded="false"
+                            >
+                              {item.q}
+                            </button>
+
+                            <div
+                              id={itemId}
+                              className="collapse"
+                              data-bs-parent={`#${faqParentId}`}
+                            >
+                              <div className="accordion-body tj-accordion-content">
+                                {item.a}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
         <div id="contact"><ContactForm /></div>
       </div>
 

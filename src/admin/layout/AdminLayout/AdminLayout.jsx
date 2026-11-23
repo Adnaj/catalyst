@@ -50,7 +50,7 @@ export default function AdminLayout({ theme, onToggleTheme }) {
     <div className={`shell${collapsed ? " is-collapsed" : ""}${drawer ? " is-open" : ""}`}>
       <aside className="shell__side">
         <div className="shell__brand">
-          <span className="shell__mark">C</span>
+          {/* <span className="shell__mark">C</span> */}
           <span className="shell__brandname">Catalyst SkillHub</span>
         </div>
 

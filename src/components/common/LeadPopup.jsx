@@ -44,6 +44,8 @@ const ALL_LOCATIONS = LOCATION_GROUPS.flatMap((g) => g.options);
  *  meta            – unique data for the button that opened the form, e.g.
  *                    { source: "home-about-enquire", course: "digital-marketing" }
  */
+
+import { sendLead } from "../../api/leads"; // adjust path to where leads.js lives
 export default function LeadPopup({
   isOpen,
   onClose,
@@ -124,15 +126,7 @@ export default function LeadPopup({
       if (onSubmitLead) {
         await onSubmitLead(payload);
       } else {
-        const response = await fetch("/api/enquiry", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        // if (!response.ok) {
-        //   throw new Error("Unable to submit your enquiry.");
-        // }
+        await sendLead("popup", payload);
       }
 
       // Download brochure only after successful enquiry submission
@@ -274,7 +268,7 @@ export default function LeadPopup({
                     placeholder="Phone Number *"
                     autoComplete="tel"
                     inputMode="tel"
-                    pattern="[0-9+() -]{7,20}"
+                    pattern="[0-9+() -]{7,15}"
                     title="Enter a valid phone number."
                     value={form.phone}
                     onChange={handleChange}

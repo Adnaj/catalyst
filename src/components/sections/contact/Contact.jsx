@@ -2,8 +2,8 @@ import { useState } from "react";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
+import { sendLead } from "../../../api/leads";
 
-const API_URL = `${import.meta.env.VITE_API_URL || ""}/api/contact`;
 
 const initial = {
   cfName: "",
@@ -14,7 +14,10 @@ const initial = {
   message: "",
 };
 
+
 const ContactSection = () => {
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState(initial);
   const [status, setStatus] = useState("idle");
   const [locationError, setLocationError] = useState(false);
@@ -66,35 +69,24 @@ const ContactSection = () => {
     }
 
     setStatus("sending");
+    setErrorMsg("");
 
     try {
-      const payload = {
+      await sendLead("contact", {
         cfName: form.cfName,
-        cfEmail: form.cfEmail,
+        cfEmail: form.cfEmail, // phone number
         cfSubject: form.cfSubject.value,
         cfMode: form.cfMode.value,
-        cfLocation: isOffline ? form.cfLocation.value : null,
+        cfLocation: isOffline ? form.cfLocation.value : undefined,
         message: form.message,
-      };
-
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit contact form");
-      }
 
       setStatus("sent");
       setForm({ ...initial });
       setLocationError(false);
       navigate("/thank-you");
     } catch (error) {
-      console.error("Contact form submission error:", error);
+      setErrorMsg(error.message);
       setStatus("error");
     }
   };
@@ -155,7 +147,7 @@ const ContactSection = () => {
                   </h3>
 
                   <p className="desc">
-                    Ready to take the next step in your career? Connect with Catalyst SkillHub to explore courses that match your goals. 
+                    Ready to take the next step in your career? Connect with Catalyst SkillHub to explore courses that match your goals.
                   </p>
                 </div>
 
@@ -310,18 +302,17 @@ const ContactSection = () => {
                     {/* Success Message */}
                     {status === "sent" && (
                       <div className="col-12">
-                        <p className="cf-status success">
+                        <div className="alert alert-success d-flex align-items-center" role="alert">
+                          <i className="bi bi-check-circle-fill me-2"></i>
                           Thanks! Our advisors will contact you shortly.
-                        </p>
+                        </div>
                       </div>
                     )}
 
                     {/* Error Message */}
                     {status === "error" && (
                       <div className="col-12">
-                        <p className="cf-status error">
-                          Something went wrong. Please try again.
-                        </p>
+                        <p className="cf-status error">{errorMsg || "Something went wrong. Please try again."}</p>
                       </div>
                     )}
                   </div>
@@ -346,7 +337,7 @@ const ContactSection = () => {
                   </h2>
 
                   <p className="desc tj-fade-anim" data-delay=".3">
-                    Have questions about your learning journey? Our team is here to guide you in the right direction. 
+                    Have questions about your learning journey? Our team is here to guide you in the right direction.
                   </p>
                 </div>
 
@@ -372,7 +363,7 @@ const ContactSection = () => {
                         className="contact-link"
                         href="mailto:hello@catalysthub.in  "
                       >
-                        hello@catalysthub.in  
+                        hello@catalysthub.in
                       </a>
                     </div>
                   </div>
@@ -388,7 +379,7 @@ const ContactSection = () => {
 
                     <div className="contact-content">
                       <h3 className="contact-title">
-                        Phone Number: 
+                        Phone Number:
                       </h3>
 
                       <p>Mon – Sat 9.00 am – 7. 00 pm </p>
@@ -397,7 +388,7 @@ const ContactSection = () => {
                         className="contact-link"
                         href="tel:+919207300700 "
                       >
-                        +91 9207300700 
+                        +91 9207300700
                       </a>
                     </div>
                   </div>
@@ -417,7 +408,7 @@ const ContactSection = () => {
                       </h3>
 
                       <p>
-                       Headquarters – Mankav, Calicut, Keralam  
+                        Headquarters – Mankav, Calicut, Keralam
                       </p>
 
                       <a
@@ -447,15 +438,15 @@ const ContactSection = () => {
               <div className="map-area">
                 <div className="map">
                   <iframe
-   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.336332946371!2d75.80228907498388!3d11.236650250536348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4d1cf7637efd3dcb%3A0x2d2d0c627868d555!2sCatalyst%20Hub!5e0!3m2!1sen!2sin!4v1793184920895!5m2!1sen!2sin" 
-    width="100%"
-    height="450"
-    style={{ border: 0, borderRadius: "12px" }}
-    allowFullScreen
-    loading="lazy"
-    referrerPolicy="no-referrer-when-downgrade"
-    title="Location - Kozhikode, Kerala"
-  ></iframe>
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.336332946371!2d75.80228907498388!3d11.236650250536348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4d1cf7637efd3dcb%3A0x2d2d0c627868d555!2sCatalyst%20Hub!5e0!3m2!1sen!2sin!4v1793184920895!5m2!1sen!2sin"
+                    width="100%"
+                    height="450"
+                    style={{ border: 0, borderRadius: "12px" }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Location - Kozhikode, Kerala"
+                  ></iframe>
                 </div>
               </div>
             </div>
