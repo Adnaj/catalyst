@@ -1,9 +1,7 @@
-
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { sendCareerApplication } from "../../../api/careers";
 import "./careers.css";
-
-const API_URL = "/api/careers";
 const MAX_CV_MB = 5;
 
 const ALLOWED_TYPES = [
@@ -167,28 +165,9 @@ const CareerPage = () => {
     });
 
     try {
-      const formData = new FormData();
+      const message = await sendCareerApplication(values, cv);
 
-      Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-
-      formData.append("cv", cv);
-
-      const response = await fetch(API_URL, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Application submission failed.");
-      }
-
-      setStatus({
-        state: "success",
-        message:
-          "Application received successfully! Our team will contact you if your profile matches.",
-      });
+      setStatus({ state: "success", message });
 
       setValues(initial);
       setCv(null);
@@ -198,11 +177,7 @@ const CareerPage = () => {
         fileRef.current.value = "";
       }
     } catch (error) {
-      setStatus({
-        state: "error",
-        message:
-          "We couldn't send your application. Please check your connection and try again.",
-      });
+      setStatus({ state: "error", message: error.message });
     }
   };
 

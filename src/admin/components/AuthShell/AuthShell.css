@@ -19,10 +19,12 @@
 }
 .auth__wordmark { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; }
 .auth__wordmark::before {
+  display: none !important;
   content: "C"; width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; font-size: 18px;
   background: linear-gradient(140deg, var(--spark), #ffb24a); box-shadow: 0 6px 16px -6px var(--spark);
 }
 .auth__headline {
+  color: #fff;
   font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 4.2vw, 58px);
   line-height: 1.04; letter-spacing: -0.03em; max-width: 12ch; margin-bottom: 40px;
 }

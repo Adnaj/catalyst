@@ -1,6 +1,5 @@
 /* Careers page styles (shared page header styles live in styles/admin-base.css) */
-.career-page__empty {
-  border: 1px dashed #b9c7ce; border-radius: 12px; padding: 40px 28px; background: var(--surface);
-}
-.career-page__empty-title { font-weight: 600; margin-bottom: 4px; }
-.career-page__empty-text { color: var(--muted); }
+.career-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.career-cv { display: inline-flex; align-items: center; gap: 6px; }
+.career-meta small { display: block; color: var(--muted); }
+.career-msg { white-space: pre-wrap; word-break: break-word; }

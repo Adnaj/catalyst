@@ -126,7 +126,7 @@ const CategoryBanner = () => {
         </div>
 
         {/* right half: image */}
-        <div className="banner-right">
+        <div className="banner-right course-category-right">
           <div className="banner-img">
             <img src={category.image || DEFAULT_IMAGE} alt={category.title} />
           </div>

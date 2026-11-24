@@ -67,6 +67,25 @@ export const request = async (path, options = {}) => {
   return parse(res);
 };
 
+// Authenticated file download (the CV route needs the Bearer token, so a plain <a href> won't work).
+// Same silent refresh-on-401 as request(). Returns a Blob.
+export const requestBlob = async (path) => {
+  let res = await call(path, { auth: true });
+  if (res.status === 401) {
+    try {
+      await refreshSession();
+      res = await call(path, { auth: true });
+    } catch {
+      /* fall through to the error below */
+    }
+  }
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new ApiError(res.status, data.message || "Download failed");
+  }
+  return res.blob();
+};
+
 const withToken = (data) => {
   setAccessToken(data.accessToken);
   return data;

@@ -8659,7 +8659,7 @@ START: Hero CSS
   position: relative;
   z-index: 1;
   background: var(--tj-color-gradient-5);
-  padding-top: 135px;
+  padding-top: 85px;
   padding-bottom: 100px;
   /* min-height: 770px; */
 }
@@ -8790,6 +8790,14 @@ only screen and (min-width: 576px) and (max-width: 767px),
   inset-inline-end: 0;
   width: 55.6%;
   height: 100%;
+}
+.banner-right.course-category-right{
+   position: absolute;
+  z-index: 0;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: 45.6%;
+  height: 80%;
 }
 
 .banner-right .bg-img {

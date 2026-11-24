@@ -45,12 +45,11 @@ const catalystLinks = [
   L("Success stories", "/success-stories"),
   L("Blogs & Insights", "/blog"),
   L("Contact", "/contact"),
-  L("Careers"), // no page yet
+  L("Careers", "/career"), 
   L("Apply as mentor", "/contact"), // no page yet
 ];
 const moreLinks = [
   L("About", "/about"),
-  L("Terms & Conditions"), // no page yet
   L("Privacy policy", "/privacy-policy"),
 ];
 

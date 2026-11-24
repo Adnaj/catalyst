@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "../../common/SmartLink";
 import { useCourses } from "../../../api/courses";
 
 // Offline courses list. Data comes from GET /api/courses/offline (see src/api/courses.js).

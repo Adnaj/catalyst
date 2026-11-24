@@ -28,14 +28,28 @@ export const adaptCategory = (c) => ({
 });
 
 // list item (card fields only)
-const adaptCard = (c, mode) => ({
+// Tech courses live on catalysttech.in. Their `slug` already holds the full URL,
+// so it is used as the link as it is (the card then opens it in a new tab).
+const isUrl = (v) => /^https?:\/\//i.test(v || "");
+const isTechCard = (c) => {
+  const cat = c.category && typeof c.category === "object" ? c.category : { name: c.category };
+  return [cat.slug, cat.name].some((v) => String(v ?? "").trim().toLowerCase() === "tech");
+};
+const cardPath = (c, mode, forceTech) =>
+  isUrl(c.slug)
+    ? c.slug
+    : forceTech || isTechCard(c)
+      ? `https://www.catalysttech.in/course/${c.slug}`
+      : coursePath(mode, c.slug);
+
+const adaptCard = (c, mode, forceTech = false) => ({
   ...c,
   mode,
   title: c.label,
   image: fileUrl(c.image),
   brochure: fileUrl(c.brochure),
   certificate: fileUrl(c.certificate),
-  path: coursePath(mode, c.slug),
+  path: cardPath(c, mode, forceTech),
 });
 
 // full course page data
@@ -75,7 +89,8 @@ export async function fetchCategory(key) {
 
 export async function fetchCategoryCourses(key, mode) {
   const d = await apiGet(`/categories/${enc(key)}/courses`, { mode });
-  return pickList(d, "courses").map((c) => adaptCard(c, mode));
+  const forceTech = String(key).trim().toLowerCase() === "tech";
+  return pickList(d, "courses").map((c) => adaptCard(c, mode, forceTech));
 }
 
 // params: { category, featured, search }

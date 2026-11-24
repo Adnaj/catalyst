@@ -21,7 +21,9 @@ export default function useCategory() {
       const cards = await fetchCategoryCourses(categorySlug, MODE);
       return Promise.all(
         cards.map((c) =>
-          fetchCourse(MODE, c.slug)
+          /^https?:\/\//i.test(c.path)
+            ? Promise.resolve(c) // external (tech) course: no detail data from our API
+            : fetchCourse(MODE, c.slug)
             .then((full) => (full ? { ...c, ...full, title: full.label, path: c.path } : c))
             .catch(() => c)
         )

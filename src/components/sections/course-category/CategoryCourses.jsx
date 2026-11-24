@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "../../common/SmartLink";
 import { Hammer, Briefcase, Diamond, Check} from "lucide-react";
 import useCategory from "./useCategory";
 import "./CourseCategory.css";

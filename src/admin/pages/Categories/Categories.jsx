@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { categoriesApi, errorLines } from "../../api/contentApi";
+import { assetUrl, categoriesApi, errorLines } from "../../api/contentApi";
 import { slugify } from "../../utils/slugify";
 import Icon from "../../components/Icons/Icons";
 import Modal, { ConfirmDialog } from "../../components/ui/Modal";
 import Field from "../../components/ui/Field";
 import Switch from "../../components/ui/Switch";
 import Thumb from "../../components/ui/Thumb";
+import UploadField from "../../components/ui/UploadField";
 import { useToast } from "../../components/ui/Toast";
 import "./Categories.css";
 
@@ -27,6 +28,7 @@ function CategoryModal({ category, nextOrder, onClose, onSaved }) {
   const [problem, setProblem] = useState(null);
   const [nameError, setNameError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false); // image upload in progress -> hold the Save button
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -83,8 +85,8 @@ function CategoryModal({ category, nextOrder, onClose, onSaved }) {
       footer={
         <>
           <button type="button" className="ui-btn ui-btn--ghost" onClick={onClose} disabled={busy}>Cancel</button>
-          <button type="submit" form="category-form" className="ui-btn ui-btn--primary" disabled={busy}>
-            {busy ? "Saving…" : editing ? "Save changes" : "Create category"}
+          <button type="submit" form="category-form" className="ui-btn ui-btn--primary" disabled={busy || uploading}>
+            {busy ? "Saving…" : uploading ? "Uploading image…" : editing ? "Save changes" : "Create category"}
           </button>
         </>
       }
@@ -109,12 +111,7 @@ function CategoryModal({ category, nextOrder, onClose, onSaved }) {
           <textarea id="cat-desc" className="ui-textarea" rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} placeholder="UI/UX and graphic design courses" />
         </Field>
 
-        <Field id="cat-image" label="Image path" hint="Path or URL, e.g. /assets/images/categories/design.webp">
-          <div className="cat-form__image">
-            <input id="cat-image" className="ui-input" value={form.image} onChange={(e) => set("image", e.target.value)} placeholder="/assets/images/categories/design.webp" />
-            <Thumb src={form.image.trim()} size={44} />
-          </div>
-        </Field>
+        <UploadField id="cat-image" label="Category image" kind="image" folder="category-images" maxMB={2} value={form.image} onChange={(v) => set("image", v)} onBusyChange={setUploading} placeholder="/uploads/category-images/design.webp" />
 
         <div className="cat-form__row">
           <Field id="cat-order" label="Display order" hint="Lower numbers come first.">
@@ -264,7 +261,7 @@ export default function Categories() {
                     <tr key={c.id}>
                       <td>
                         <div className="ui-cell">
-                          <Thumb src={c.image} />
+                          <Thumb src={assetUrl(c.image)} />
                           <div>
                             <strong>{c.name}</strong>
                             <small>/{c.slug}</small>
