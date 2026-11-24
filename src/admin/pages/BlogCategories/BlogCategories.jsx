@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { blogCategoriesApi, errorLines } from "../../api/contentApi";
+import { slugify } from "../../utils/slugify";
 import Icon from "../../components/Icons/Icons";
 import Modal, { ConfirmDialog } from "../../components/ui/Modal";
 import Field from "../../components/ui/Field";
@@ -18,7 +19,8 @@ function CategoryModal({ category, nextOrder, onClose, onSaved }) {
     e.preventDefault();
     if (!form.name.trim()) return setNameError("Name is required");
     setBusy(true); setProblem(null);
-    const body = { name: form.name.trim(), description: form.description.trim(), isActive: form.isActive, ...(form.order !== "" && { order: Number(form.order) }) };
+    const name = form.name.trim();
+    const body = { name, slug: slugify(name) || undefined, description: form.description.trim(), isActive: form.isActive, ...(form.order !== "" && { order: Number(form.order) }) };
     try {
       if (editing) await blogCategoriesApi.update(category.slug || category.id, body);
       else await blogCategoriesApi.create(body);
@@ -37,9 +39,10 @@ function CategoryModal({ category, nextOrder, onClose, onSaved }) {
       </>}>
       <form id="bcat-form" onSubmit={submit} noValidate>
         {problem && <div className="ui-alert ui-alert--error" role="alert">{problem.message}{problem.lines.length > 0 && <ul>{problem.lines.map((l) => <li key={l}>{l}</li>)}</ul>}</div>}
-        <Field id="bc-name" label="Name" required error={nameError} hint={editing ? "Renaming also updates every post in this category." : "The slug is generated from the name."}>
+        <Field id="bc-name" label="Name" required error={nameError} hint={editing ? "Renaming also updates the slug and every post in this category." : "The slug is generated from the name."}>
           <input id="bc-name" className="ui-input" value={form.name} onChange={(e) => { setNameError(""); set("name", e.target.value); }} placeholder="Career" data-autofocus />
         </Field>
+        <Field id="bc-slug" label="Slug" hint="Generated automatically from the name and updated whenever the name changes."><input id="bc-slug" className="ui-input" value={slugify(form.name)} readOnly /></Field>
         <Field id="bc-desc" label="Description"><textarea id="bc-desc" className="ui-textarea" rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} /></Field>
         <div className="form-grid">
           <Field id="bc-order" label="Display order" hint="Lower numbers come first."><input id="bc-order" type="number" className="ui-input" value={form.order} onChange={(e) => set("order", e.target.value)} /></Field>

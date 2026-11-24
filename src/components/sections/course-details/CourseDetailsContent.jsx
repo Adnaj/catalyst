@@ -1,5 +1,5 @@
 // OFFLINE course detail page  (route: /courses/:slug)
-// Content comes from data/courseDetailContent.js  ->  courseDetailContent.offline
+// Content comes from GET /api/courses/offline/:slug (see src/api/courses.js)
 // The online page has its own copy: Onlinecoursedetailscontent.jsx
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -21,12 +21,8 @@ import {
   CircleCheck
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import {
-  getCourseDetail,
-  getLearningOptions,
-  getWhyChoose,
-  courseListPath,
-} from "../../../data/courseDetailContent";
+import { useCourse, courseListPath } from "../../../api/courses";
+import { getLearningOptions, getWhyChoose } from "../../../data/courseDefaults";
 import "./LearningOptions.css";
 import Students from "../home3/Students";
 
@@ -34,7 +30,6 @@ import AboutCounter from "../about/Aboutcounter";
 import Review from "../home2/Testimonials";
 import Testimonials from "../home3/Testimonials";
 import Blog from "../home2/Blog";
-import { getCourseFaqs } from "../../../data/faq";
 import Clients from "../home3/Clients";
 import CareerPaths from "../home3/CareerPaths";
 import MoreCourses from "../home3/MoreCourse";
@@ -117,6 +112,17 @@ const InfoCard = ({ title, children }) => (
 
 const mode = "offline"; // this file = the offline page
 
+const PageLoading = () => (
+  <>
+    <div className="space-for-header" />
+    <section className="section-gap">
+      <div className="container text-center">
+        <p>Loading course...</p>
+      </div>
+    </section>
+  </>
+);
+
 const NotFound = ({ mode }) => (
   <>
     <div className="space-for-header" />
@@ -136,7 +142,7 @@ const NotFound = ({ mode }) => (
 const CourseDetailsContent = () => {
   const isOffline = mode === "offline";
   const { slug } = useParams();
-  const d = getCourseDetail(slug, mode); // everything comes from data/courseDetailContent.js
+  const { data: d, loading } = useCourse(mode, slug); // GET /api/courses/offline/:slug
 
   // ---- ALL hooks live above the early return ----
   const [lead, setLead] = useState(EMPTY_LEAD);
@@ -225,6 +231,7 @@ const CourseDetailsContent = () => {
   const [enrollMode, setEnrollMode] = useState(""); // "" | "online" | "offline"
   // ---- end hooks ----
 
+  if (loading && !d) return <PageLoading />;
   if (!d) return <NotFound mode={mode} />;
 
   // small object so the rest of the page can keep using c.title, c.category ...
@@ -236,12 +243,11 @@ const CourseDetailsContent = () => {
     brochure: d.brochure,
   };
 
-  const lo = getLearningOptions(slug, c.title, mode); // learning options content
-  const why = getWhyChoose(slug, mode); // "Why choose Catalyst" content
+  const lo = getLearningOptions(d, c.title); // learning options content
+  const why = getWhyChoose(d); // "Why choose Catalyst" content
 
   // ---- FAQ (inline, no separate component) ----
-  const faqData = getCourseFaqs(slug, c.title);
-  const faqList = isOffline ? faqData.offline : faqData.online;
+  const faqList = d.faqList; // [{ q, a }] built from the API's faqs
   const faqGroupId = `course-${mode}-${slug}`;
   const faqParentId = `tjAccordion-${faqGroupId}`;
   const faqHeading = "FAQs";
@@ -642,7 +648,7 @@ const CourseDetailsContent = () => {
         </div>
       </section>
 
-      {/* ===== Learning options (content from data/courseDetailContent.js) ===== */}
+      {/* ===== Learning options (content from the API) ===== */}
       <div id="learning-options">
         <section className="tj-categories-section-3 pt-5 pb-5 fix">
           <div className="container">
@@ -757,7 +763,7 @@ const CourseDetailsContent = () => {
         <div id="testimonials"><Testimonials /></div>
         <div id="Centers"><Centers /></div>
 
-        {/* ===== SECTION 7: Why choose Catalyst (content from data/courseDetailContent.js) ===== */}
+        {/* ===== SECTION 7: Why choose Catalyst (content from the API) ===== */}
         <section id="benefits" className="about-section-4 section-gap-bottom fix">
           <div className="container">
             <div className="row">
@@ -810,7 +816,7 @@ const CourseDetailsContent = () => {
 
         <div id="blog"><Blog /></div>
         <div id="more-courses"><MoreCourses mode={mode} /></div>
-        <div id="faq">
+        <div id="faq" style={faqList.length ? undefined : { display: "none" }}>
           <section className="tj-faq-section-3 section-gap fix mb-5">
             <div className="container">
               <div className="row rg-50">

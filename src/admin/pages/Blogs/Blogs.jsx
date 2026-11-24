@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { assetUrl, blogCategoriesApi, blogsApi, errorLines } from "../../api/contentApi";
 import { slugify } from "../../utils/slugify";
 import Icon from "../../components/Icons/Icons";
@@ -8,17 +8,28 @@ import Pager from "../../components/ui/Pager";
 import Switch from "../../components/ui/Switch";
 import Thumb from "../../components/ui/Thumb";
 import UploadField from "../../components/ui/UploadField";
+import RichTextEditor from "../../components/ui/RichTextEditor";
 import { useToast } from "../../components/ui/Toast";
 
-const TYPES = { p: "Paragraph", h3: "Sub heading", quote: "Quote", list: "List" };
-const emptyBlock = (type) => (type === "list" ? { type, items: "" } : { type, text: "" });
+const TYPES = { h3: "Heading", p: "Paragraph" };
+const emptyBlock = (type) => ({ type, text: "" });
+const escapeHtml = (s = "") => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// Old posts may still contain list/quote blocks: convert them to paragraphs so nothing is lost on save.
+const legacyToBlock = (x) => {
+  if (x.type === "h3") return { type: "h3", text: x.text || "" };
+  if (x.type === "list") return { type: "p", text: (x.items || []).map((i) => `<p>• ${escapeHtml(i)}</p>`).join("") };
+  if (x.type === "quote") return { type: "p", text: `<p>${escapeHtml(x.text || "")}</p>` };
+  const t = x.text || "";
+  return { type: "p", text: /^\s*</.test(t) ? t : `<p>${escapeHtml(t)}</p>` }; // plain text -> html
+};
+const isEmptyHtml = (h = "") => !h.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
 const today = () => new Date().toISOString().slice(0, 10);
 
 const toForm = (b) => ({
   title: b?.title ?? "", slug: b?.slug ?? "", categorySlug: b?.categorySlug ?? "", image: b?.image ?? "", excerpt: b?.excerpt ?? "",
   tags: (b?.tags || []).join(", "), authorName: b?.author?.name ?? "", authorRole: b?.author?.role ?? "", authorImage: b?.author?.image ?? "",
   publishedAt: (b?.publishedAt || today()).slice(0, 10), isPublished: b?.isPublished ?? true,
-  content: (b?.content || []).map((x) => (x.type === "list" ? { type: "list", items: (x.items || []).join("\n") } : { type: x.type, text: x.text || "" })),
+  content: (b?.content || []).map((x, i) => ({ ...legacyToBlock(x), key: `b${i}` })),
 });
 
 function BlogModal({ blog, categories, onClose, onSaved }) {
@@ -29,6 +40,10 @@ function BlogModal({ blog, categories, onClose, onSaved }) {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
   const set = (k, v) => { setErrors((e) => ({ ...e, [k]: "" })); setForm((f) => ({ ...f, [k]: v })); };
+  // The slug always follows the title (on create and on every edit).
+  const setTitle = (v) => { setErrors((e) => ({ ...e, title: "" })); setForm((f) => ({ ...f, title: v, slug: slugify(v) })); };
+  const keySeq = useRef(1000);
+  const newBlock = (type) => ({ ...emptyBlock(type), key: `n${keySeq.current++}` });
   const setBlock = (i, patch) => set("content", form.content.map((b, j) => (j === i ? { ...b, ...patch } : b)));
   const moveBlock = (i, d) => {
     const c = [...form.content]; const j = i + d;
@@ -45,18 +60,18 @@ function BlogModal({ blog, categories, onClose, onSaved }) {
     if (Object.keys(er).length) return setErrors(er);
 
     const content = form.content
-      .map((b) => (b.type === "list" ? { type: "list", items: b.items.split("\n").map((s) => s.trim()).filter(Boolean) } : { type: b.type, text: b.text.trim() }))
-      .filter((b) => (b.type === "list" ? b.items.length : b.text));
+      .map((b) => ({ type: b.type, text: b.text.trim() }))
+      .filter((b) => (b.type === "p" ? !isEmptyHtml(b.text) : b.text));
     const author = { name: form.authorName.trim(), role: form.authorRole.trim(), image: form.authorImage.trim() };
     const body = {
-      title: t, categorySlug: form.categorySlug, image: form.image.trim(), excerpt: form.excerpt.trim(),
+      title: t, slug: slugify(t) || undefined, categorySlug: form.categorySlug, image: form.image.trim(), excerpt: form.excerpt.trim(),
       tags: form.tags.split(",").map((s) => s.trim()).filter(Boolean), publishedAt: form.publishedAt, isPublished: form.isPublished, content,
       ...(Object.values(author).some(Boolean) && { author }),
     };
     setBusy(true); setProblem(null);
     try {
       if (editing) await blogsApi.update(blog.slug || blog.id, body);
-      else await blogsApi.create({ ...body, ...(form.slug.trim() && { slug: slugify(form.slug) }) });
+      else await blogsApi.create(body);
       onSaved(editing ? "Post updated" : form.isPublished ? "Post published" : "Draft saved");
     } catch (err) {
       setProblem({ message: err.message, lines: errorLines(err) });
@@ -73,15 +88,15 @@ function BlogModal({ blog, categories, onClose, onSaved }) {
       <form id="blog-form" onSubmit={submit} noValidate>
         {problem && <div className="ui-alert ui-alert--error" role="alert">{problem.message}{problem.lines.length > 0 && <ul>{problem.lines.map((l) => <li key={l}>{l}</li>)}</ul>}</div>}
         <div className="form-grid">
-          <Field id="b-title" label="Title" required error={errors.title} className="wide"><input id="b-title" className="ui-input" value={form.title} onChange={(e) => set("title", e.target.value)} data-autofocus /></Field>
+          <Field id="b-title" label="Title" required error={errors.title} className="wide"><input id="b-title" className="ui-input" value={form.title} onChange={(e) => setTitle(e.target.value)} data-autofocus /></Field>
           <Field id="b-cat" label="Category" required error={errors.categorySlug}>
             <select id="b-cat" className="ui-select" value={form.categorySlug} onChange={(e) => set("categorySlug", e.target.value)}>
               <option value="">Select a category</option>
               {categories.map((c) => <option key={c.id} value={c.slug}>{c.name}{c.isActive ? "" : " (inactive)"}</option>)}
             </select>
           </Field>
-          <Field id="b-slug" label="Slug" hint={editing ? "The slug doesn’t change when the title is edited." : "Leave blank to generate it from the title."}>
-            <input id="b-slug" className="ui-input" value={form.slug} disabled={editing} onChange={(e) => set("slug", e.target.value)} />
+          <Field id="b-slug" label="Slug" hint="Generated automatically from the title and updated whenever the title changes.">
+            <input id="b-slug" className="ui-input" value={form.slug} readOnly />
           </Field>
           <div className="wide"><UploadField id="b-image" label="Cover image" folder="blog-images" value={form.image} onChange={(v) => set("image", v)} onBusyChange={setUploading} placeholder="/uploads/blog-images/…" /></div>
           <Field id="b-excerpt" label="Excerpt" hint="Short text shown on the cards." className="wide"><textarea id="b-excerpt" className="ui-textarea" rows={2} value={form.excerpt} onChange={(e) => set("excerpt", e.target.value)} /></Field>
@@ -97,25 +112,23 @@ function BlogModal({ blog, categories, onClose, onSaved }) {
         {editing && <p className="ui-muted" style={{ marginBottom: 8 }}>Saving replaces the whole content body with the blocks below.</p>}
         <div className="blocks">
           {form.content.map((b, i) => (
-            <div className="block" key={i}>
+            <div className="block" key={b.key}>
               <div className="block__bar">
-                <select className="ui-select" value={b.type} aria-label="Block type" onChange={(e) => set("content", form.content.map((x, j) => (j === i ? { ...emptyBlock(e.target.value), ...(e.target.value === "list" ? { items: x.text ?? x.items ?? "" } : { text: x.text ?? x.items ?? "" }) } : x)))}>
-                  {Object.entries(TYPES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                </select>
+                <strong>{TYPES[b.type]}</strong>
                 <span className="grow" />
                 <button type="button" className="ui-iconbtn ui-iconbtn--sm" onClick={() => moveBlock(i, -1)} disabled={i === 0} aria-label="Move up"><Icon name="up" size={16} /></button>
                 <button type="button" className="ui-iconbtn ui-iconbtn--sm" onClick={() => moveBlock(i, 1)} disabled={i === form.content.length - 1} aria-label="Move down"><Icon name="down" size={16} /></button>
                 <button type="button" className="ui-iconbtn ui-iconbtn--sm ui-iconbtn--danger" onClick={() => set("content", form.content.filter((_, j) => j !== i))} aria-label="Remove block"><Icon name="trash" size={16} /></button>
               </div>
-              {b.type === "list"
-                ? <textarea className="ui-textarea" rows={3} value={b.items} onChange={(e) => setBlock(i, { items: e.target.value })} placeholder="One point per line" aria-label="List items" />
-                : <textarea className="ui-textarea" rows={b.type === "p" ? 4 : 2} value={b.text} onChange={(e) => setBlock(i, { text: e.target.value })} aria-label={TYPES[b.type]} />}
+              {b.type === "p"
+                ? <RichTextEditor value={b.text} onChange={(html) => setBlock(i, { text: html })} />
+                : <input className="ui-input" value={b.text} onChange={(e) => setBlock(i, { text: e.target.value })} placeholder="Heading" aria-label="Heading" />}
             </div>
           ))}
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
           {Object.entries(TYPES).map(([k, v]) => (
-            <button key={k} type="button" className="ui-btn ui-btn--ghost ui-btn--sm" onClick={() => set("content", [...form.content, emptyBlock(k)])}><Icon name="plus" size={16} /> {v}</button>
+            <button key={k} type="button" className="ui-btn ui-btn--ghost ui-btn--sm" onClick={() => set("content", [...form.content, newBlock(k)])}><Icon name="plus" size={16} /> {v}</button>
           ))}
         </div>
       </form>

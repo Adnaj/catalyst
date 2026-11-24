@@ -1,31 +1,31 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import {
-  blogCategories,
-  gridPosts,
-  postsByCategory,
-  blogPath,
-} from "../../../data/BlogPosts";
+import { blogPath, useBlogs, useBlogCategories } from "../../../api/blogs";
 
 const PAGE_SIZE = 6;
 
 // Filterable blog grid + pagination. Class names are the same as blog.html.
-// The selected category lives in the URL (/blog?category=design), so the sidebar links on the
-// blog details page open the list already filtered.
-// "All" shows the grid posts (the 3 featured posts are in the strip above);
-// a category shows EVERY post of that category, so the numbers match the sidebar counts.
+//   categories -> GET /api/blog-categories?active=true
+//   posts      -> GET /api/blogs?category=<slug>&page=<n>&limit=6  (filter + paging done by the server)
+// The selected category lives in the URL (/blog?category=career), so links from the blog
+// details page open the list already filtered.
 const BlogList = () => {
   const [params, setParams] = useSearchParams();
-  const wanted = params.get("category");
-  const filter = blogCategories.some((c) => c.key === wanted) ? wanted : "*";
+  const filter = params.get("category") || "*";
   const [page, setPage] = useState(1);
 
   useEffect(() => setPage(1), [filter]);
 
-  const filtered = filter === "*" ? gridPosts : postsByCategory(filter);
-  const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const current = Math.min(page, pages);
-  const visible = filtered.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
+  const { data: cats } = useBlogCategories();
+  const categories = cats || [];
+
+  const { data, loading, error } = useBlogs(
+    { category: filter === "*" ? undefined : filter, page, limit: PAGE_SIZE },
+    { keepPrevious: true }
+  );
+  const visible = data?.posts || [];
+  const pages = data?.pages || 1;
+  const current = data?.page || page;
 
   const changeFilter = (key) => {
     setParams(key === "*" ? {} : { category: key }, { replace: true });
@@ -61,7 +61,7 @@ const BlogList = () => {
                 >
                   <span>All</span>
                 </button>
-                {blogCategories.map((c) => (
+                {categories.map((c) => (
                   <button
                     type="button"
                     key={c.key}
@@ -78,10 +78,22 @@ const BlogList = () => {
         </div>
 
         <div className="row tj-course-filter tj_filter_item_wrapper tj-fade-anim">
+          {loading && visible.length === 0 && (
+            <p className="text-center w-100">Loading posts...</p>
+          )}
+          {!loading && error && (
+            <p className="text-center w-100">
+              Could not load blog posts. Please try again later.
+            </p>
+          )}
+          {!loading && !error && visible.length === 0 && (
+            <p className="text-center w-100">No posts found.</p>
+          )}
+
           {visible.map((post) => (
             <div
               key={post.slug}
-              className={`col-lg-4 col-md-6 tj_filter_item ${post.filters.join(" ")}`}
+              className={`col-lg-4 col-md-6 tj_filter_item ${(post.filters || []).join(" ")}`}
             >
               <article className="blog-item">
                 <div className="blog-thumb">

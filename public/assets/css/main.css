@@ -500,6 +500,7 @@ color : #6e7189 !important;
 .form-control{
   padding: 10px 25px;
   background-color: #faf8fe;
+  border-radius: 25px;
 }
 .nice-select::-webkit-input-placeholder,
 select::-webkit-input-placeholder,
@@ -1335,6 +1336,27 @@ only screen and (min-width: 576px) and (max-width: 767px),
   font-size: 18px;
   line-height: 1;
   margin-top: 3px;
+}
+
+.tj-list.list-category {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 20px !important;
+  list-style: none;
+  padding: 0;
+  max-width: 500px;
+}
+
+.tj-list.list-category li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+@media (max-width: 576px) {
+  .tj-list.list-category {
+    grid-template-columns: 1fr;
+  }
 }
 
 .tj-rating-wrapper {
@@ -15445,7 +15467,7 @@ START: Event CSS
   background-color: #fff;
   backdrop-filter: blur(15px);
   border-radius: 22px;
-  padding: 20px;
+  padding: 20px 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -23926,6 +23948,9 @@ START: Course Details CSS
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.video-btn.video-popup{
+  display: none;
+}
 
 .tj-course-details-img .video-btn span {
   display: -webkit-inline-box;
@@ -26313,13 +26338,22 @@ only screen and (min-width: 576px) and (max-width: 767px),
 @media (max-width: 991px) { :root { --section-space: 55px; } }
 @media (max-width: 575px) { :root { --section-space: 45px; } }
 
+.site-main section.cp-section {
+  padding-top: 0 !important;
+  padding-bottom: var(--section-space) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
 /* Every content section on every page (home, courses, about, contact, course details) */
-.site-main section:not(.tj-page-header):not([class*="banner"]):not(.tj-course-details) {
+.site-main section:not(.tj-page-header):not([class*="banner"]):not(.tj-course-details):not(.cp-section) {
   padding-top: var(--section-space) !important;
   padding-bottom: var(--section-space) !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
+
+
 
 /* Custom spacing for course details */
 .site-main section.tj-course-details {
@@ -26554,3 +26588,13 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .tj-select .contact-select__control--is-focused {
     border-radius: 30px !important;
 }
+
+.directors-row {
+  
+  justify-content: center;
+}
+
+.directors-col{
+  padding-bottom: 25px;
+}
+

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { navigation } from "../../data/navigation";
+import useNavigation, { isExternal } from "../../hooks/useNavigation";
 
 // React replacement for the jQuery meanmenu plugin (same classes, same CSS).
 const Item = ({ item }) => {
@@ -8,7 +8,13 @@ const Item = ({ item }) => {
   return (
     <li>
       {item.to && item.to !== "#" ? (
-        <Link to={item.to}>{item.label}</Link>
+        item.external || isExternal(item.to) ? (
+          <a href={item.to} target="_blank" rel="noopener noreferrer">
+            {item.label}
+          </a>
+        ) : (
+          <Link to={item.to}>{item.label}</Link>
+        )
       ) : (
         <a href="#">{item.label}</a>
       )}
@@ -35,7 +41,9 @@ const Item = ({ item }) => {
   );
 };
 
-const MobileMenu = () => (
+const MobileMenu = () => {
+  const { navigation } = useNavigation();
+  return (
   <div className="mean-container">
     <div className="mean-bar">
       <nav className="mean-nav">
@@ -47,5 +55,6 @@ const MobileMenu = () => (
       </nav>
     </div>
   </div>
-);
+  );
+};
 export default MobileMenu;

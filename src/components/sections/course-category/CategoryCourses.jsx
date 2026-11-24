@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Hammer, Briefcase, Diamond, Check} from "lucide-react";
-import { coursePath } from "../../../data/courses";
 import useCategory from "./useCategory";
 import "./CourseCategory.css";
 
@@ -20,7 +19,7 @@ const ToolIcon = ({ tool }) => {
 };
 
 const CategoryCourses = () => {
-  const { category, courses } = useCategory();
+  const { category, courses, loading } = useCategory();
   if (!category) return null;
 
   return (
@@ -45,19 +44,21 @@ const CategoryCourses = () => {
           <div className="col-12">
             {courses.length === 0 ? (
               <div className="cc-empty">
-                New courses in this category are coming soon.
+                {loading
+                  ? "Loading courses..."
+                  : "New courses in this category are coming soon."}
               </div>
             ) : (
               <div className="tj-event-wrapper">
                 {courses.map((course) => {
                   const [num, unit] = splitDuration(course.duration);
-                  const description = course.listingDescription || course.summary;
-                  const tools = course.tools || course.skills || [];
+                  const description = course.summary;
+                  const tools = course.tools?.length ? course.tools : course.skills || [];
 
                   return (
                     <div className="tj-event-item tj-fade-anim" key={course.slug}>
                       {/* <div className="tj-event-img">
-                        <Link to={coursePath(course.slug)}>
+                        <Link to={course.path}>
                           <img
                             src={course.thumb || course.image}
                             alt={course.title}
@@ -67,12 +68,12 @@ const CategoryCourses = () => {
 
                       <div className="tj-event-content">
                         <div className="tj-categories">
-                          <Link className="tj-cat-2" to={coursePath(course.slug)}>
+                          <Link className="tj-cat-2" to={course.path}>
                             {course.category}
                           </Link>
                         </div>
                         <h3 className="title">
-                          <Link to={coursePath(course.slug)}>{course.title}</Link>
+                          <Link to={course.path}>{course.title}</Link>
                         </h3>
                         <p className="course-cat-dec">{description}</p>
 
@@ -100,7 +101,7 @@ const CategoryCourses = () => {
                           </div>
                         )}
 
-                        {course.jobRoles?.length > 0 && (
+                        {course.careers?.length > 0 && (
                           <div className="cc-block">
                             <div className="cc-head">
                               <span className="cc-head-icon">
@@ -109,7 +110,7 @@ const CategoryCourses = () => {
                               <h4 className="cc-head-title">Job Roles</h4>
                             </div>
                             <ul className="cc-roles">
-                              {course.jobRoles.map((r) => (
+                              {course.careers.map((r) => (
                                 <li key={r}>{r}</li>
                               ))}
                             </ul>

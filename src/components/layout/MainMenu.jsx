@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { navigation } from "../../data/navigation";
+import useNavigation, { isExternal } from "../../hooks/useNavigation";
 import "./mega-menu.css";
 
 const isActive = (item, path) =>
@@ -17,6 +17,15 @@ const NavLink = ({ item }) => {
     return <a href="#">{item.label}</a>;
   }
 
+  // external link (e.g. Tech courses on catalysttech.in) -> new tab
+  if (item.external || isExternal(item.to)) {
+    return (
+      <a href={item.to} target="_blank" rel="noopener noreferrer">
+        {item.label}
+      </a>
+    );
+  }
+
   return <Link to={item.to}>{item.label}</Link>;
 };
 
@@ -30,7 +39,7 @@ const MegaPanel = ({ item }) => (
         return (
           <div className="mega-col" key={cat.label}>
             <h4 className="mega-col__title">
-              {hasLink ? <Link to={cat.to}>{cat.label}</Link> : cat.label}
+              {hasLink ? <NavLink item={cat} /> : cat.label}
             </h4>
             <ul className="mega-col__list">
               {cat.children?.map((course) => (
@@ -72,6 +81,7 @@ const Items = ({ items, sub, path }) => (
 
 const MainMenu = ({ id }) => {
   const { pathname } = useLocation();
+  const { navigation } = useNavigation();
   return (
     <nav id={id} className="mainmenu">
       <Items items={navigation} path={pathname} />

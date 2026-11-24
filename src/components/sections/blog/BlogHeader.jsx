@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { featuredPosts, blogPath } from "../../../data/BlogPosts";
 
-// Page header + the 3 featured posts. Class names are the same as blog.html.
+// Page header. Class names are the same as blog.html.
 const BlogHeader = () => (
   <>
     <div className="space-for-header" />
@@ -31,8 +30,6 @@ const BlogHeader = () => (
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
     </section>

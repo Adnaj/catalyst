@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
-import { blogPosts, blogPath } from "../../../data/BlogPosts";
+import { blogPath, useBlogs } from "../../../api/blogs";
 
-// Home page blog section. Shows the latest 3 posts from data/BlogPosts.js
-// (the first 3 posts in that file) - edit / reorder the posts there and this section updates.
+// Home page blog section. Shows the latest 3 published posts from GET /api/blogs?limit=3
 // Class names are the same as index-2.html.
 const HOME_POSTS = 3;
 
 const Blog = () => {
-  const posts = blogPosts.slice(0, HOME_POSTS);
+  const { data } = useBlogs({ limit: HOME_POSTS });
+  const posts = data?.posts || [];
+  if (posts.length === 0) return null;
 
   return (
     <>
@@ -48,7 +49,7 @@ const Blog = () => {
                       <div className="tj-categories">
                         <Link
                           className="blog-category"
-                          to={`/blog?category=${post.category.toLowerCase()}`}
+                          to={`/blog?category=${post.categorySlug}`}
                         >
                           {post.category}
                         </Link>

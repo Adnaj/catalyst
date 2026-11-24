@@ -1,0 +1,460 @@
+import { useState } from "react";
+import Select from "react-select";
+import { useNavigate } from "react-router-dom";
+import { SUBJECTS, MODES, LOCATIONS } from "../../../data/formOptions";
+import { sendLead } from "../../../api/leads";
+
+
+const initial = {
+  cfName: "",
+  cfEmail: "",
+  cfSubject: SUBJECTS[0],
+  cfMode: MODES[1],
+  cfLocation: null,
+  message: "",
+};
+
+
+const ContactSection = () => {
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [form, setForm] = useState(initial);
+  const [status, setStatus] = useState("idle");
+  const [locationError, setLocationError] = useState(false);
+
+  const isOffline = form.cfMode.value === "offline";
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubjectChange = (selectedOption) => {
+    setForm((prev) => ({
+      ...prev,
+      cfSubject: selectedOption,
+    }));
+  };
+
+  const handleModeChange = (selectedOption) => {
+    setForm((prev) => ({
+      ...prev,
+      cfMode: selectedOption,
+      cfLocation:
+        selectedOption.value === "online" ? null : prev.cfLocation,
+    }));
+
+    setLocationError(false);
+  };
+
+  const handleLocationChange = (selectedOption) => {
+    setForm((prev) => ({
+      ...prev,
+      cfLocation: selectedOption,
+    }));
+
+    setLocationError(false);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isOffline && !form.cfLocation) {
+      setLocationError(true);
+      return;
+    }
+
+    setStatus("sending");
+    setErrorMsg("");
+
+    try {
+      await sendLead("contact", {
+        cfName: form.cfName,
+        cfEmail: form.cfEmail, // phone number
+        cfSubject: form.cfSubject.value,
+        cfMode: form.cfMode.value,
+        cfLocation: isOffline ? form.cfLocation.value : undefined,
+        message: form.message,
+      });
+
+      setStatus("sent");
+      setForm({ ...initial });
+      setLocationError(false);
+      navigate("/thank-you");
+    } catch (error) {
+      setErrorMsg(error.message);
+      setStatus("error");
+    }
+  };
+
+  return (
+    <main id="primary" className="site-main">
+      <div className="space-for-header"></div>
+
+      {/* Page Header - Original Design */}
+      <section className="tj-page-header tj-page-header-2">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <div className="tj-page-header-content">
+                <h1 className="tj-page-title">Contact us</h1>
+
+                <div className="tj-page-link">
+                  <span>
+                    <i className="tji-home"></i>
+                  </span>
+
+                  <span>
+                    <a href="/">Home</a>
+                  </span>
+
+                  <span>
+                    <i className="tji-arrow-right-4"></i>
+                  </span>
+
+                  <span>
+                    <span>Contact us</span>
+                  </span>
+                </div>
+
+                <div className="shape">
+                  <img
+                    src="/assets/images/shapes/stars.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section - Original Layout and Classes */}
+      <section className="tj-contact-section section-gap-bottom">
+        <div className="container">
+          <div className="row rg-30 flex-lg-row flex-column-reverse">
+
+            {/* Contact Form */}
+            <div className="col-lg-7">
+              <div className="contact-form tj-fade-anim">
+                <div className="form-title-wrap">
+                  <h3 className="form-title">
+                    Send us a message.
+                  </h3>
+
+                  <p className="desc">
+                    Ready to take the next step in your career? Connect with Catalyst SkillHub to explore courses that match your goals.
+                  </p>
+                </div>
+
+                <form id="contact-form" onSubmit={onSubmit}>
+                  <div className="row">
+
+                    {/* Full Name */}
+                    <div className="col-sm-6">
+                      <div className="form-input w-100">
+                        <label className="cf-label" htmlFor="cfName">
+                          Full name
+                        </label>
+
+                        <input
+                          type="text"
+                          id="cfName"
+                          name="cfName"
+                          placeholder="Enter name"
+                          value={form.cfName}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className="col-sm-6">
+                      <div className="form-input w-100">
+                        <label className="cf-label" htmlFor="cfEmail">
+                          Phone number
+                        </label>
+
+                        <input
+                          type="tel"
+                          id="cfEmail"
+                          name="cfEmail"
+                          placeholder="Enter Phone number"
+                          value={form.cfEmail}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Choose Programme */}
+                    <div className="col-sm-6">
+                      <div className="form-input w-100">
+                        <label className="cf-label">
+                          Choose programme
+                        </label>
+
+                        <div className="tj-select">
+                          <Select
+                            options={SUBJECTS}
+                            value={form.cfSubject}
+                            onChange={handleSubjectChange}
+                            placeholder="General question"
+                            isSearchable={false}
+                            classNamePrefix="contact-select"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mode */}
+                    <div className="col-sm-6">
+                      <div className="form-input w-100">
+                        <label className="cf-label">
+                          Mode
+                        </label>
+
+                        <div className="tj-select">
+                          <Select
+                            options={MODES}
+                            value={form.cfMode}
+                            onChange={handleModeChange}
+                            isSearchable={false}
+                            classNamePrefix="contact-select"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Location - Only for Offline */}
+                    {isOffline && (
+                      <div className="col-12">
+                        <div className="form-input w-100">
+                          <label className="cf-label">
+                            Location
+                          </label>
+
+                          <div className="tj-select">
+                            <Select
+                              options={LOCATIONS}
+                              value={form.cfLocation}
+                              onChange={handleLocationChange}
+                              placeholder="Select location"
+                              isSearchable={false}
+                              classNamePrefix="contact-select"
+                            />
+                          </div>
+
+                          {locationError && (
+                            <small className="text-danger">
+                              Please select a location.
+                            </small>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Note */}
+                    <div className="col-12">
+                      <div className="form-input message-input w-100">
+                        <label className="cf-label" htmlFor="message">
+                          Note
+                        </label>
+
+                        <textarea
+                          id="message"
+                          name="message"
+                          rows="2"
+                          placeholder="Tell us how we can help..."
+                          value={form.message}
+                          onChange={handleChange}
+                          required
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    {/* Submit Button - Original Classes */}
+                    <div className="col-12">
+                      <div className="form-submit">
+                        <button
+                          type="submit"
+                          className="tj-btn-primary flip-text-wrap"
+                          disabled={status === "sending"}
+                        >
+                          <span className="btn-text">
+                            {status === "sending"
+                              ? "Sending..."
+                              : "Send message"}
+                          </span>
+
+                          <span className="btn-icon">
+                            <i className="tji-arrow-right-2"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Success Message */}
+                    {status === "sent" && (
+                      <div className="col-12">
+                        <div className="alert alert-success d-flex align-items-center" role="alert">
+                          <i className="bi bi-check-circle-fill me-2"></i>
+                          Thanks! Our advisors will contact you shortly.
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Error Message */}
+                    {status === "error" && (
+                      <div className="col-12">
+                        <p className="cf-status error">{errorMsg || "Something went wrong. Please try again."}</p>
+                      </div>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            {/* Contact Details - Original Content and Classes */}
+            <div className="col-lg-5">
+              <div className="tj-contact-area">
+                <div className="sec-heading">
+                  {/* <span
+                  className="sec-subtitle sec-subtitle-3 tj-fade-anim"
+                  data-direction="top"
+                >
+                  <i className="tji-subtitle-2"></i>
+                  {" Get in Touch"}
+                </span>{" "} */}
+
+                  <h2 className="sec-title tj-fade-anim">
+                    Get in Touch.
+                  </h2>
+
+                  <p className="desc tj-fade-anim" data-delay=".3">
+                    Have questions about your learning journey? Our team is here to guide you in the right direction.
+                  </p>
+                </div>
+
+                <div className="contact-item-wrap">
+
+                  {/* Email */}
+                  <div
+                    className="contact-item style-2 tj-fade-anim"
+                    data-delay="0.3"
+                  >
+                    <div className="contact-icon">
+                      <i className="tji-envelope"></i>
+                    </div>
+
+                    <div className="contact-content">
+                      <h3 className="contact-title">
+                        Email us
+                      </h3>
+
+                      <p>Get the information you need </p>
+
+                      <a
+                        className="contact-link"
+                        href="mailto:hello@catalysthub.in  "
+                      >
+                        hello@catalysthub.in
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Phone */}
+                  <div
+                    className="contact-item style-2 tj-fade-anim"
+                    data-delay="0.5"
+                  >
+                    <div className="contact-icon">
+                      <i className="tji-phone-call"></i>
+                    </div>
+
+                    <div className="contact-content">
+                      <h3 className="contact-title">
+                        Phone Number:
+                      </h3>
+
+                      <p>Mon – Sat 9.00 am – 7. 00 pm </p>
+
+                      <a
+                        className="contact-link"
+                        href="tel:+919207300700 "
+                      >
+                        +91 9207300700
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div
+                    className="contact-item style-2 tj-fade-anim"
+                    data-delay="0.1"
+                  >
+                    <div className="contact-icon">
+                      <i className="tji-location"></i>
+                    </div>
+
+                    <div className="contact-content">
+                      <h3 className="contact-title">
+                        Visit us
+                      </h3>
+
+                      <p>
+                        Headquarters – Mankav, Calicut, Keralam
+                      </p>
+
+                      <a
+                        className="tj-text-btn flip-text-wrap"
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://maps.app.goo.gl/d45VP5cxQmTQ5eoR6"
+                      >
+                        <span className="btn-text">
+                          Get directions
+                        </span>
+
+                        <span className="btn-icon">
+                          <i className="tji-arrow-right-2"></i>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Map - Original Layout */}
+          <div className="row">
+            <div className="col">
+              <div className="map-area">
+                <div className="map">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.336332946371!2d75.80228907498388!3d11.236650250536348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4d1cf7637efd3dcb%3A0x2d2d0c627868d555!2sCatalyst%20Hub!5e0!3m2!1sen!2sin!4v1793184920895!5m2!1sen!2sin"
+                    width="100%"
+                    height="450"
+                    style={{ border: 0, borderRadius: "12px" }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Location - Kozhikode, Kerala"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+};
+
+export default ContactSection;

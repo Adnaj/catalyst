@@ -4,7 +4,20 @@ import "./CourseCategory.css";
 const DEFAULT_IMAGE = "/assets/images/hero/hero-img.png";
 
 const CategoryBanner = () => {
-  const { category, courses } = useCategory();
+  const { category, courses, loading } = useCategory();
+
+  if (loading && !category) {
+    return (
+      <>
+        <div className="space-for-header" />
+        <section className="tj-banner-section fix">
+          <div className="container">
+            <p className="py-5 text-center">Loading...</p>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   if (!category) {
     return (
@@ -39,9 +52,11 @@ const CategoryBanner = () => {
 
   // dynamic checklist: category highlights + live course count
   const checklist = [
-    `${courses.length} ${courses.length === 1 ? "course" : "courses"} available`,
-    ...(category.highlights || []),
-  ];
+  "Industry-Relevant Curriculum",
+  "Expert-Led Learning",
+  "Hands-On Practical Learning",
+  "Career & Placement Support",
+];
 
   return (
     <>
@@ -91,7 +106,7 @@ const CategoryBanner = () => {
                   data-duration="1"
                   data-direction="left"
                 >
-                  <ul className="tj-list">
+                  <ul className="tj-list list-category">
                     {checklist.map((text) => (
                       <li key={text}>
                         <span className="icon">

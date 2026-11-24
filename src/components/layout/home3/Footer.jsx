@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import useNavigation, { isExternal } from "../../../hooks/useNavigation";
 // Footer matching the Catalyst Skill Hub design mockup
 import {
   FaFacebookF,
@@ -35,9 +36,9 @@ const accounting = [
   L("Business Accounting", "/courses/business-accounting"),
 ];
 const tech = [
-  L("Python full-stack with devops", "/courses/python-full-stack-devops"),
-  L("Data analytics with gen ai", "/courses/data-analytics-gen-ai"),
-  L("Cyber Security", "/courses/cyber-security"),
+  L("Python full-stack with devops", "https://www.catalysttech.in/course/python-full-stack-development-with-devops"),
+  L("Data analytics with gen ai", "https://www.catalysttech.in/course/data-analytics-with-generative-ai"),
+  L("Cyber Security", "https://www.catalysttech.in/course/cyber-security"),
 ];
 
 const catalystLinks = [
@@ -53,8 +54,6 @@ const moreLinks = [
   L("Privacy policy", "/privacy-policy"),
 ];
 
-const learnOnline = [...marketing, ...accounting, ...tech];
-
 const socials = [
   { name: "Facebook", href: "https://facebook.com", Icon: FaFacebookF },
   { name: "Instagram", href: "https://instagram.com", Icon: FaInstagram },
@@ -64,8 +63,12 @@ const socials = [
 ];
 
 // Internal link when `to` exists, otherwise an inert placeholder (no jump to top)
-const FooterLink = ({ to, children, ...rest }) =>
-  to ? (
+const FooterLink = ({ to, external, children, ...rest }) =>
+  to && (external || isExternal(to)) ? (
+    <a href={to} target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
+  ) : to ? (
     <Link to={to} {...rest}>
       {children}
     </Link>
@@ -79,7 +82,9 @@ const LinkList = ({ items }) => (
   <ul className="csh-list">
     {items.map((item) => (
       <li key={item.label}>
-        <FooterLink to={item.to}>{item.label}</FooterLink>
+        <FooterLink to={item.to} external={item.external}>
+          {item.label}
+        </FooterLink>
       </li>
     ))}
   </ul>
@@ -165,7 +170,21 @@ const styles = `
 }
 `;
 
-const Footer = () => (
+const Footer = () => {
+  const { groups } = useNavigation();
+
+  // API data when loaded, otherwise the static lists above
+  const fallback = [
+    { label: "Marketing & Management", slug: "marketing-management", to: "/category/marketing-management", children: marketing },
+    { label: "Accounting", slug: "accounting", to: "/category/accounting", children: accounting },
+    { label: "Tech Courses", slug: "tech", to: "https://www.catalysttech.in/courses", external: true, children: tech },
+  ];
+  const programmes = groups ? groups.offline.filter((g) => g.children.length) : fallback;
+  const learnOnline = groups
+    ? groups.online.flatMap((g) => g.children)
+    : fallback.flatMap((g) => g.children);
+
+  return (
   <>
     <style>{styles}</style>
     <footer id="scroll-target" className="csh-footer">
@@ -202,24 +221,16 @@ const Footer = () => (
           <div className="csh-col-programmes">
             <h3 className="csh-heading">Programmes</h3>
 
-            <div className="csh-group">
-              <h4 className="csh-sub">
-                <Link to="/category/marketing-management">Marketing &amp; Management</Link>
-              </h4>
-              <LinkList items={marketing} />
-            </div>
-            <div className="csh-group">
-              <h4 className="csh-sub">
-                <Link to="/category/accounting">Accounting</Link>
-              </h4>
-              <LinkList items={accounting} />
-            </div>
-            <div className="csh-group">
-              <h4 className="csh-sub">
-                <Link to="/category/tech">Tech Courses</Link>
-              </h4>
-              <LinkList items={tech} />
-            </div>
+            {programmes.map((g) => (
+              <div className="csh-group" key={g.slug}>
+                <h4 className="csh-sub">
+                  <FooterLink to={g.to} external={g.external}>
+                    {g.label.replace(/ Courses$/, "")}
+                  </FooterLink>
+                </h4>
+                <LinkList items={g.children} />
+              </div>
+            ))}
           </div>
 
           {/* Catalyst + More */}
@@ -268,6 +279,7 @@ const Footer = () => (
       </div>
     </footer>
   </>
-);
+  );
+};
 
 export default Footer;

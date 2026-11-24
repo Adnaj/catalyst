@@ -1,16 +1,8 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import { apiPost } from "./http";
 
+// form = contact | guidance | popup | online-course | offline-course
+// Returns the success message from the server. Throws Error(message) on failure.
 export async function sendLead(form, body) {
-  const response = await fetch(`${API}/leads/${form}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(data.message || "Unable to submit enquiry");
-  }
+  const data = await apiPost(`/leads/${form}`, body, "Unable to submit enquiry");
   return data.message;
 }

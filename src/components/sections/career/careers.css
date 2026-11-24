@@ -1,0 +1,29 @@
+/* Only what the theme doesn't already provide. Colours fall back to the
+   theme's CSS variables if it defines them; edit the fallbacks if not. */
+.tj-careers-section { padding: 80px 0 100px; }
+.careers-form-wrap {
+  background: #fff;
+  border: 1px solid var(--tj-color-border-1, #e5e7eb);
+  border-radius: 16px;
+  padding: clamp(20px, 4vw, 40px);
+}
+.careers-title { margin-bottom: 8px; }
+.careers-desc { text-align: center; margin: 15px auto  35px auto; max-width: 600px; }
+.careers-form-wrap .form-label { font-weight: 500; margin-bottom: 6px; }
+.careers-upload {
+  display: flex; flex-direction: column; gap: 4px; align-items: center;
+  border: 2px dashed var(--tj-color-border-1, #d1d5db);
+  border-radius: 12px; padding: 24px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.careers-upload:hover, .careers-upload.is-drag {
+  border-color: var(--tj-color-theme-primary, #0d6efd);
+  background: rgba(0, 0, 0, .02);
+}
+.careers-upload.is-invalid { border-color: #dc3545; }
+.careers-upload:focus-visible { outline: 3px solid var(--tj-color-theme-primary, #0d6efd); outline-offset: 2px; }
+.careers-upload small { opacity: .7; }
+.careers-form-wrap form button[type="submit"] {
+  width: 100%;
+  margin: 15px 0;
+}

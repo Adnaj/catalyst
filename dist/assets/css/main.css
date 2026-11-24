@@ -500,6 +500,7 @@ color : #6e7189 !important;
 .form-control{
   padding: 10px 25px;
   background-color: #faf8fe;
+  border-radius: 30px;
 }
 .nice-select::-webkit-input-placeholder,
 select::-webkit-input-placeholder,

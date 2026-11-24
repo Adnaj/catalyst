@@ -1,0 +1,20 @@
+/* Append to admin/pages/content.css (replaces any older .rte rules) */
+.rte .jodit-container { border-radius: 8px; }
+.rte .jodit-workplace { min-height: 320px; }
+.rte .jodit-wysiwyg { padding: 14px 16px !important; font-size: 16px; line-height: 1.7; }
+.rte .jodit-wysiwyg img { max-width: 100%; height: auto; }
+/* keep Jodit popups and fullscreen above the admin modal */
+.jodit-popup, .jodit-popup__content, .jodit-dialog, .jodit-ui-popup { z-index: 100000 !important; }
+.jodit-container.jodit_fullsize { z-index: 99999 !important; }
+
+/* Lists: a global CSS reset (e.g. Tailwind preflight) usually strips bullets/numbers, so restore them */
+.rte .jodit-wysiwyg ul { list-style: disc outside !important; padding-left: 1.6em !important; margin: 0 0 .8em !important; }
+.rte .jodit-wysiwyg ol { list-style: decimal outside !important; padding-left: 1.6em !important; margin: 0 0 .8em !important; }
+.rte .jodit-wysiwyg li { display: list-item !important; margin: 0 0 .3em; }
+.rte .jodit-wysiwyg ul ul { list-style: circle outside !important; }
+.rte .jodit-wysiwyg blockquote { border-left: 4px solid #cbd5e1; margin: 0 0 .8em; padding: 4px 14px; opacity: .85; }
+
+/* A global "ul li { list-style: none }" style hides the dots: make every li follow its parent list */
+.rte .jodit-wysiwyg ul > li,
+.rte .jodit-wysiwyg ol > li { list-style: inherit !important; display: list-item !important; }
+.rte .jodit-wysiwyg li::marker { color: inherit !important; font-size: 1em !important; content: normal; }

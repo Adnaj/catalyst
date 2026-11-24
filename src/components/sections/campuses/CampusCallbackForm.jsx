@@ -2,6 +2,7 @@ import "./Campus.css";
 
 
 import { useState } from "react";
+import { sendLead } from "../../../api/leads";
 
 const EMPTY_FORM = {
   name: "",
@@ -36,22 +37,22 @@ const CampusCallbackForm = () => {
     setStatus("sending");
 
     try {
-      const res = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          source: "campus-page-callback",
-          page: window.location.href,
-        }),
+      // POST /api/leads/popup  (name + phone are required, the rest is saved with the lead)
+      await sendLead("popup", {
+        name: form.name,
+        phone: form.phone,
+        formTitle: "Request a Call Back",
+        source: "campus-page-callback",
+        meta: { source: "campus-page-callback", message: form.message },
+        pageUrl: window.location.href,
+        pagePath: window.location.pathname,
       });
-
-      if (!res.ok) throw new Error("Request failed");
 
       setStatus("success");
       setForm(EMPTY_FORM);
-    } catch {
-      setStatus("error");
+    } catch (err) {
+      setError(err.message);
+      setStatus("idle");
     }
   };
 

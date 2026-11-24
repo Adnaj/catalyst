@@ -11,6 +11,7 @@ import Home2 from "./pages/Home2";
 import CourseDetails from "./pages/CourseDetails";
 import OnlineCourseDetails from "./pages/OnlineCourseDetails";
 import About from "./pages/About";
+import Career from "./pages/Career";
 import Contact from "./pages/Contact";
 import Courses from "./pages/Courses";
 import OnlineCourses from "./pages/Onlinecourses";
@@ -48,6 +49,7 @@ const App = () => (
       <Route path="/" element={<Home3 />} />
       <Route path="/home-2" element={<Home2 />} />
       <Route path="/about" element={<About />} />
+      <Route path="/career" element={<Career />} />
       <Route path="/Contact" element={<Contact />} />
       <Route path="/Courses-online" element={<OnlineCourses />} />
       <Route

@@ -147,7 +147,7 @@ const Banner = () => (
               </div>
               <div className="banner-3-img">
                 <img
-                  src="/assets/images/hero/hero-locations.png"
+                  src="/assets/images/hero/location-1.webp"
                   alt="Hero image"
                 />
               </div>

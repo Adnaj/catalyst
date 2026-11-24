@@ -29,7 +29,7 @@ export const categories = [
     headline: "Tech Courses",
     description:
       "Get job-ready in full-stack development, data analytics with Gen AI and cyber security through project-first training.",
-    image: "/assets/images/course/tech-2.png",
+    image: "/assets/images/course/tech.png",
     highlights: ["Project-first learning", "Industry mentors", "Placement support"],
   },
 ];

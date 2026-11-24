@@ -4,6 +4,8 @@ import StickyHeader from "../components/layout/home3/StickyHeader";
 import Footer from "../components/layout/home3/Footer";
 import AboutHeader from "../components/sections/about/AboutHeader";
 import AboutVideo from "../components/sections/about/AboutVideo";
+import MissionVision from "../components/sections/about/MissionVision";
+import Directors from "../components/sections/about/Directors";
 import AboutCounter from "../components/sections/about/AboutCounter";
 import AboutIntro from "../components/sections/about/AboutPlatform";
 import Clients from "../components/sections/home3/Clients";
@@ -24,10 +26,13 @@ const sections = [
   AboutCounter,
   AboutIntro,
   Promo,
+  MissionVision,
   Features,
+  Directors,
 
-  Testimonials,
+  
     Clients,
+    Testimonials,
   Faq,
   ContactForm
 //   AboutClients,

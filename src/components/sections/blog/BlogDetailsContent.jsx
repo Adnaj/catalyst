@@ -8,14 +8,10 @@ import { FaLinkedinIn, FaWhatsapp } from "react-icons/fa6";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import ErrorContent from "../error/ErrorContent";
-import {
-  blogPath,
-  categoryPath,
-  getPost,
-  getRelatedPosts,
-  defaultContent,
-} from "../../../data/BlogPosts";
-import { courses, coursePath, coursesByCategory } from "../../../data/courses";
+import { blogPath, categoryPath, useBlog, useRelatedBlogs } from "../../../api/blogs";
+import { useCourses } from "../../../api/courses";
+import { sendLead } from "../../../api/leads";
+import DOMPurify from "dompurify";
 
 // Blog details page (route: /blog/:slug) - article layout in the style of upGrad blogs:
 // breadcrumb > title > byline + share > table of contents > article > FAQ > author > suggested blogs,
@@ -37,6 +33,24 @@ import { courses, coursePath, coursesByCategory } from "../../../data/courses";
 
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+
+const looksLikeHtml = (s = "") => /<\/?[a-z][\s\S]*>/i.test(s);
+
+// Links open in a new tab; iframes (video embeds) only allowed from YouTube / Vimeo.
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName === "A") {
+    node.setAttribute("target", "_blank");
+    node.setAttribute("rel", "noopener noreferrer");
+  }
+  if (node.tagName === "IFRAME" && !/^https:\/\/(www\.)?(youtube\.com|youtube-nocookie\.com|player\.vimeo\.com)\//.test(node.getAttribute("src") || "")) {
+    node.remove();
+  }
+});
+const cleanHtml = (html) =>
+  DOMPurify.sanitize(html, { ADD_TAGS: ["iframe"], ADD_ATTR: ["target", "allowfullscreen", "frameborder"] });
+
+const stripTags = (s = "") => String(s).replace(/<[^>]*>/g, " ");
 
 // The site uses GSAP ScrollSmoother, so native "#anchor" jumps break scrolling (the page gets stuck).
 // Always scroll through the smoother (falls back to window.scrollTo when it is not active).
@@ -60,9 +74,11 @@ const scrollToId = (id, offset = 110) => {
 const isSubHeading = (t) => /^\d+\s*[.)]\s+/.test(t);
 
 const textOf = (b) =>
-  [b.text, ...(b.items || []).map((i) => (typeof i === "string" ? i : `${i.q || ""} ${i.a || ""}`))]
-    .filter(Boolean)
-    .join(" ");
+  stripTags(
+    [b.text, ...(b.items || []).map((i) => (typeof i === "string" ? i : `${i.q || ""} ${i.a || ""}`))]
+      .filter(Boolean)
+      .join(" ")
+  );
 
 // **bold** inside any text
 const Rich = ({ text }) =>
@@ -88,6 +104,15 @@ const ListText = ({ text }) => {
 };
 
 
+const PostLoading = () => (
+  <>
+    <div className="space-for-header" />
+    <div className="container py-5 text-center">
+      <p>Loading...</p>
+    </div>
+  </>
+);
+
 const ConsultForm = ({ slug }) => {
   const [phone, setPhone] = useState();
   const [status, setStatus] = useState("idle"); // idle | sending | done
@@ -102,26 +127,23 @@ const ConsultForm = ({ slug }) => {
     setError("");
     setStatus("sending");
     try {
-      // same endpoint + payload shape as LeadPopup
-      await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: "",
-          phone,
-          formTitle: "Get Free Consultation",
-          source: "blog-details-sidebar",
-          meta: { source: "blog-details-sidebar", blog: slug },
-          pageUrl: window.location.href,
-          pagePath: window.location.pathname,
-          submittedAt: new Date().toISOString(),
-        }),
+      // POST /api/leads/popup. The API needs a name (2+ characters) and this form only
+      // asks for a phone number, so a generic name is sent.
+      await sendLead("popup", {
+        name: "Blog Visitor",
+        phone,
+        formTitle: "Get Free Consultation",
+        source: "blog-details-sidebar",
+        meta: { source: "blog-details-sidebar", blog: slug },
+        pageUrl: window.location.href,
+        pagePath: window.location.pathname,
       });
-    } catch {
-      /* same behaviour as LeadPopup: failures are not shown to the visitor */
+      setStatus("done");
+      setPhone(undefined);
+    } catch (err) {
+      setError(err.message);
+      setStatus("idle");
     }
-    setStatus("done");
-    setPhone(undefined);
   };
 
   return (
@@ -259,7 +281,9 @@ const Block = ({ block }) => {
     case "faq":
       return null; // rendered once, after the article
     default:
-      return (
+      return looksLikeHtml(block.text) ? (
+        <div className="bd-html" dangerouslySetInnerHTML={{ __html: cleanHtml(block.text) }} />
+      ) : (
         <p>
           <Rich text={block.text} />
         </p>
@@ -271,7 +295,9 @@ const Block = ({ block }) => {
 
 const BlogDetailsContent = () => {
   const { slug } = useParams();
-  const post = getPost(slug);
+  const { data: post, loading } = useBlog(slug); // GET /api/blogs/:slug
+  const { data: relatedPosts } = useRelatedBlogs(slug, 3); // GET /api/blogs/:slug/related
+  const { data: courseList } = useCourses("offline"); // sidebar "Recommended Programs"
 
   const [tocOpen, setTocOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -295,7 +321,7 @@ const BlogDetailsContent = () => {
     if (!id) return;
     const t = setTimeout(() => scrollToId(id), 600);
     return () => clearTimeout(t);
-  }, [slug]);
+  }, [slug, !!post]);
 
   const goTo = (e, id) => {
     e.preventDefault();
@@ -343,11 +369,13 @@ const BlogDetailsContent = () => {
       window.removeEventListener("load", refresh);
       mm.revert();
     };
-  }, [slug]);
+  }, [slug, !!post]);
 
   const data = useMemo(() => {
     if (!post) return null;
-    const blocks = post.content?.length ? post.content : defaultContent;
+    const blocks = post.content?.length
+      ? post.content
+      : [{ type: "p", text: post.excerpt || "" }];
     const body = blocks.filter((b) => b.type !== "faq");
 
 
@@ -364,16 +392,20 @@ const BlogDetailsContent = () => {
     return { body, toc, minutes };
   }, [post]);
 
+  if (loading && !post) return <PostLoading />;
   if (!post) return <ErrorContent />;
 
   const { body, toc, minutes } = data;
-  const suggested = getRelatedPosts(slug, 3);
+  const suggested = relatedPosts || [];
   const author = post.author || {};
   const url = typeof window !== "undefined" ? window.location.href : "";
-  const catKey = String(post.category || "").toLowerCase();
+  const catKey = post.categorySlug || String(post.category || "").toLowerCase();
 
-  const sameCat = coursesByCategory(post.category);
-  const programs = (sameCat.length ? sameCat : courses).slice(0, 4);
+  const allCourses = courseList || [];
+  const sameCat = allCourses.filter(
+    (c) => c.categorySlug === post.categorySlug || c.category === post.category
+  );
+  const programs = (sameCat.length ? sameCat : allCourses).slice(0, 4);
 
   const copyLink = async () => {
     try {
@@ -487,11 +519,11 @@ const BlogDetailsContent = () => {
                     </div>
                   ))}
 
-              
+
                 </div>
 
-     
-     
+
+
               </article>
             </div>
 
@@ -505,7 +537,7 @@ const BlogDetailsContent = () => {
                   <ul className="bd-programs">
                     {programs.map((c) => (
                       <li key={c.slug}>
-                        <Link to={coursePath(c.slug)}>
+                        <Link to={c.path}>
                           {c.image && <img src={c.image} alt={c.title} loading="lazy" />}
                           <span>
                             <strong>{c.title}</strong>
@@ -619,6 +651,19 @@ const css = `
 .bd-table-wrap table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
 .bd-table-wrap th{background:#f4f4f8;color:var(--bd-ink);text-align:left;padding:12px 16px;font-weight:700}
 .bd-table-wrap td{padding:12px 16px;border-top:1px solid var(--bd-line)}
+
+.bd-html p{margin:0 0 16px}
+.bd-html p:empty,.bd-html p:has(>br:only-child){margin:0 0 6px}
+.bd-html ul{list-style:disc outside!important;padding-left:1.6em!important;margin:0 0 6px!important}
+.bd-html ol{list-style:decimal outside!important;padding-left:1.6em!important;margin:0 0 16px!important}
+.bd-html ul>li,.bd-html ol>li{list-style:inherit!important;display:list-item!important;margin-bottom:6px;padding-left:4px}
+.bd-html ul>li::marker{color:var(--bd-ink)}
+.bd-html blockquote{background:var(--bd-accent-soft);border-left:4px solid var(--bd-accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;font-style:italic}
+.bd-html img{max-width:100%;height:auto;border-radius:10px;display:block;margin:18px 0}
+.bd-html table{width:100%;border-collapse:collapse;margin:18px 0}
+.bd-html th,.bd-html td{border:1px solid var(--bd-line);padding:10px 14px;text-align:left}
+.bd-html iframe{max-width:100%;border:0;border-radius:10px}
+.bd-html hr{border:0;border-top:1px solid var(--bd-line);margin:24px 0}
 
 
 

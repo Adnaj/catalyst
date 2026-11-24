@@ -1,0 +1,330 @@
+/* =====================================
+   SHARED HEADING
+===================================== */
+
+.tj-mission-section,
+.tj-values-section {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.tj-mission-section{
+  background: #fafbff;
+}
+
+.mission-section-desc {
+  max-width: 650px;
+  margin: 15px auto 0;
+  color: #686d7d;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.purpose-pill-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.purpose-pill-wrap::before,
+.purpose-pill-wrap::after {
+  content: "";
+  width: 180px;
+  max-width: 22%;
+  height: 1px;
+  background: #d9d2fb;
+}
+
+.purpose-pill {
+  margin: 0 -1px;
+  padding: 6px 22px;
+  border-radius: 999px;
+  background: #efeafe;
+  color: #2d2a8c;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 4px 14px rgba(112, 66, 217, 0.1);
+}
+
+.sec-title.purpose-title span {
+  background: linear-gradient(90deg, #6a3fe0 0%, #3a63e8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #5b3bd9;
+}
+
+.sec-title.values-title span {
+  background: linear-gradient(90deg, #4a45e0 0%, #1f6fe8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #2f5fe0;
+}
+
+/* =====================================
+   MISSION & VISION CARDS
+===================================== */
+
+.mission-vision-row {
+  margin-top: 45px;
+}
+
+.mission-vision-card {
+  position: relative;
+  height: 100%;
+  min-height: 290px;
+  padding: 38px 40px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  isolation: isolate;
+}
+
+.mission-card {
+  background: linear-gradient(135deg, #f3eeff 0%, #f8f6ff 55%, #efeaff 100%);
+}
+
+.vision-card {
+  background: linear-gradient(135deg, #eaf5ff 0%, #f1f9ff 55%, #e3f1ff 100%);
+}
+
+.mission-vision-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(30, 64, 140, 0.1);
+}
+
+.mv-content {
+  position: relative;
+  z-index: 2;
+  width: 58%;
+}
+
+.mv-icon {
+  display: inline-flex;
+  margin-bottom: 18px;
+  line-height: 0;
+  color: #7a35d6;
+}
+
+.vision-card .mv-icon {
+  color: #1f3fa8;
+}
+
+.mv-content h3 {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #101c46;
+  margin: 0 0 14px;
+}
+
+.mission-card .mv-content h3 span {
+  color: #7a35d6;
+}
+
+.vision-card .mv-content h3 span {
+  color: #1d6fe0;
+}
+
+.mv-divider {
+  display: block;
+  width: 50px;
+  height: 2px;
+  border-radius: 2px;
+  margin-bottom: 18px;
+  background: #7a35d6;
+}
+
+.vision-card .mv-divider {
+  background: #1d6fe0;
+}
+
+.mv-content p {
+  max-width: 370px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #2f3857;
+  margin: 0;
+}
+
+.mv-illustration {
+  position: absolute;
+  z-index: 1;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mv-illustration-mission {
+  right: 0px;
+  top: 52%;
+  width: 290px;
+  transform: translateY(-50%);
+}
+
+.mv-illustration-vision {
+  right: 0;
+  bottom: 0;
+  width: 290px;
+}
+
+/* =====================================
+   OUR VALUES CARDS (5 across)
+===================================== */
+
+.core-values-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-top: 5px;
+}
+
+.core-value-card {
+  padding: 24px 22px 28px;
+  background: #fff;
+  border: 1px solid #f1f1f8;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(60, 50, 140, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.core-value-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(60, 50, 140, 0.12);
+}
+
+.value-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.tone-purple .value-icon {
+  background: #ece5ff;
+  color: #6a35d6;
+}
+
+.tone-blue .value-icon {
+  background: #dfeeff;
+  color: #1d6fe0;
+}
+
+.core-value-card h3 {
+  font-size: 21px;
+  font-weight: 700;
+  color: #1a1f5c;
+  margin: 0 0 12px;
+}
+
+.value-divider {
+  display: block;
+  width: 36px;
+  height: 2px;
+  margin: 0 auto 14px;
+  border-radius: 2px;
+}
+
+.tone-purple .value-divider {
+  background: #6a35d6;
+}
+
+.tone-blue .value-divider {
+  background: #1d6fe0;
+}
+
+.core-value-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4b5270;
+  margin: 0;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 1199px) {
+  .mv-content h3 {
+    font-size: 34px;
+  }
+
+  .mv-illustration-mission {
+    width: 235px;
+  }
+
+  .mv-illustration-vision {
+    width: 280px;
+  }
+
+  .core-values-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .mission-vision-card {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 767px) {
+  .mission-section-desc {
+    font-size: 15px;
+  }
+
+  .mission-vision-row {
+    margin-top: 30px;
+  }
+
+  .mission-vision-card {
+    min-height: 430px;
+    padding: 28px 24px 210px;
+    align-items: flex-start;
+  }
+
+  .mv-content {
+    width: 100%;
+  }
+
+  .mv-content h3 {
+    font-size: 30px;
+  }
+
+  .mv-content p {
+    font-size: 15px;
+  }
+
+  .mv-illustration-mission {
+    top: auto;
+    bottom: 10px;
+    right: 50%;
+    width: 220px;
+    transform: translateX(50%);
+  }
+
+  .mv-illustration-vision {
+    width: 260px;
+  }
+
+  .core-values-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .core-values-grid {
+    grid-template-columns: 1fr;
+  }
+}

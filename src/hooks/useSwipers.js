@@ -69,11 +69,14 @@ const sliders = [
 
 export default function useSwipers() {
   useEffect(() => {
+    // A slider marked data-no-auto-swiper is a React <Swiper> (its slides come from an API),
+    // so it must not be started a second time here.
+    const target = (s) => `${s.el}:not([data-no-auto-swiper])`;
     const instances = sliders
-      .filter((s) => document.querySelector(s.el))
+      .filter((s) => document.querySelector(target(s)))
       .map(
         (s) =>
-          new Swiper(s.el, {
+          new Swiper(target(s), {
             modules: [Navigation, Pagination, Autoplay],
             ...s.options,
           }),

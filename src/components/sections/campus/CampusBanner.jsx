@@ -69,14 +69,12 @@ const CampusBanner = () => {
               </div>
             </div>
             <div className="col-lg-6">
-                   <div className="banner-img campus-img-banner">
-            <img src={campus.image} alt={campus.heading} />
-          </div>
+              <div className="banner-img campus-img-banner">
+                <img src={campus.image} alt={campus.heading} />
+              </div>
             </div>
           </div>
         </div>
-
-
       </section>
     </>
   );
